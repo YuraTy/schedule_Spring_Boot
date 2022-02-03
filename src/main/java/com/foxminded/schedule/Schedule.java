@@ -11,18 +11,18 @@ import java.util.List;
 
 public class Schedule {
 
-    private Group group = new Group();
-    private Teacher teacher = new Teacher();
-    private Course course = new Course();
-    private Classroom classroom = new Classroom();
-    private LocalDateTime localDateTime;
+    private Group group;
+    private Teacher teacher;
+    private Course course;
+    private Classroom classroom;
+    private LocalDateTime lessonDate;
 
-    public Schedule(Group group, Teacher teacher, Course course, Classroom classroom, LocalDateTime localDateTime) {
+    public Schedule(Group group, Teacher teacher, Course course, Classroom classroom, LocalDateTime lessonDate) {
         this.group = group;
         this.teacher = teacher;
         this.course = course;
         this.classroom = classroom;
-        this.localDateTime = localDateTime;
+        this.lessonDate = lessonDate;
     }
 
     public List<Schedule> takeAllSchedule() {
