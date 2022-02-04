@@ -1,48 +1,46 @@
 package com.foxminded.dao.classroomdao;
 
 import com.foxminded.classroom.Classroom;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class ClassroomDaoImpl implements ClassroomDao {
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public ClassroomDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public void create(Classroom classroom) {
-        String sqlInquiry = "INSERT INTO classroom (number_classroom) VALUES (?)";
+    public Classroom create(Classroom classroom) {
+        String sqlInquiry = "INSERT INTO classrooms (number_classroom) VALUES (?)";
         jdbcTemplate.update(sqlInquiry,classroom.getNumberClassroom());
+        return classroom;
     }
 
     @Override
     public List<Classroom> findAll() {
         String sqlInquiry = "SELECT number_classroom FROM classrooms";
-        return jdbcTemplate.query(sqlInquiry,(rs,row) ->
-                new Classroom(rs.getInt("number_classroom")));
+        return jdbcTemplate.query(sqlInquiry,BeanPropertyRowMapper.newInstance(Classroom.class));
     }
 
     @Override
-    public Classroom findId(int id) {
-        String sqlInquiry = "SELECT number_classroom FROM classrooms WHERE id = ?";
-        return jdbcTemplate.queryForObject(sqlInquiry,new Object[]{id},(rs,row) ->
-                new Classroom(rs.getInt(id)));
-    }
-
-    @Override
-    public void update(Classroom classroom, int id) {
-        String sqlInquiry = "UPDATE classrooms SET number_classroom=? WHERE id = ?";
-        jdbcTemplate.update(sqlInquiry,classroom.getNumberClassroom(),id);
+    public Classroom update(Classroom classroomNew, Classroom classroomOld) {
+        String sqlInquiry = "UPDATE classrooms SET number_classroom=? WHERE number_classroom = ?";
+        jdbcTemplate.update(sqlInquiry,classroomNew.getNumberClassroom(),classroomOld.getNumberClassroom());
+        return classroomNew;
     }
 
     @Override
@@ -51,9 +49,15 @@ public class ClassroomDaoImpl implements ClassroomDao {
         jdbcTemplate.update(sqlInquiry,classroom.getNumberClassroom());
     }
 
-    public void creteTable() {
-        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableClassroom.sql"));
-        resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
+    @PostConstruct
+    public void creteTable() throws SQLException {
+        DatabaseMetaData metaData = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection().getMetaData();
+        ResultSet tablesResultSet = metaData.getTables(null,null,null,new String[]{"TABLE"});
+        if (!tablesResultSet.next()){
+            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableClassroom.sql"));
+            resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
+        }
+
     }
 
 

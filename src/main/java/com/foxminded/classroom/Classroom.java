@@ -1,11 +1,9 @@
 package com.foxminded.classroom;
 
-import com.foxminded.dao.classroomdao.ClassroomInterface;
+import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-public class Classroom implements ClassroomInterface {
+@Component
+public class Classroom {
 
     private int numberClassroom;
 
@@ -14,14 +12,7 @@ public class Classroom implements ClassroomInterface {
     }
 
     public Classroom() {
-
     }
-
-    @Override
-    public Classroom map(ResultSet rs, int rowNum) throws SQLException {
-        return new Classroom(rs.getInt("number_classroom"));
-    }
-
     public int getNumberClassroom() {
         return numberClassroom;
     }
