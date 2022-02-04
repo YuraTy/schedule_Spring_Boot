@@ -5,6 +5,10 @@ public class Teacher {
     private String firstName;
     private String lastName;
 
+    public Teacher(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getFirstName() {
         return firstName;
     }
