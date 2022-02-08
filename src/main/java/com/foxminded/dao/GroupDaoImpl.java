@@ -1,6 +1,7 @@
-package com.foxminded.dao.groupdao;
+package com.foxminded.dao;
 
 import com.foxminded.group.Group;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,15 +18,12 @@ import java.util.Objects;
 @Repository
 public class GroupDaoImpl implements GroupDao {
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public GroupDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @Autowired
+    private  JdbcTemplate jdbcTemplate;
 
     @Override
     public Group create(Group group) {
-        String sqlInquiry = "INSERT INTO groups (name_group) VALUE (?)";
+        String sqlInquiry = "INSERT INTO groups (name_group) VALUES (?)";
         jdbcTemplate.update(sqlInquiry, group.getNameGroup());
         return group;
     }
@@ -52,8 +50,20 @@ public class GroupDaoImpl implements GroupDao {
     @PostConstruct
     public void creteTable() throws SQLException {
         DatabaseMetaData metaData = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection().getMetaData();
-        ResultSet tablesResultSet = metaData.getTables(null, null, null, new String[]{"TABLE"});
-        if (!tablesResultSet.next()) {
+        ResultSet databases = metaData.getTables(null,null,"%",new String[]{"TABLE"});
+        boolean hasDB = false;
+        while (databases.next()) {
+            String databaseName = databases.getString("TABLE_NAME");
+            if (databaseName.equals("GROUPS")) {
+                hasDB = true;
+                break;
+            }
+        }
+        if (hasDB){
+            jdbcTemplate.update("DROP TABLE groups");
+            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableGroups.sql"));
+            resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
+        }else{
             ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableGroups.sql"));
             resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
         }

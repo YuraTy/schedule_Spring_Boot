@@ -1,4 +1,4 @@
-package com.foxminded.dao.coursedao;
+package com.foxminded.dao;
 
 import com.foxminded.course.Course;
 

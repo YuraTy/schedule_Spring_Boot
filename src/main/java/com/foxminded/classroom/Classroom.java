@@ -7,6 +7,21 @@ public class Classroom {
 
     private int numberClassroom;
 
+    public Classroom(int numberClassroom, int classroomId) {
+        this.numberClassroom = numberClassroom;
+        this.classroomId = classroomId;
+    }
+
+    public int getClassroomId() {
+        return classroomId;
+    }
+
+    public void setClassroomId(int classroomId) {
+        this.classroomId = classroomId;
+    }
+
+    private int classroomId;
+
     public Classroom(int numberClassroom) {
         this.numberClassroom = numberClassroom;
     }
@@ -21,4 +36,15 @@ public class Classroom {
         this.numberClassroom = numberClassroom;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Classroom))
+            return false;
+        Classroom classroom = (Classroom) obj;
+        return this.numberClassroom == (classroom.numberClassroom) ;
+    }
 }

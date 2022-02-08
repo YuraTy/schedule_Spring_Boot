@@ -1,6 +1,7 @@
-package com.foxminded.dao.coursedao;
+package com.foxminded.dao;
 
 import com.foxminded.course.Course;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,15 +18,12 @@ import java.util.Objects;
 @Repository
 public class CourseDaoImpl implements CourseDao {
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public CourseDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @Autowired
+    private  JdbcTemplate jdbcTemplate;
 
     @Override
     public Course create(Course course) {
-        String sqlInquiry = "INSERT INTO courses (name_course) VALUE (?)";
+        String sqlInquiry = "INSERT INTO courses (name_course) VALUES (?)";
         jdbcTemplate.update(sqlInquiry, course.getNameCourse());
         return course;
     }
@@ -52,11 +50,22 @@ public class CourseDaoImpl implements CourseDao {
     @PostConstruct
     public void creteTable() throws SQLException {
         DatabaseMetaData metaData = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection().getMetaData();
-        ResultSet tablesResultSet = metaData.getTables(null, null, null, new String[]{"TABLE"});
-        if (!tablesResultSet.next()) {
+        ResultSet databases = metaData.getTables(null,null,"%",new String[]{"TABLE"});
+        boolean hasDB = false;
+        while (databases.next()) {
+            String databaseName = databases.getString("TABLE_NAME");
+            if (databaseName.equals("COURSES")) {
+                hasDB = true;
+                break;
+            }
+        }
+        if (hasDB){
+            jdbcTemplate.update("DROP TABLE courses");
+            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableCourses.sql"));
+            resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
+        }else{
             ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableCourses.sql"));
             resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
         }
-
     }
 }

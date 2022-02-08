@@ -6,8 +6,7 @@ import com.foxminded.group.Group;
 import com.foxminded.teacher.Teacher;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 public class Schedule {
 
@@ -17,23 +16,44 @@ public class Schedule {
     private Classroom classroom;
     private LocalDateTime lessonStartTime;
     private LocalDateTime lessonEndTime;
+    private int scheduleId;
 
-    public Schedule(Group group, Teacher teacher, Course course, Classroom classroom, LocalDateTime lessonStartTime, LocalDateTime lessonEndTime) {
+    public Schedule(Group group, Teacher teacher, Course course, Classroom classroom, LocalDateTime lessonStartTime, LocalDateTime lessonEndTime, int scheduleId) {
         this.group = group;
         this.teacher = teacher;
         this.course = course;
         this.classroom = classroom;
         this.lessonStartTime = lessonStartTime;
         this.lessonEndTime = lessonEndTime;
+        this.scheduleId = scheduleId;
     }
 
-
-    public List<Schedule> takeAllSchedule() {
-        return new ArrayList<>();
+    public int getScheduleId() {
+        return scheduleId;
     }
 
-    public List<Schedule> takeScheduleToTeacher(Teacher teacher) {
-        return new ArrayList<>();
+    public void setScheduleId(int scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+
+    private final String dataPattern = "yyyy-MM-dd HH:mm:ss";
+
+    public Schedule(Group group, Teacher teacher, Course course, Classroom classroom, String lessonStartTime, String lessonEndTime, int scheduleId) {
+        this.group = group;
+        this.teacher = teacher;
+        this.course = course;
+        this.classroom = classroom;
+        this.lessonStartTime = LocalDateTime.parse(lessonStartTime, DateTimeFormatter.ofPattern(dataPattern));
+        this.lessonEndTime = LocalDateTime.parse(lessonEndTime, DateTimeFormatter.ofPattern(dataPattern));
+        this.scheduleId = scheduleId;
+    }
+    public Schedule(Group group, Teacher teacher, Course course, Classroom classroom, String lessonStartTime, String lessonEndTime) {
+        this.group = group;
+        this.teacher = teacher;
+        this.course = course;
+        this.classroom = classroom;
+        this.lessonStartTime = LocalDateTime.parse(lessonStartTime,DateTimeFormatter.ofPattern(dataPattern));
+        this.lessonEndTime = LocalDateTime.parse(lessonEndTime, DateTimeFormatter.ofPattern(dataPattern));
     }
 
     public Group getGroup() {
@@ -58,5 +78,17 @@ public class Schedule {
 
     public LocalDateTime getLessonEndTime() {
         return lessonEndTime;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Schedule))
+            return false;
+        Schedule schedule = (Schedule) obj;
+        return this.classroom.equals(schedule.classroom) && this.course.equals(schedule.course) && this.teacher.equals(schedule.teacher) && this.group.equals(schedule.group);
     }
 }

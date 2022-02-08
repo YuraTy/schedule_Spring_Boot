@@ -1,4 +1,4 @@
-package com.foxminded.dao.scheduledao;
+package com.foxminded.dao;
 
 import com.foxminded.schedule.Schedule;
 import com.foxminded.teacher.Teacher;

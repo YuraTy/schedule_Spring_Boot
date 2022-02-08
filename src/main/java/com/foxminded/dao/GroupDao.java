@@ -1,4 +1,4 @@
-package com.foxminded.dao.groupdao;
+package com.foxminded.dao;
 
 import com.foxminded.group.Group;
 

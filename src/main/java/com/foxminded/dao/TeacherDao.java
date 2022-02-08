@@ -1,4 +1,4 @@
-package com.foxminded.dao.teacherdao;
+package com.foxminded.dao;
 
 import com.foxminded.teacher.Teacher;
 

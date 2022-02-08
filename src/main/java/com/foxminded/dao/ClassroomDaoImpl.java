@@ -1,6 +1,7 @@
-package com.foxminded.dao.classroomdao;
+package com.foxminded.dao;
 
 import com.foxminded.classroom.Classroom;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,11 +18,8 @@ import java.util.Objects;
 @Repository
 public class ClassroomDaoImpl implements ClassroomDao {
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public ClassroomDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @Autowired
+    private  JdbcTemplate jdbcTemplate;
 
     @Override
     public Classroom create(Classroom classroom) {
@@ -52,13 +50,22 @@ public class ClassroomDaoImpl implements ClassroomDao {
     @PostConstruct
     public void creteTable() throws SQLException {
         DatabaseMetaData metaData = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection().getMetaData();
-        ResultSet tablesResultSet = metaData.getTables(null,null,null,new String[]{"TABLE"});
-        if (!tablesResultSet.next()){
+        ResultSet databases = metaData.getTables(null,null,"%",new String[]{"TABLE"});
+        boolean hasDB = false;
+        while (databases.next()) {
+            String databaseName = databases.getString("TABLE_NAME");
+            if (databaseName.equals("CLASSROOMS")) {
+                hasDB = true;
+                break;
+            }
+        }
+        if (hasDB){
+            jdbcTemplate.update("DROP TABLE classrooms");
+            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableClassroom.sql"));
+            resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
+        }else{
             ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableClassroom.sql"));
             resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
         }
-
     }
-
-
 }
