@@ -19,7 +19,7 @@ import java.util.Objects;
 public class GroupDaoImpl implements GroupDao {
 
     @Autowired
-    private  JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public Group create(Group group) {
@@ -48,24 +48,8 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @PostConstruct
-    public void creteTable() throws SQLException {
-        DatabaseMetaData metaData = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection().getMetaData();
-        ResultSet databases = metaData.getTables(null,null,"%",new String[]{"TABLE"});
-        boolean hasDB = false;
-        while (databases.next()) {
-            String databaseName = databases.getString("TABLE_NAME");
-            if (databaseName.equals("GROUPS")) {
-                hasDB = true;
-                break;
-            }
-        }
-        if (hasDB){
-            jdbcTemplate.update("DROP TABLE groups");
-            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableGroups.sql"));
-            resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
-        }else{
-            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableGroups.sql"));
-            resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
-        }
+    public void creteTable() {
+        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableGroups.sql"));
+        resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
     }
 }

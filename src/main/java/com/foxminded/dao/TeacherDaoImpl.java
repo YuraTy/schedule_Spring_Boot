@@ -48,24 +48,8 @@ public class TeacherDaoImpl implements TeacherDao {
     }
 
     @PostConstruct
-    public void creteTable() throws SQLException {
-        DatabaseMetaData metaData = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection().getMetaData();
-        ResultSet databases = metaData.getTables(null,null,"%",new String[]{"TABLE"});
-        boolean hasDB = false;
-        while (databases.next()) {
-            String databaseName = databases.getString("TABLE_NAME");
-            if (databaseName.equals("TEACHERS")) {
-                hasDB = true;
-                break;
-            }
-        }
-        if (hasDB){
-            jdbcTemplate.update("DROP TABLE teachers");
-            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableTeachers.sql"));
-            resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
-        }else{
-            ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableTeachers.sql"));
-            resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
-        }
+    public void creteTable() {
+        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableTeachers.sql"));
+        resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
     }
 }

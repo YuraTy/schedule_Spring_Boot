@@ -1,4 +1,4 @@
-CREATE TABLE schedule (
+CREATE TABLE IF NOT EXISTS schedule (
 schedule_id SERIAL PRIMARY KEY,
 group_id int REFERENCES groups (id),
 teacher_id int REFERENCES teachers (id),

@@ -1,7 +1,5 @@
 package com.foxminded.course;
-import org.springframework.stereotype.Component;
 
-@Component
 public class Course {
 
     private String nameCourse;

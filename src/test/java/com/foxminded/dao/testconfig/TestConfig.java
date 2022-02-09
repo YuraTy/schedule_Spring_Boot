@@ -6,13 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 
 @Configuration
 @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true)
-@Component
 public class TestConfig {
 
     @Value("${spring.datasource.driver}")

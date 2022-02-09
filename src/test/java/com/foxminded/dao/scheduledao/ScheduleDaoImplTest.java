@@ -53,7 +53,6 @@ class ScheduleDaoImplTest {
 
     @Test
     void create() throws SQLException {
-
         scheduleDao.create(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 18:10:00","2016-06-22 19:10:25"));
         Schedule expectedSchedule = new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 18:10:00","2016-06-22 19:10:25");
         Schedule actualSchedule = scheduleDao.findAll().get(0);
@@ -72,7 +71,6 @@ class ScheduleDaoImplTest {
         expectedScheduleList.add(schedule1);
         List<Schedule> actualScheduleList = scheduleDao.findAll();
         scheduleDao.delete(scheduleDao.takeScheduleToTeacher(testTeacher).get(0));
-
         Assertions.assertEquals(expectedScheduleList,actualScheduleList);
     }
 

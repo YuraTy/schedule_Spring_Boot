@@ -1,8 +1,5 @@
 package com.foxminded.classroom;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Classroom {
 
     private int numberClassroom;
