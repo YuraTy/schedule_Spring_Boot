@@ -132,14 +132,14 @@ public class ScheduleDaoImpl implements ScheduleDao {
         return new Classroom(resultSet.getInt("classrooms.number_classroom"),resultSet.getInt("classrooms.id"));
     }
 
+    private static final String DATA_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
     private LocalDateTime buildStartTime(ResultSet resultSet) throws SQLException {
-        String dataPattern = "yyyy-MM-dd HH:mm:ss";
-        return LocalDateTime.parse(resultSet.getString("schedule.lesson_start_time"), DateTimeFormatter.ofPattern(dataPattern));
+        return LocalDateTime.parse(resultSet.getString("schedule.lesson_start_time"), DateTimeFormatter.ofPattern(DATA_PATTERN));
     }
 
     private LocalDateTime buildEndTime(ResultSet resultSet) throws SQLException {
-        String dataPattern = "yyyy-MM-dd HH:mm:ss";
-        return LocalDateTime.parse(resultSet.getString("schedule.lesson_end_time"), DateTimeFormatter.ofPattern(dataPattern));
+        return LocalDateTime.parse(resultSet.getString("schedule.lesson_end_time"), DateTimeFormatter.ofPattern(DATA_PATTERN));
     }
 
     private int buildScheduleId(ResultSet resultSet) throws SQLException {
