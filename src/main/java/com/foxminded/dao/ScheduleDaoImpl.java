@@ -1,5 +1,8 @@
 package com.foxminded.dao;
 
+import com.foxminded.classroom.Classroom;
+import com.foxminded.course.Course;
+import com.foxminded.group.Group;
 import com.foxminded.schedule.Schedule;
 import com.foxminded.teacher.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import javax.annotation.PostConstruct;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Repository
@@ -45,21 +49,15 @@ public class ScheduleDaoImpl implements ScheduleDao {
         return jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
             @Override
             public Schedule mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-                ScheduleDataBuilder scheduleDataBuilder = ScheduleDataBuilder.builder()
-                        .classroomId(resultSet.getInt("classrooms.id"))
-                        .classroomNumber(resultSet.getInt("classrooms.number_classroom"))
-                        .courseId(resultSet.getInt("courses.id"))
-                        .nameCourse(resultSet.getString("courses.name_course"))
-                        .groupId(resultSet.getInt("groups.id"))
-                        .groupName(resultSet.getString("groups.name_group"))
-                        .teacherId(resultSet.getInt("teachers.id"))
-                        .teacherFirstName(resultSet.getString("teachers.first_name"))
-                        .teacherLastName(resultSet.getString("teachers.last_name"))
-                        .scheduleId(resultSet.getInt("schedule.schedule_id"))
-                        .timeStart(resultSet.getString("schedule.lesson_start_time"))
-                        .timeEnd(resultSet.getString("schedule.lesson_end_time"))
+                return Schedule.builder()
+                        .group(buildGroup(resultSet))
+                        .teacher(buildTeacher(resultSet))
+                        .classroom(buildClassroom(resultSet))
+                        .course(buildCourse(resultSet))
+                        .lessonStartTime(buildStartTime(resultSet))
+                        .lessonEndTime(buildEndTime(resultSet))
+                        .scheduleId(buildScheduleId(resultSet))
                         .build();
-                return new Schedule(scheduleDataBuilder.getGroup(), scheduleDataBuilder.getTeacher(), scheduleDataBuilder.getCourse(), scheduleDataBuilder.getClassroom(), scheduleDataBuilder.getTimeStart(), scheduleDataBuilder.getTimeEnd(), scheduleDataBuilder.getScheduleId());
             }
         });
     }
@@ -77,21 +75,15 @@ public class ScheduleDaoImpl implements ScheduleDao {
         return jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
             @Override
             public Schedule mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-                ScheduleDataBuilder scheduleDataBuilder = ScheduleDataBuilder.builder()
-                        .classroomId(resultSet.getInt("classrooms.id"))
-                        .classroomNumber(resultSet.getInt("classrooms.number_classroom"))
-                        .courseId(resultSet.getInt("courses.id"))
-                        .nameCourse(resultSet.getString("courses.name_course"))
-                        .groupId(resultSet.getInt("groups.id"))
-                        .groupName(resultSet.getString("groups.name_group"))
-                        .teacherId(resultSet.getInt("teachers.id"))
-                        .teacherFirstName(resultSet.getString("teachers.first_name"))
-                        .teacherLastName(resultSet.getString("teachers.last_name"))
-                        .scheduleId(resultSet.getInt("schedule.schedule_id"))
-                        .timeStart(resultSet.getString("schedule.lesson_start_time"))
-                        .timeEnd(resultSet.getString("schedule.lesson_end_time"))
+                return Schedule.builder()
+                        .group(buildGroup(resultSet))
+                        .teacher(buildTeacher(resultSet))
+                        .classroom(buildClassroom(resultSet))
+                        .course(buildCourse(resultSet))
+                        .lessonStartTime(buildStartTime(resultSet))
+                        .lessonEndTime(buildEndTime(resultSet))
+                        .scheduleId(buildScheduleId(resultSet))
                         .build();
-                return new Schedule(scheduleDataBuilder.getGroup(), scheduleDataBuilder.getTeacher(), scheduleDataBuilder.getCourse(), scheduleDataBuilder.getClassroom(), scheduleDataBuilder.getTimeStart(), scheduleDataBuilder.getTimeEnd(), scheduleDataBuilder.getScheduleId());
             }
         }, teacherId);
     }
@@ -123,4 +115,35 @@ public class ScheduleDaoImpl implements ScheduleDao {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableSchedule.sql"));
         resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
     }
+
+    private Group buildGroup(ResultSet resultSet) throws SQLException {
+        return new Group(resultSet.getString("groups.name_group"),resultSet.getInt("groups.id"));
+    }
+
+    private Teacher buildTeacher(ResultSet resultSet) throws SQLException {
+        return  new Teacher(resultSet.getString("teachers.first_name"),resultSet.getString("teachers.last_name"),resultSet.getInt("teachers.id"));
+    }
+
+    private Course buildCourse(ResultSet resultSet) throws SQLException {
+        return new Course(resultSet.getString("courses.name_course"),resultSet.getInt("courses.id"));
+    }
+
+    private Classroom buildClassroom(ResultSet resultSet) throws SQLException {
+        return new Classroom(resultSet.getInt("classrooms.number_classroom"),resultSet.getInt("classrooms.id"));
+    }
+
+    private LocalDateTime buildStartTime(ResultSet resultSet) throws SQLException {
+        String dataPattern = "yyyy-MM-dd HH:mm:ss";
+        return LocalDateTime.parse(resultSet.getString("schedule.lesson_start_time"), DateTimeFormatter.ofPattern(dataPattern));
+    }
+
+    private LocalDateTime buildEndTime(ResultSet resultSet) throws SQLException {
+        String dataPattern = "yyyy-MM-dd HH:mm:ss";
+        return LocalDateTime.parse(resultSet.getString("schedule.lesson_end_time"), DateTimeFormatter.ofPattern(dataPattern));
+    }
+
+    private int buildScheduleId(ResultSet resultSet) throws SQLException {
+        return resultSet.getInt("schedule.schedule_id");
+    }
+
 }

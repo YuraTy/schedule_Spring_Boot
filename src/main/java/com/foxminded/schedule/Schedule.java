@@ -4,10 +4,15 @@ import com.foxminded.classroom.Classroom;
 import com.foxminded.course.Course;
 import com.foxminded.group.Group;
 import com.foxminded.teacher.Teacher;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
+@Builder
 public class Schedule {
 
     private Group group;
@@ -17,16 +22,6 @@ public class Schedule {
     private LocalDateTime lessonStartTime;
     private LocalDateTime lessonEndTime;
     private int scheduleId;
-
-    public Schedule(Group group, Teacher teacher, Course course, Classroom classroom, LocalDateTime lessonStartTime, LocalDateTime lessonEndTime, int scheduleId) {
-        this.group = group;
-        this.teacher = teacher;
-        this.course = course;
-        this.classroom = classroom;
-        this.lessonStartTime = lessonStartTime;
-        this.lessonEndTime = lessonEndTime;
-        this.scheduleId = scheduleId;
-    }
 
     public int getScheduleId() {
         return scheduleId;
