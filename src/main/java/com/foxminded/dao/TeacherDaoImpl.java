@@ -9,11 +9,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class TeacherDaoImpl implements TeacherDao {
