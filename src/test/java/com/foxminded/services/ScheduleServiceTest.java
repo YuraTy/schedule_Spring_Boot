@@ -3,8 +3,8 @@ package com.foxminded.services;
 import com.foxminded.classroom.Classroom;
 import com.foxminded.course.Course;
 import com.foxminded.dao.*;
-import com.foxminded.dao.testconfig.TestConfig;
 import com.foxminded.group.Group;
+import com.foxminded.objectdto.ScheduleDTO;
 import com.foxminded.schedule.Schedule;
 import com.foxminded.teacher.Teacher;
 import org.junit.jupiter.api.Test;
@@ -12,28 +12,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 
-
-@ContextHierarchy({
-        @ContextConfiguration(classes = TestConfig.class),
-        @ContextConfiguration(classes = GroupDaoImpl.class),
-        @ContextConfiguration(classes = TeacherDaoImpl.class),
-        @ContextConfiguration(classes = CourseDaoImpl.class),
-        @ContextConfiguration(classes = ClassroomDaoImpl.class),
-        @ContextConfiguration(classes = ScheduleDaoImpl.class),
-        @ContextConfiguration(classes = ScheduleService.class)
-})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class ScheduleServiceTest {
 
     @Mock
-    ScheduleDaoImpl scheduleDao;
+    private ModelMapper modelMapper;
+
+    @Mock
+    private ScheduleDaoImpl scheduleDao;
 
     @InjectMocks
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
 
     @Test
     void create() {
@@ -63,5 +55,12 @@ class ScheduleServiceTest {
     void delete() {
         scheduleService.delete(new Schedule(new Group("GT-23",1),new Teacher("Ivan","Ivanov",1),new Course("History",1),new Classroom(12,1),"2016-06-22 18:10:00","2016-06-22 19:10:25"));
         Mockito.verify(scheduleDao).delete(Mockito.any());
+    }
+
+    @Test
+    void mapping() {
+        Mockito.when(modelMapper.map(Mockito.any(),Mockito.any())).thenReturn(new ScheduleDTO());
+        scheduleService.mapping(new Schedule(new Group("GT-23",1),new Teacher("Ivan","Ivanov",1),new Course("History",1),new Classroom(12,1),"2016-06-22 18:10:00","2016-06-22 19:10:25"));
+        Mockito.verify(modelMapper).map(Mockito.any(),Mockito.any());
     }
 }

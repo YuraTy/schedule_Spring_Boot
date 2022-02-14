@@ -1,30 +1,27 @@
 package com.foxminded.services;
 
 import com.foxminded.dao.TeacherDaoImpl;
-import com.foxminded.dao.testconfig.TestConfig;
+import com.foxminded.objectdto.TeacherDTO;
 import com.foxminded.teacher.Teacher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 
-@ContextHierarchy({
-        @ContextConfiguration(classes = TestConfig.class),
-        @ContextConfiguration(classes = TeacherDaoImpl.class),
-        @ContextConfiguration(classes = TeacherService.class)
-})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class TeacherServiceTest {
 
     @Mock
-    TeacherDaoImpl teacherDao;
+    private ModelMapper modelMapper;
+
+    @Mock
+    private TeacherDaoImpl teacherDao;
 
     @InjectMocks
-    TeacherService teacherService;
+    private TeacherService teacherService;
 
     @Test
     void create() {
@@ -48,5 +45,12 @@ class TeacherServiceTest {
     void delete() {
         teacherService.delete(new Teacher("Vova","Turenko"));
         Mockito.verify(teacherDao).delete(Mockito.any());
+    }
+
+    @Test
+    void mapping() {
+        Mockito.when(modelMapper.map(Mockito.any(),Mockito.any())).thenReturn(new TeacherDTO());
+        teacherService.mapping(new Teacher("Vova","Turenko"));
+        Mockito.verify(modelMapper).map(Mockito.any(),Mockito.any());
     }
 }

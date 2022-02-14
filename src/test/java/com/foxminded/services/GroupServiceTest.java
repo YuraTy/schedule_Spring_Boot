@@ -1,30 +1,27 @@
 package com.foxminded.services;
 
 import com.foxminded.dao.GroupDaoImpl;
-import com.foxminded.dao.testconfig.TestConfig;
 import com.foxminded.group.Group;
+import com.foxminded.objectdto.GroupDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 
-@ContextHierarchy({
-        @ContextConfiguration(classes = TestConfig.class),
-        @ContextConfiguration(classes = GroupDaoImpl.class),
-        @ContextConfiguration(classes = GroupService.class)
-})
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 class GroupServiceTest {
 
     @Mock
-    GroupDaoImpl groupDao;
+    private ModelMapper modelMapper;
+
+    @Mock
+    private GroupDaoImpl groupDao;
 
     @InjectMocks
-    GroupService groupService;
+    private GroupService groupService;
 
     @Test
     void create() {
@@ -48,5 +45,12 @@ class GroupServiceTest {
     void delete() {
         groupService.delete(new Group("WE-22"));
         Mockito.verify(groupDao).delete(Mockito.any());
+    }
+
+    @Test
+    void mapping() {
+        Mockito.when(modelMapper.map(Mockito.any(),Mockito.any())).thenReturn(new GroupDTO());
+        groupService.mapping(new Group("WE-22",2));
+        Mockito.verify(modelMapper).map(Mockito.any(),Mockito.any());
     }
 }
