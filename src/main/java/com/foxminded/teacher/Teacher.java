@@ -25,7 +25,8 @@ public class Teacher {
         this.lastName = lastName;
     }
 
-    public Teacher() {}
+    public Teacher() {
+    }
 
     public String getFirstName() {
         return firstName;
@@ -52,6 +53,6 @@ public class Teacher {
         if (!(obj instanceof Teacher))
             return false;
         Teacher teacher = (Teacher) obj;
-        return this.firstName.equals(teacher.firstName) && this.lastName.equals(teacher.lastName) ;
+        return this.firstName.equals(teacher.firstName) && this.lastName.equals(teacher.lastName);
     }
 }

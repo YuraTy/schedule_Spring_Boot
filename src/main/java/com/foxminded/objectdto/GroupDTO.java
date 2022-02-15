@@ -1,6 +1,17 @@
 package com.foxminded.objectdto;
 
 public class GroupDTO {
+    private String nameGroup;
+    private int groupId;
+
+    public GroupDTO(String nameGroup, int groupId) {
+        this.nameGroup = nameGroup;
+        this.groupId = groupId;
+    }
+
+    public GroupDTO() {
+    }
+
     public String getNameGroup() {
         return nameGroup;
     }
@@ -17,7 +28,5 @@ public class GroupDTO {
         this.groupId = groupId;
     }
 
-    private String nameGroup;
 
-    private int groupId;
 }

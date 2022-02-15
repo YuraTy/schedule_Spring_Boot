@@ -5,6 +5,14 @@ public class TeacherDTO {
     private String lastName;
     private int teacherId;
 
+    public TeacherDTO(String firstName, String lastName, int teacherId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.teacherId = teacherId;
+    }
+
+    public TeacherDTO() {}
+
     public String getFirstName() {
         return firstName;
     }

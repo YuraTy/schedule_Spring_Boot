@@ -4,6 +4,8 @@ public class Classroom {
 
     private int numberClassroom;
 
+    private int classroomId;
+
     public Classroom(int numberClassroom, int classroomId) {
         this.numberClassroom = numberClassroom;
         this.classroomId = classroomId;
@@ -16,8 +18,6 @@ public class Classroom {
     public void setClassroomId(int classroomId) {
         this.classroomId = classroomId;
     }
-
-    private int classroomId;
 
     public Classroom(int numberClassroom) {
         this.numberClassroom = numberClassroom;

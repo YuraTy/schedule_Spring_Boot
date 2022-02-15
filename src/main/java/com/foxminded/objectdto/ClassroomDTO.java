@@ -4,6 +4,13 @@ public class ClassroomDTO {
     private int numberClassroom;
     private int classroomId;
 
+    public ClassroomDTO(int numberClassroom, int classroomId) {
+        this.numberClassroom = numberClassroom;
+        this.classroomId = classroomId;
+    }
+
+    public ClassroomDTO(){}
+
     public int getNumberClassroom() {
         return numberClassroom;
     }

@@ -5,10 +5,10 @@ import com.foxminded.objectdto.TeacherDTO;
 import com.foxminded.teacher.Teacher;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TeacherService {
@@ -19,23 +19,26 @@ public class TeacherService {
     @Autowired
     private TeacherDaoImpl teacherDao;
 
-    public Teacher create(Teacher teacher) {
-        return teacherDao.create(teacher);
+    public TeacherDTO create(Teacher teacher) {
+        return mapping(teacherDao.create(teacher));
     }
 
-    public List<Teacher> findAll() {
-        return teacherDao.findAll();
+    public List<TeacherDTO> findAll() {
+        return teacherDao.findAll().stream()
+                .map(p -> mapping(p))
+                .collect(Collectors.toList());
     }
 
-    public Teacher update(Teacher teacherNew, Teacher teacherOld) {
-        return teacherDao.update(teacherNew, teacherOld);
+    public TeacherDTO update(Teacher teacherNew, Teacher teacherOld) {
+        return mapping(teacherDao.update(teacherNew, teacherOld));
     }
 
-    public void delete(Teacher teacher) {
+    public TeacherDTO delete(Teacher teacher) {
         teacherDao.delete(teacher);
+        return mapping(teacher);
     }
 
-    public TeacherDTO mapping(Teacher teacher) {
-        return modelMapper.map(teacher,TeacherDTO.class);
+    private TeacherDTO mapping(Teacher teacher) {
+        return modelMapper.map(teacher, TeacherDTO.class);
     }
 }

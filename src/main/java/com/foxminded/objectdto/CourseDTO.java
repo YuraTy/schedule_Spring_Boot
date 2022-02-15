@@ -4,6 +4,13 @@ public class CourseDTO {
     private String nameCourse;
     private int courseId;
 
+    public CourseDTO(String nameCourse, int courseId) {
+        this.nameCourse = nameCourse;
+        this.courseId = courseId;
+    }
+
+    public CourseDTO() {}
+
     public String getNameCourse() {
         return nameCourse;
     }

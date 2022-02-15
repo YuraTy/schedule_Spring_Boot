@@ -4,6 +4,8 @@ public class Course {
 
     private String nameCourse;
 
+    private int courseId;
+
     public Course(String nameCourse, int courseId) {
         this.nameCourse = nameCourse;
         this.courseId = courseId;
@@ -16,8 +18,6 @@ public class Course {
     public void setCourseId(int courseId) {
         this.courseId = courseId;
     }
-
-    private int courseId;
 
     public Course(String nameCourse) {
         this.nameCourse = nameCourse;

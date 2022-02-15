@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ScheduleService {
@@ -19,27 +20,32 @@ public class ScheduleService {
     @Autowired
     private ScheduleDaoImpl scheduleDao;
 
-    public Schedule create(Schedule schedule) {
-        return scheduleDao.create(schedule);
+    public ScheduleDTO create(Schedule schedule) {
+        return mapping(scheduleDao.create(schedule));
     }
 
-    public List<Schedule> findAll() {
-        return scheduleDao.findAll();
+    public List<ScheduleDTO> findAll() {
+        return scheduleDao.findAll().stream()
+                .map(p -> mapping(p))
+                .collect(Collectors.toList());
     }
 
-    public List<Schedule> takeScheduleToTeacher(Teacher teacher) {
-        return scheduleDao.takeScheduleToTeacher(teacher);
+    public List<ScheduleDTO> takeScheduleToTeacher(Teacher teacher) {
+        return scheduleDao.takeScheduleToTeacher(teacher).stream()
+                .map(p -> mapping(p))
+                .collect(Collectors.toList());
     }
 
-    public Schedule update(Schedule scheduleNew, Schedule scheduleOld) {
-        return scheduleDao.update(scheduleNew, scheduleOld);
+    public ScheduleDTO update(Schedule scheduleNew, Schedule scheduleOld) {
+        return mapping(scheduleDao.update(scheduleNew, scheduleOld));
     }
 
-    public void delete(Schedule schedule) {
+    public ScheduleDTO delete(Schedule schedule) {
         scheduleDao.delete(schedule);
+        return mapping(schedule);
     }
 
-    public ScheduleDTO mapping(Schedule schedule) {
+    private ScheduleDTO mapping(Schedule schedule) {
         return modelMapper.map(schedule,ScheduleDTO.class);
     }
 }

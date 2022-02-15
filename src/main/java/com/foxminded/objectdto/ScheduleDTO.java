@@ -6,6 +6,7 @@ import com.foxminded.group.Group;
 import com.foxminded.teacher.Teacher;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ScheduleDTO {
     private Group group;
@@ -15,6 +16,29 @@ public class ScheduleDTO {
     private LocalDateTime lessonStartTime;
     private LocalDateTime lessonEndTime;
     private int scheduleId;
+
+    public ScheduleDTO(Group group, Teacher teacher, Course course, Classroom classroom, LocalDateTime lessonStartTime, LocalDateTime lessonEndTime, int scheduleId) {
+        this.group = group;
+        this.teacher = teacher;
+        this.course = course;
+        this.classroom = classroom;
+        this.lessonStartTime = lessonStartTime;
+        this.lessonEndTime = lessonEndTime;
+        this.scheduleId = scheduleId;
+    }
+
+    public ScheduleDTO(Group group, Teacher teacher, Course course, Classroom classroom, String lessonStartTime, String lessonEndTime, int scheduleId) {
+        String dataPattern = "yyyy-MM-dd HH:mm:ss";
+        this.group = group;
+        this.teacher = teacher;
+        this.course = course;
+        this.classroom = classroom;
+        this.lessonStartTime = LocalDateTime.parse(lessonStartTime, DateTimeFormatter.ofPattern(dataPattern));
+        this.lessonEndTime = LocalDateTime.parse(lessonEndTime, DateTimeFormatter.ofPattern(dataPattern));
+        this.scheduleId = scheduleId;
+    }
+
+    public ScheduleDTO() {}
 
     public Group getGroup() {
         return group;

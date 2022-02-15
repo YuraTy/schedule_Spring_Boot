@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClassroomService {
@@ -18,23 +19,26 @@ public class ClassroomService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Classroom create(Classroom classroom) {
-        return classroomDao.create(classroom);
+    public ClassroomDTO create(Classroom classroom) {
+        return mapping(classroomDao.create(classroom));
     }
 
-    public List<Classroom> findAll() {
-        return classroomDao.findAll();
+    public List<ClassroomDTO> findAll() {
+        return classroomDao.findAll().stream()
+                .map(p -> mapping(p))
+                .collect(Collectors.toList());
     }
 
-    public Classroom update(Classroom classroomNew, Classroom classroomOld) {
-        return classroomDao.update(classroomNew,classroomOld);
+    public ClassroomDTO update(Classroom classroomNew, Classroom classroomOld) {
+        return mapping(classroomDao.update(classroomNew, classroomOld));
     }
 
-    public void delete(Classroom classroom) {
+    public ClassroomDTO delete(Classroom classroom) {
         classroomDao.delete(classroom);
+        return mapping(classroom);
     }
 
-    public ClassroomDTO mapping(Classroom classroom) {
+    private ClassroomDTO mapping(Classroom classroom) {
         return modelMapper.map(classroom, ClassroomDTO.class);
     }
 }

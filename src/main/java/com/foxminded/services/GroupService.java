@@ -2,13 +2,13 @@ package com.foxminded.services;
 
 import com.foxminded.dao.GroupDaoImpl;
 import com.foxminded.group.Group;
-import com.foxminded.mapperconfig.MapperConfig;
 import com.foxminded.objectdto.GroupDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupService {
@@ -19,23 +19,26 @@ public class GroupService {
     @Autowired
     private GroupDaoImpl groupDao;
 
-    public Group create(Group group) {
-        return groupDao.create(group);
+    public GroupDTO create(Group group) {
+        return mapping(groupDao.create(group));
     }
 
-    public List<Group> findAll() {
-        return groupDao.findAll();
+    public List<GroupDTO> findAll() {
+        return groupDao.findAll().stream()
+                .map(p -> mapping(p))
+                .collect(Collectors.toList());
     }
 
-    public Group update(Group groupNew, Group groupOld) {
-        return groupDao.update(groupNew, groupOld);
+    public GroupDTO update(Group groupNew, Group groupOld) {
+        return mapping(groupDao.update(groupNew, groupOld));
     }
 
-    public void delete(Group group) {
+    public GroupDTO delete(Group group) {
         groupDao.delete(group);
+        return mapping(group);
     }
 
-    public GroupDTO mapping(Group group) {
-    return modelMapper.map(group, GroupDTO .class);
+    private GroupDTO mapping(Group group) {
+        return modelMapper.map(group, GroupDTO.class);
     }
 }

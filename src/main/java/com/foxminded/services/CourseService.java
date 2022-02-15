@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -18,23 +19,26 @@ public class CourseService {
     @Autowired
     private CourseDaoImpl courseDao;
 
-    public Course create(Course course) {
-        return courseDao.create(course);
+    public CourseDTO create(Course course) {
+        return mapping(courseDao.create(course));
     }
 
-    public List<Course> findAll() {
-        return courseDao.findAll();
+    public List<CourseDTO> findAll() {
+        return courseDao.findAll().stream()
+                .map(p -> mapping(p))
+                .collect(Collectors.toList());
     }
 
-    public Course update(Course courseNew, Course courseOld) {
-        return courseDao.update(courseNew, courseOld);
+    public CourseDTO update(Course courseNew, Course courseOld) {
+        return mapping(courseDao.update(courseNew, courseOld));
     }
 
-    public void delete(Course course) {
+    public CourseDTO delete(Course course) {
         courseDao.delete(course);
+        return mapping(course);
     }
 
-    public CourseDTO mapping(Course course) {
-        return modelMapper.map(course,CourseDTO.class);
+    private CourseDTO mapping(Course course) {
+        return modelMapper.map(course, CourseDTO.class);
     }
-    }
+}
