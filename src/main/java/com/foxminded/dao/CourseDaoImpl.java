@@ -1,6 +1,6 @@
 package com.foxminded.dao;
 
-import com.foxminded.course.Course;
+import com.foxminded.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

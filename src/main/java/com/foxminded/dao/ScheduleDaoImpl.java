@@ -1,10 +1,10 @@
 package com.foxminded.dao;
 
-import com.foxminded.classroom.Classroom;
-import com.foxminded.course.Course;
-import com.foxminded.group.Group;
-import com.foxminded.schedule.Schedule;
-import com.foxminded.teacher.Teacher;
+import com.foxminded.model.Classroom;
+import com.foxminded.model.Course;
+import com.foxminded.model.Group;
+import com.foxminded.model.Schedule;
+import com.foxminded.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;

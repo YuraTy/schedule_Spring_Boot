@@ -1,8 +1,8 @@
 package com.foxminded.services;
 
-import com.foxminded.course.Course;
+import com.foxminded.model.Course;
 import com.foxminded.dao.CourseDaoImpl;
-import com.foxminded.objectdto.CourseDTO;
+import com.foxminded.dto.CourseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,6 +60,5 @@ class CourseServiceTest {
     void delete() {
         courseService.delete(new Course("history"));
         Mockito.verify(courseDao).delete(Mockito.any());
-        Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 }

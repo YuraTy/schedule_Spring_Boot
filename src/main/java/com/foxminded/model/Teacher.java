@@ -1,4 +1,4 @@
-package com.foxminded.teacher;
+package com.foxminded.model;
 
 public class Teacher {
 

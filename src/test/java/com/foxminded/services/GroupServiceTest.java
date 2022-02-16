@@ -1,8 +1,8 @@
 package com.foxminded.services;
 
 import com.foxminded.dao.GroupDaoImpl;
-import com.foxminded.group.Group;
-import com.foxminded.objectdto.GroupDTO;
+import com.foxminded.model.Group;
+import com.foxminded.dto.GroupDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,6 +60,5 @@ class GroupServiceTest {
     void delete() {
         groupService.delete(new Group("WE-22"));
         Mockito.verify(groupDao).delete(Mockito.any());
-        Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 }

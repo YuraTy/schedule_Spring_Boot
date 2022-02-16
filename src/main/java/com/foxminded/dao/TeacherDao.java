@@ -1,6 +1,6 @@
 package com.foxminded.dao;
 
-import com.foxminded.teacher.Teacher;
+import com.foxminded.model.Teacher;
 
 import java.util.List;
 

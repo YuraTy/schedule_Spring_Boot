@@ -1,8 +1,9 @@
 package com.foxminded.dao.coursedao;
 
-import com.foxminded.course.Course;
+import com.foxminded.model.Course;
 import com.foxminded.dao.CourseDaoImpl;
 import com.foxminded.dao.testconfig.TestConfig;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @ContextHierarchy({
         @ContextConfiguration(classes = TestConfig.class),
         @ContextConfiguration(classes = CourseDaoImpl.class)
@@ -23,12 +26,18 @@ class CourseDaoImplTest {
     @Autowired
     private CourseDaoImpl courseDao;
 
+    @AfterEach
+    void deleteDate() {
+        courseDao.findAll().stream()
+                .peek(p -> courseDao.delete(p))
+                .collect(Collectors.toList());
+    }
+
     @Test
     void create() {
         courseDao.create(new Course("geogrfi"));
         String expectedName = "geogrfi";
         String actualName = courseDao.findAll().get(0).getNameCourse();
-        courseDao.delete(new Course("geogrfi"));
         Assertions.assertEquals(expectedName, actualName);
     }
 
@@ -40,8 +49,6 @@ class CourseDaoImplTest {
         expectedList.add(new Course("geogrfi"));
         expectedList.add(new Course("matem"));
         List<Course> actualList = courseDao.findAll();
-        courseDao.delete(new Course("geogrfi"));
-        courseDao.delete(new Course("matem"));
         Assertions.assertEquals(expectedList, actualList);
     }
 
@@ -56,9 +63,6 @@ class CourseDaoImplTest {
         expectedList.add(new Course("astronomia"));
         expectedList.add(new Course("history"));
         List<Course> actualList = courseDao.findAll();
-        courseDao.delete(new Course("geogrfi"));
-        courseDao.delete(new Course("astronomia"));
-        courseDao.delete(new Course("history"));
         Assertions.assertEquals(expectedList, actualList);
     }
 
@@ -70,7 +74,6 @@ class CourseDaoImplTest {
         List<Course> expectedList = new ArrayList<>();
         expectedList.add(new Course("geogrfi"));
         List<Course> actualList = courseDao.findAll();
-        courseDao.delete(new Course("geogrfi"));
         Assertions.assertEquals(expectedList, actualList);
     }
 }

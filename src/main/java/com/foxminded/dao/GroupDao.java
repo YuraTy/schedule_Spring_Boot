@@ -1,6 +1,6 @@
 package com.foxminded.dao;
 
-import com.foxminded.group.Group;
+import com.foxminded.model.Group;
 
 import java.util.List;
 

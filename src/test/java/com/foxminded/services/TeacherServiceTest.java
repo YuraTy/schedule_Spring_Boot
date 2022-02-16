@@ -1,8 +1,8 @@
 package com.foxminded.services;
 
 import com.foxminded.dao.TeacherDaoImpl;
-import com.foxminded.objectdto.TeacherDTO;
-import com.foxminded.teacher.Teacher;
+import com.foxminded.dto.TeacherDTO;
+import com.foxminded.model.Teacher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,6 +60,5 @@ class TeacherServiceTest {
     void delete() {
         teacherService.delete(new Teacher("Vova", "Turenko"));
         Mockito.verify(teacherDao).delete(Mockito.any());
-        Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 }

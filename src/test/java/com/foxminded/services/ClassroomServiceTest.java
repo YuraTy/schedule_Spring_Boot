@@ -1,8 +1,8 @@
 package com.foxminded.services;
 
-import com.foxminded.classroom.Classroom;
+import com.foxminded.model.Classroom;
 import com.foxminded.dao.ClassroomDaoImpl;
-import com.foxminded.objectdto.ClassroomDTO;
+import com.foxminded.dto.ClassroomDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

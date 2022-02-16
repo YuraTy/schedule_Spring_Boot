@@ -2,7 +2,8 @@ package com.foxminded.dao.teacherdao;
 
 import com.foxminded.dao.TeacherDaoImpl;
 import com.foxminded.dao.testconfig.TestConfig;
-import com.foxminded.teacher.Teacher;
+import com.foxminded.model.Teacher;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ContextHierarchy({
         @ContextConfiguration(classes = TestConfig.class),
@@ -24,6 +26,12 @@ class TeacherDaoImplTest {
     @Autowired
     private TeacherDaoImpl teacherDao;
 
+    @AfterEach
+    void deleteDate() {
+        teacherDao.findAll().stream()
+                .peek(p -> teacherDao.delete(p))
+                .collect(Collectors.toList());
+    }
 
     @Test
     void create() {
@@ -33,8 +41,6 @@ class TeacherDaoImplTest {
         expectedList.add(new Teacher("Ivan","Ivanov"));
         expectedList.add(new Teacher("Ivan","Sidorov"));
         List<Teacher> actualList = teacherDao.findAll();
-        teacherDao.delete(new Teacher("Ivan","Ivanov"));
-        teacherDao.delete(new Teacher("Ivan","Sidorov"));
         Assertions.assertEquals(expectedList,actualList);
     }
 
@@ -46,8 +52,6 @@ class TeacherDaoImplTest {
         expectedList.add(new Teacher("Ivan","Ivanov"));
         expectedList.add(new Teacher("Ivan","Sidorov"));
         List<Teacher> actualList = teacherDao.findAll();
-        teacherDao.delete(new Teacher("Ivan","Sidorov"));
-        teacherDao.delete(new Teacher("Ivan","Ivanov"));
         Assertions.assertEquals(expectedList,actualList);
     }
 
@@ -60,8 +64,6 @@ class TeacherDaoImplTest {
         expectedList.add(new Teacher("Ivan","Ivanov"));
         expectedList.add(new Teacher("Georgiy","Keba"));
         List<Teacher> actualList = teacherDao.findAll();
-        teacherDao.delete(new Teacher("Ivan","Ivanov"));
-        teacherDao.delete(new Teacher("Georgiy","Keba"));
         Assertions.assertEquals(expectedList,actualList);
     }
 
@@ -73,7 +75,6 @@ class TeacherDaoImplTest {
         List<Teacher> expectedList = new ArrayList<>();
         expectedList.add(new Teacher("Ivan","Ivanov"));
         List<Teacher> actualList = teacherDao.findAll();
-        teacherDao.delete(new Teacher("Ivan","Ivanov"));
         Assertions.assertEquals(expectedList,actualList);
     }
 }

@@ -1,4 +1,4 @@
-package com.foxminded.group;
+package com.foxminded.model;
 
 public class Group {
 

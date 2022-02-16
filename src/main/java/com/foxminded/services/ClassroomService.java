@@ -1,8 +1,8 @@
 package com.foxminded.services;
 
-import com.foxminded.classroom.Classroom;
+import com.foxminded.model.Classroom;
 import com.foxminded.dao.ClassroomDaoImpl;
-import com.foxminded.objectdto.ClassroomDTO;
+import com.foxminded.dto.ClassroomDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,9 +33,8 @@ public class ClassroomService {
         return mapping(classroomDao.update(classroomNew, classroomOld));
     }
 
-    public ClassroomDTO delete(Classroom classroom) {
+    public void delete(Classroom classroom) {
         classroomDao.delete(classroom);
-        return mapping(classroom);
     }
 
     private ClassroomDTO mapping(Classroom classroom) {

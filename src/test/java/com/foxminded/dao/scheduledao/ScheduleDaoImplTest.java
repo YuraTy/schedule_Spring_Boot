@@ -1,12 +1,13 @@
 package com.foxminded.dao.scheduledao;
 
-import com.foxminded.classroom.Classroom;
-import com.foxminded.course.Course;
+import com.foxminded.model.Classroom;
+import com.foxminded.model.Course;
 import com.foxminded.dao.*;
 import com.foxminded.dao.testconfig.TestConfig;
-import com.foxminded.group.Group;
-import com.foxminded.schedule.Schedule;
-import com.foxminded.teacher.Teacher;
+import com.foxminded.model.Group;
+import com.foxminded.model.Schedule;
+import com.foxminded.model.Teacher;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ContextHierarchy({
         @ContextConfiguration(classes = TestConfig.class),
@@ -45,6 +47,13 @@ class ScheduleDaoImplTest {
     @Autowired
     private CourseDaoImpl courseDao;
 
+    @AfterEach
+    void deleteDate() {
+        scheduleDao.findAll().stream()
+                .peek(p -> scheduleDao.delete(p))
+                .collect(Collectors.toList());
+    }
+
     private Group testGroup = new Group("GT-23",1);
     private Teacher testTeacher = new Teacher("Ivan","Ivanov",1);
     private Classroom testClassroom = new Classroom(12,1);
@@ -56,7 +65,6 @@ class ScheduleDaoImplTest {
         scheduleDao.create(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 18:10:00","2016-06-22 19:10:25"));
         Schedule expectedSchedule = new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 18:10:00","2016-06-22 19:10:25");
         Schedule actualSchedule = scheduleDao.findAll().get(0);
-        scheduleDao.delete(scheduleDao.takeScheduleToTeacher(testTeacher).get(0));
         Assertions.assertEquals(expectedSchedule,actualSchedule);
     }
 
@@ -70,7 +78,6 @@ class ScheduleDaoImplTest {
         expectedScheduleList.add(schedule0);
         expectedScheduleList.add(schedule1);
         List<Schedule> actualScheduleList = scheduleDao.findAll();
-        scheduleDao.delete(scheduleDao.takeScheduleToTeacher(testTeacher).get(0));
         Assertions.assertEquals(expectedScheduleList,actualScheduleList);
     }
 
@@ -84,7 +91,6 @@ class ScheduleDaoImplTest {
         List<Schedule> expectedScheduleList = new ArrayList<>();
         expectedScheduleList.add(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));
         List<Schedule> actualScheduleList = scheduleDao.takeScheduleToTeacher(testTeacher);
-        scheduleDao.delete(scheduleDao.takeScheduleToTeacher(testTeacher).get(0));
         Assertions.assertEquals(expectedScheduleList,actualScheduleList);
     }
 

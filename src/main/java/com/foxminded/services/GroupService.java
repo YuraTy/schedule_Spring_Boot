@@ -1,8 +1,8 @@
 package com.foxminded.services;
 
 import com.foxminded.dao.GroupDaoImpl;
-import com.foxminded.group.Group;
-import com.foxminded.objectdto.GroupDTO;
+import com.foxminded.model.Group;
+import com.foxminded.dto.GroupDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,9 +33,8 @@ public class GroupService {
         return mapping(groupDao.update(groupNew, groupOld));
     }
 
-    public GroupDTO delete(Group group) {
+    public void delete(Group group) {
         groupDao.delete(group);
-        return mapping(group);
     }
 
     private GroupDTO mapping(Group group) {

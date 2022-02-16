@@ -1,9 +1,9 @@
-package com.foxminded.objectdto;
+package com.foxminded.dto;
 
-import com.foxminded.classroom.Classroom;
-import com.foxminded.course.Course;
-import com.foxminded.group.Group;
-import com.foxminded.teacher.Teacher;
+import com.foxminded.model.Classroom;
+import com.foxminded.model.Course;
+import com.foxminded.model.Group;
+import com.foxminded.model.Teacher;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

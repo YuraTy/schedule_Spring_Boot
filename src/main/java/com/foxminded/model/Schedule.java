@@ -1,9 +1,5 @@
-package com.foxminded.schedule;
+package com.foxminded.model;
 
-import com.foxminded.classroom.Classroom;
-import com.foxminded.course.Course;
-import com.foxminded.group.Group;
-import com.foxminded.teacher.Teacher;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

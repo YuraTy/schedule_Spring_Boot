@@ -1,12 +1,12 @@
 package com.foxminded.services;
 
-import com.foxminded.classroom.Classroom;
-import com.foxminded.course.Course;
+import com.foxminded.model.Classroom;
+import com.foxminded.model.Course;
 import com.foxminded.dao.*;
-import com.foxminded.group.Group;
-import com.foxminded.objectdto.ScheduleDTO;
-import com.foxminded.schedule.Schedule;
-import com.foxminded.teacher.Teacher;
+import com.foxminded.model.Group;
+import com.foxminded.dto.ScheduleDTO;
+import com.foxminded.model.Schedule;
+import com.foxminded.model.Teacher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -75,6 +75,5 @@ class ScheduleServiceTest {
     void delete() {
         scheduleService.delete(new Schedule(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25"));
         Mockito.verify(scheduleDao).delete(Mockito.any());
-        Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 }

@@ -1,4 +1,4 @@
-package com.foxminded.course;
+package com.foxminded.model;
 
 public class Course {
 

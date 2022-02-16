@@ -1,4 +1,4 @@
-package com.foxminded.objectdto;
+package com.foxminded.dto;
 
 public class ClassroomDTO {
     private int numberClassroom;
