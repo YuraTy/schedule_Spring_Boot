@@ -26,7 +26,7 @@ public class TeacherDaoImpl implements TeacherDao {
 
     @Override
     public List<Teacher> findAll() {
-        String sqlInquiry = "SELECT first_name,last_name FROM teachers";
+        String sqlInquiry = "SELECT first_name,last_name,id FROM teachers";
         return jdbcTemplate.query(sqlInquiry, BeanPropertyRowMapper.newInstance(Teacher.class));
     }
 

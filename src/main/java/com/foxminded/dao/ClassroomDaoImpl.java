@@ -26,7 +26,7 @@ public class ClassroomDaoImpl implements ClassroomDao {
 
     @Override
     public List<Classroom> findAll() {
-        String sqlInquiry = "SELECT number_classroom FROM classrooms";
+        String sqlInquiry = "SELECT number_classroom,id FROM classrooms";
         return jdbcTemplate.query(sqlInquiry, BeanPropertyRowMapper.newInstance(Classroom.class));
     }
 

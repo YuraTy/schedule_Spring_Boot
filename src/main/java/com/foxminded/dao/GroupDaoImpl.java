@@ -26,7 +26,7 @@ public class GroupDaoImpl implements GroupDao {
 
     @Override
     public List<Group> findAll() {
-        String sqlInquiry = "SELECT name_group FROM groups";
+        String sqlInquiry = "SELECT name_group,id FROM groups";
         return jdbcTemplate.query(sqlInquiry, BeanPropertyRowMapper.newInstance(Group.class));
     }
 

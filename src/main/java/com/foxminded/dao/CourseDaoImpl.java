@@ -26,7 +26,7 @@ public class CourseDaoImpl implements CourseDao {
 
     @Override
     public List<Course> findAll() {
-        String sqlInquiry = "SELECT name_course FROM courses";
+        String sqlInquiry = "SELECT name_course,id FROM courses";
         return jdbcTemplate.query(sqlInquiry, BeanPropertyRowMapper.newInstance(Course.class));
     }
 
