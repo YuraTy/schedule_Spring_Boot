@@ -1,7 +1,6 @@
 package com.foxminded.services;
 
 import com.foxminded.dao.GroupDaoImpl;
-import com.foxminded.dto.CourseDTO;
 import com.foxminded.dto.GroupDTO;
 import com.foxminded.model.Group;
 import org.junit.jupiter.api.Test;

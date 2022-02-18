@@ -14,7 +14,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -59,9 +58,8 @@ class ScheduleDaoImplTest {
 
     @AfterEach
     void deleteDate() {
-        scheduleDao.findAll().stream()
-                .peek(p -> scheduleDao.delete(p))
-                .collect(Collectors.toList());
+        scheduleDao.findAll()
+                .forEach(p -> scheduleDao.delete(p));
     }
 
     private Group testGroup = new Group("GT-22",1);

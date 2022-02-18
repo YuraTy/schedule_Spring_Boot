@@ -15,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ContextHierarchy({
         @ContextConfiguration(classes = TestConfig.class),
@@ -30,9 +29,8 @@ class TeacherDaoImplTest {
 
     @AfterEach
     void deleteDate() {
-        teacherDao.findAll().stream()
-                .peek(p -> teacherDao.delete(p))
-                .collect(Collectors.toList());
+        teacherDao.findAll()
+                .forEach(p -> teacherDao.delete(p));
     }
 
     @Test

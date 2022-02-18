@@ -30,9 +30,8 @@ class CourseDaoImplTest {
 
     @AfterEach
     void deleteDate() {
-        courseDao.findAll().stream()
-                .peek(p -> courseDao.delete(p))
-                .collect(Collectors.toList());
+        courseDao.findAll()
+                .forEach(p -> courseDao.delete(p));
     }
 
     @Test

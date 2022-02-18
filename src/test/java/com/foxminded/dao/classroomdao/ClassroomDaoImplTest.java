@@ -31,9 +31,8 @@ class ClassroomDaoImplTest {
 
     @AfterEach
     void deleteDate() {
-        classroomDaoImpl.findAll().stream()
-                .peek(p -> classroomDaoImpl.delete(p))
-                .collect(Collectors.toList());
+        classroomDaoImpl.findAll()
+                .forEach(p -> classroomDaoImpl.delete(p));
     }
 
     @Test
