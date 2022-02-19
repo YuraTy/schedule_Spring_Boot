@@ -1,4 +1,4 @@
-package com.foxminded.dbconfig;
+package com.foxminded.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

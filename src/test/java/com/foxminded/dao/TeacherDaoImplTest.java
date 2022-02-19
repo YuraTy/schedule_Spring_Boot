@@ -1,7 +1,6 @@
-package com.foxminded.dao.teacherdao;
+package com.foxminded.dao;
 
-import com.foxminded.dao.TeacherDaoImpl;
-import com.foxminded.dao.testconfig.TestConfig;
+import com.foxminded.testconfig.TestConfig;
 import com.foxminded.model.Teacher;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

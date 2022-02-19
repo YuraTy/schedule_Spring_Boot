@@ -1,8 +1,7 @@
-package com.foxminded.dao.coursedao;
+package com.foxminded.dao;
 
 import com.foxminded.model.Course;
-import com.foxminded.dao.CourseDaoImpl;
-import com.foxminded.dao.testconfig.TestConfig;
+import com.foxminded.testconfig.TestConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ContextHierarchy({
         @ContextConfiguration(classes = TestConfig.class),

@@ -1,7 +1,6 @@
-package com.foxminded.dao.groupdao;
+package com.foxminded.dao;
 
-import com.foxminded.dao.GroupDaoImpl;
-import com.foxminded.dao.testconfig.TestConfig;
+import com.foxminded.testconfig.TestConfig;
 import com.foxminded.model.Group;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

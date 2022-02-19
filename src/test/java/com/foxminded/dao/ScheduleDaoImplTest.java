@@ -1,9 +1,8 @@
-package com.foxminded.dao.scheduledao;
+package com.foxminded.dao;
 
 import com.foxminded.model.Classroom;
 import com.foxminded.model.Course;
-import com.foxminded.dao.*;
-import com.foxminded.dao.testconfig.TestConfig;
+import com.foxminded.testconfig.TestConfig;
 import com.foxminded.model.Group;
 import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;

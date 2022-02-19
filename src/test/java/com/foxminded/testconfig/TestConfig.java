@@ -1,4 +1,4 @@
-package com.foxminded.dao.testconfig;
+package com.foxminded.testconfig;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
