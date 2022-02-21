@@ -25,30 +25,37 @@ public class ClassroomService {
     private final Logger logger = LoggerFactory.getLogger(ClassroomService.class);
 
     public ClassroomDTO create(Classroom classroom) {
-        logger.info("Data correct input");
-        return mapping(classroomDao.create(classroom));
+             ClassroomDTO classroomDTO = mapping(classroomDao.create(classroom));
+             logger.info("The data is added to the database using the ( create ) method");
+        logger.trace("Added data class number = {} to the database, Returned DTO object with data class number = {}",classroom.getNumberClassroom(),classroomDTO.getNumberClassroom());
+        return classroomDTO;
+
     }
 
     public List<ClassroomDTO> findAll() {
         try {
             List<ClassroomDTO> classroomDTOLIst =  classroomDao.findAll().stream()
                     .map(p -> mapping(p))
+                    .peek(p -> logger.trace("Found data in the database id = {} class number = {}. And the DTO object was created with id = {} , class number = {}",p.getClassroomId(),p.getNumberClassroom(),p.getClassroomId(),p.getNumberClassroom()))
                     .collect(Collectors.toList());
-            logger.info("The data is correctly found in the database");
+            logger.info("The data is correctly found in the database using the method ( findAll )");
             return classroomDTOLIst;
         } catch (Exception exception) {
-            logger.error("Data in database not found");
-            exception.getMessage();
+            Exception exception1 = new Exception("Failed to get data on query request");
+            logger.error("Error while querying the database: {} , {}",exception1.getMessage(),exception1.getStackTrace());
         }
         return new ArrayList<>();
     }
 
     public ClassroomDTO update(Classroom classroomNew, Classroom classroomOld) {
         try {
-            logger.info("Attempt to update data");
-            return mapping(classroomDao.update(classroomNew, classroomOld));
+            ClassroomDTO classroomDTO = mapping(classroomDao.update(classroomNew, classroomOld));
+            logger.info("Data updated using the (update) method");
+            logger.trace("The data in the database has been changed from class number = {} to class number = {}",classroomOld.getNumberClassroom(),classroomNew.getNumberClassroom());
+            return classroomDTO;
         }catch (Exception e) {
-            logger.warn("Replacement data not found");
+            logger.warn("Could not find data in database to replace class number = {}",classroomOld.getNumberClassroom());
+            logger.error("Error when accessing the database : {} , {}",e.getMessage(),e.getStackTrace());
         }
         return mapping(classroomNew);
     }
@@ -56,9 +63,10 @@ public class ClassroomService {
     public void delete(Classroom classroom) {
         try {
             classroomDao.delete(classroom);
-            logger.info("Data deleted successfully");
+            logger.info("Data deleted successfully class number = {}" , classroom.getNumberClassroom());
         } catch (Exception e) {
-            logger.warn(String.format("No entry found to delete : classroom № %d", classroom.getNumberClassroom()));
+            logger.warn("Data in DB class number = {} not found for deletion", classroom.getNumberClassroom());
+            logger.error("Error while deleting data from database: {} , {}",e.getStackTrace(),e.getMessage());
         }
     }
 

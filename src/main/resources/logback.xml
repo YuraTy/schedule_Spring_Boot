@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true">
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>logback.log</file>
+        <append>true</append>
+        <immediateFlush>true</immediateFlush>
         <encoder>
-            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <logger name="com.base22" level="TRACE"/>
+    <logger name="com.foxminded">
+        <appender-ref ref="console"/>
+    </logger>
 
-    <root level="debug">
-        <appender-ref ref="STDOUT"/>
+    <root level="trace">
+        <appender-ref ref="file" />
     </root>
 
 </configuration>
