@@ -1,5 +1,6 @@
 package com.foxminded.services;
 
+import com.foxminded.commonserviceexception.CommonServiceException;
 import org.slf4j.Logger;
 import com.foxminded.model.Classroom;
 import com.foxminded.dao.ClassroomDaoImpl;
@@ -8,7 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,49 +27,58 @@ public class ClassroomService {
 
     private final Logger logger = LoggerFactory.getLogger(ClassroomService.class);
 
+    @ExceptionHandler(SQLException.class)
     public ClassroomDTO create(Classroom classroom) {
-             ClassroomDTO classroomDTO = mapping(classroomDao.create(classroom));
-             logger.info("The data is added to the database using the ( create ) method");
-        logger.trace("Added data class number = {} to the database, Returned DTO object with data class number = {}",classroom.getNumberClassroom(),classroomDTO.getNumberClassroom());
+        ClassroomDTO classroomDTO = mapping(classroomDao.create(classroom));
+        logger.info("The data is added to the database using the ( create ) method");
+        logger.trace("Added data class number = {} to the database, Returned DTO object with data class number = {}", classroom.getNumberClassroom(), classroomDTO.getNumberClassroom());
         return classroomDTO;
-
     }
 
     public List<ClassroomDTO> findAll() {
         try {
-            List<ClassroomDTO> classroomDTOLIst =  classroomDao.findAll().stream()
+            List<ClassroomDTO> classroomDTOLIst = classroomDao.findAll().stream()
                     .map(p -> mapping(p))
-                    .peek(p -> logger.trace("Found data in the database id = {} class number = {}. And the DTO object was created with id = {} , class number = {}",p.getClassroomId(),p.getNumberClassroom(),p.getClassroomId(),p.getNumberClassroom()))
+                    .peek(p -> logger.trace("Found data in the database id = {} class number = {}. And the DTO object was created with id = {} , class number = {}", p.getClassroomId(), p.getNumberClassroom(), p.getClassroomId(), p.getNumberClassroom()))
                     .collect(Collectors.toList());
+            if (classroomDTOLIst.isEmpty()) {
+                throw new CommonServiceException();
+            }
             logger.info("The data is correctly found in the database using the method ( findAll )");
             return classroomDTOLIst;
-        } catch (Exception exception) {
-            Exception exception1 = new Exception("Failed to get data on query request");
-            logger.error("Error while querying the database: {} , {}",exception1.getMessage(),exception1.getStackTrace());
+        } catch (CommonServiceException e) {
+            logger.error("Error while querying the database: {} , {}", e.getMessage(), e.getStackTrace());
         }
         return new ArrayList<>();
     }
 
     public ClassroomDTO update(Classroom classroomNew, Classroom classroomOld) {
         try {
-            ClassroomDTO classroomDTO = mapping(classroomDao.update(classroomNew, classroomOld));
+            ClassroomDTO classroomDTO;
+            if ((classroomDTO = mapping(classroomDao.update(classroomNew, classroomOld))) == null) {
+                throw new CommonServiceException();
+            }
             logger.info("Data updated using the (update) method");
-            logger.trace("The data in the database has been changed from class number = {} to class number = {}",classroomOld.getNumberClassroom(),classroomNew.getNumberClassroom());
+            logger.trace("The data in the database has been changed from class number = {} to class number = {}", classroomOld.getNumberClassroom(), classroomNew.getNumberClassroom());
             return classroomDTO;
-        }catch (Exception e) {
-            logger.warn("Could not find data in database to replace class number = {}",classroomOld.getNumberClassroom());
-            logger.error("Error when accessing the database : {} , {}",e.getMessage(),e.getStackTrace());
+        } catch (CommonServiceException e) {
+            logger.warn("Could not find data in database to replace class number = {}", classroomOld.getNumberClassroom());
+            logger.error("Error when accessing the database : {} , {}", e.getMessage(), e.getStackTrace());
         }
         return mapping(classroomNew);
     }
 
     public void delete(Classroom classroom) {
         try {
-            classroomDao.delete(classroom);
-            logger.info("Data deleted successfully class number = {}" , classroom.getNumberClassroom());
-        } catch (Exception e) {
-            logger.warn("Data in DB class number = {} not found for deletion", classroom.getNumberClassroom());
-            logger.error("Error while deleting data from database: {} , {}",e.getStackTrace(),e.getMessage());
+            try {
+                classroomDao.delete(classroom);
+                logger.info("Data deleted successfully class number = {}", classroom.getNumberClassroom());
+            } catch (Exception e) {
+                throw new CommonServiceException();
+            }
+        } catch (CommonServiceException e) {
+            logger.warn("Data in database class number = {} not found for deletion", classroom.getNumberClassroom());
+            logger.error("Error while deleting data from database: {} , {}", e.getStackTrace(), e.getMessage());
         }
     }
 
