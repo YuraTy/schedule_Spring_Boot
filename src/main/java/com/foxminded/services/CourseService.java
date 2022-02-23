@@ -25,6 +25,8 @@ public class CourseService {
 
     private final Logger logger = LoggerFactory.getLogger(CourseService.class);
 
+    private static final String ERROR_MESSAGE = "Error while getting data from database in table courses";
+
     public CourseDTO create(Course course) {
         CourseDTO courseDTO = mapping(courseDao.create(course));
         logger.info("Data entered into the database using the ( create ) method");
@@ -39,7 +41,7 @@ public class CourseService {
                     .peek(p -> logger.trace("Found data in the database id = {} course name = {}. And the DTO object was created with id = {} , course name = {}",p.getCourseId(),p.getNameCourse(),p.getCourseId(),p.getNameCourse()))
                     .collect(Collectors.toList());
             if (courseDTOList.isEmpty()){
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("The data is correctly found in the database using the method ( findAll )");
             return courseDTOList;
@@ -53,7 +55,7 @@ public class CourseService {
         try {
             CourseDTO courseDTO;
             if ((courseDTO = mapping(courseDao.update(courseNew, courseOld))) == null){
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
             logger.trace("The data in the database has been changed from course name = {} to course name = {}", courseOld.getNameCourse(),courseNew.getNameCourse());
@@ -71,7 +73,7 @@ public class CourseService {
                 courseDao.delete(course);
                 logger.info("Data deleted successfully course name = {}", course.getNameCourse());
             }catch (Exception e) {
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
         }catch (CommonServiceException e) {
             logger.warn("Data in database course name = {} not found for deletion", course.getNameCourse());

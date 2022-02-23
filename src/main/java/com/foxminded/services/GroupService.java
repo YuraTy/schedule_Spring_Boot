@@ -25,6 +25,8 @@ public class GroupService {
 
     private final Logger logger = LoggerFactory.getLogger(GroupService.class);
 
+    private static final String ERROR_MESSAGE = "Error while getting data from database in table groups";
+
     public GroupDTO create(Group group) {
         GroupDTO groupDTO = mapping(groupDao.create(group));
         logger.info("Data entered into the database using the ( create ) method");
@@ -39,7 +41,7 @@ public class GroupService {
                     .peek(p -> logger.trace("Found data group id = {}, group name = {} to the database, Returned DTO object with data group id = {}, group name = {}", p.getGroupId(),p.getNameGroup(), p.getGroupId(),p.getNameGroup()))
                     .collect(Collectors.toList());
             if (groupDTOList.isEmpty()) {
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("The data is correctly found in the database using the method ( findAll )");
             return groupDTOList;
@@ -53,7 +55,7 @@ public class GroupService {
         try {
             GroupDTO groupDTO;
             if ((groupDTO = mapping(groupDao.update(groupNew, groupOld))) == null) {
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
             logger.trace("The data in the database has been changed from group name = {} to group name = {}", groupOld.getNameGroup(), groupNew.getNameGroup());
@@ -71,7 +73,7 @@ public class GroupService {
                 groupDao.delete(group);
                 logger.info("Data deleted successfully group name = {}", group.getNameGroup());
             }catch (Exception e){
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
         }catch (CommonServiceException e){
             logger.warn("Data in database group name = {} not found for deletion", group.getNameGroup());

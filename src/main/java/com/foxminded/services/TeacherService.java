@@ -25,6 +25,8 @@ public class TeacherService {
 
     private final Logger logger = LoggerFactory.getLogger(TeacherService.class);
 
+    private static final String ERROR_MESSAGE = "Error while getting data from database in table teachers";
+
     public TeacherDTO create(Teacher teacher) {
         TeacherDTO teacherDTO = mapping(teacherDao.create(teacher));
         logger.info("Data entered into the database using the ( create ) method");
@@ -39,7 +41,7 @@ public class TeacherService {
                     .peek(p -> logger.trace("Found data teacher id = {},teacher first name = {}, teacher last name = {} to the database, Returned DTO object with data teacher id = {}, teacher first name = {}, teacher last name = {}", p.getTeacherId(),p.getFirstName(),p.getLastName(),p.getTeacherId(),p.getFirstName(),p.getLastName()))
                     .collect(Collectors.toList());
             if (teacherDTOList.isEmpty()){
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("The data is correctly found in the database using the method ( findAll )");
             return teacherDTOList;
@@ -53,7 +55,7 @@ public class TeacherService {
         try {
             TeacherDTO teacherDTO;
             if ((teacherDTO = mapping(teacherDao.update(teacherNew, teacherOld))) == null){
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
             logger.trace("The data in the database has been changed from teacher first name = {}, teacher last name = {} to teacher first name = {}, teacher last name = {}", teacherOld.getFirstName(),teacherOld.getLastName(),teacherNew.getFirstName(),teacherNew.getLastName());
@@ -71,7 +73,7 @@ public class TeacherService {
                 teacherDao.delete(teacher);
                 logger.info("Data deleted successfully teacher first name = {}, teacher last name = {}", teacher.getFirstName(),teacher.getLastName());
             }catch (Exception e){
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
         }catch (CommonServiceException e){
             logger.warn("Could not find data in database to replace teacher first name = {}, teacher last name = {}", teacher.getFirstName(),teacher.getLastName());

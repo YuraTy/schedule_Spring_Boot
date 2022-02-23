@@ -27,6 +27,8 @@ public class ClassroomService {
 
     private final Logger logger = LoggerFactory.getLogger(ClassroomService.class);
 
+    private static final String ERROR_MESSAGE = "Error while getting data from database in table classrooms";
+
     @ExceptionHandler(SQLException.class)
     public ClassroomDTO create(Classroom classroom) {
         ClassroomDTO classroomDTO = mapping(classroomDao.create(classroom));
@@ -42,7 +44,7 @@ public class ClassroomService {
                     .peek(p -> logger.trace("Found data in the database id = {} class number = {}. And the DTO object was created with id = {} , class number = {}", p.getClassroomId(), p.getNumberClassroom(), p.getClassroomId(), p.getNumberClassroom()))
                     .collect(Collectors.toList());
             if (classroomDTOLIst.isEmpty()) {
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("The data is correctly found in the database using the method ( findAll )");
             return classroomDTOLIst;
@@ -56,7 +58,7 @@ public class ClassroomService {
         try {
             ClassroomDTO classroomDTO;
             if ((classroomDTO = mapping(classroomDao.update(classroomNew, classroomOld))) == null) {
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
             logger.trace("The data in the database has been changed from class number = {} to class number = {}", classroomOld.getNumberClassroom(), classroomNew.getNumberClassroom());
@@ -74,7 +76,7 @@ public class ClassroomService {
                 classroomDao.delete(classroom);
                 logger.info("Data deleted successfully class number = {}", classroom.getNumberClassroom());
             } catch (Exception e) {
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
         } catch (CommonServiceException e) {
             logger.warn("Data in database class number = {} not found for deletion", classroom.getNumberClassroom());

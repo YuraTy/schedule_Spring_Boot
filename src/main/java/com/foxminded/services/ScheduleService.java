@@ -26,6 +26,8 @@ public class ScheduleService {
 
     private final Logger logger = LoggerFactory.getLogger(ScheduleService.class);
 
+    private static final String ERROR_MESSAGE = "Error while getting data from database in table schedule";
+
     public ScheduleDTO create(Schedule schedule) {
         ScheduleDTO scheduleDTO = mapping(scheduleDao.create(schedule));
         logger.info("Data entered into the database using the ( create ) method");
@@ -40,7 +42,7 @@ public class ScheduleService {
                     .peek(p -> logger.trace("Found data schedule id ={}, group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} to the database, Returned DTO object with data schedule id ={}, group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {}", p.getScheduleId(),p.getGroup().getGroupId(),p.getTeacher().getTeacherId(),p.getCourse().getCourseId(),p.getClassroom().getClassroomId(),p.getLessonStartTime(),p.getLessonEndTime(),p.getScheduleId(),p.getGroup().getGroupId(),p.getTeacher().getTeacherId(),p.getCourse().getCourseId(),p.getClassroom().getClassroomId(),p.getLessonStartTime(),p.getLessonEndTime()))
                     .collect(Collectors.toList());
             if (scheduleDTOList.isEmpty()){
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("The data is correctly found in the database using the method ( findAll )");
             return scheduleDTOList;
@@ -57,7 +59,7 @@ public class ScheduleService {
                     .peek(p -> logger.trace("Found data schedule id ={}, group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} to the database, Returned DTO object with data schedule id ={}, group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {}", p.getScheduleId(),p.getGroup().getGroupId(),p.getTeacher().getTeacherId(),p.getCourse().getCourseId(),p.getClassroom().getClassroomId(),p.getLessonStartTime(),p.getLessonEndTime(),p.getScheduleId(),p.getGroup().getGroupId(),p.getTeacher().getTeacherId(),p.getCourse().getCourseId(),p.getClassroom().getClassroomId(),p.getLessonStartTime(),p.getLessonEndTime()))
                     .collect(Collectors.toList());
             if (scheduleDTOList.isEmpty()){
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("The data is correctly found in the database using the method ( takeScheduleToTeacher )");
             return scheduleDTOList;
@@ -71,7 +73,7 @@ public class ScheduleService {
         try {
             ScheduleDTO scheduleDTO;
             if ((scheduleDTO = mapping(scheduleDao.update(scheduleNew, scheduleOld))) == null){
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
             logger.trace("The data in the database has been changed from group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} to group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} ", scheduleOld.getGroup().getGroupId(),scheduleOld.getTeacher().getTeacherId(),scheduleOld.getCourse().getCourseId(),scheduleOld.getClassroom().getClassroomId(),scheduleOld.getLessonStartTime(),scheduleOld.getLessonEndTime(),scheduleNew.getGroup().getGroupId(),scheduleNew.getTeacher().getTeacherId(),scheduleNew.getCourse().getCourseId(),scheduleNew.getClassroom().getClassroomId(),scheduleNew.getLessonStartTime(),scheduleNew.getLessonEndTime());
@@ -89,7 +91,7 @@ public class ScheduleService {
                 scheduleDao.delete(schedule);
                 logger.info("Data deleted successfully group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {}", schedule.getGroup().getGroupId(),schedule.getTeacher().getTeacherId(),schedule.getCourse().getCourseId(),schedule.getClassroom().getClassroomId(),schedule.getLessonStartTime(),schedule.getLessonEndTime());
             } catch (Exception e) {
-                throw new CommonServiceException();
+                throw new CommonServiceException(ERROR_MESSAGE);
             }
         } catch (CommonServiceException e) {
             logger.warn("Data in database group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} not found for deletion", schedule.getGroup().getGroupId(),schedule.getTeacher().getTeacherId(),schedule.getCourse().getCourseId(),schedule.getClassroom().getClassroomId(),schedule.getLessonStartTime(),schedule.getLessonEndTime());
