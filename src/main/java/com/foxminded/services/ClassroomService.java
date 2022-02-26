@@ -29,7 +29,6 @@ public class ClassroomService {
 
     private static final String ERROR_MESSAGE = "Error while getting data from database in table classrooms";
 
-    @ExceptionHandler(SQLException.class)
     public ClassroomDTO create(Classroom classroom) {
         ClassroomDTO classroomDTO = mapping(classroomDao.create(classroom));
         logger.info("The data is added to the database using the ( create ) method");
