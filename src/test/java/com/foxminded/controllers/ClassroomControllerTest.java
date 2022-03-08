@@ -37,6 +37,9 @@ class ClassroomControllerTest {
     @MockBean
     private ClassroomService classroomService;
 
+    @Autowired
+    private MockMvc mockMvc;
+
     @Test
     void create() throws Exception {
         Mockito.when(classroomService.create(Mockito.any())).thenReturn(new ClassroomDTO(22,1));
