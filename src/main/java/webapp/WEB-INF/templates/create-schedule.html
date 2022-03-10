@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="../css/stylecss.css" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <title>Schedule</title>
+</head>
+<body>
+<h1>Schedule</h1>
+<form action="/createSchedule" method="post" th:object="${schedule}">
+    <input name="group.groupId" type="number">
+    <input name="teacher.teacherId" type="number">
+    <input name="course.courseId" type="number">
+    <input name="classroom.classroomId" type="number">
+    <input name="lessonStartTime" type="datetime-local">
+    <input name="lessonEndTime" type="datetime-local">
+    <input type="submit" value="Create schedule">
+</form>
+<table>
+    <caption>List schedule</caption>
+    <tr>
+        <th>Id</th>
+        <th>Classroom</th>
+        <th>Group</th>
+        <th>Course</th>
+        <th>Teacher</th>
+        <th>Lesson Start Time</th>
+        <th>Lesson End Time</th>
+    </tr>
+    <th:block th.each="schedule : ${/allSchedule}">
+        <tr>
+            <td th:text="${schedule.scheduleId}"></td>
+            <td th:text="${schedule.classroom.numberClassroom}"></td>
+            <td th:text="${schedule.group.nameGroup}"></td>
+            <td th:text="${schedule.course.nameCourse}"></td>
+            <td th:text="${schedule.teacher.firstName} + ${schedule.teacher.lastName}"></td>
+            <td th:text="${classroom.lessonStartTime}"></td>
+            <td th:text="${classroom.lessonEndTime}"></td>
+        </tr>
+    </th:block>
+</table>
+
+<update action="/updateSchedule" method="post" th:object="${scheduleNew}" th:object="${scheduleOld}">
+    <input name="scheduleNew.group.groupId" type="number">
+    <input name="scheduleNew.teacher.teacherId" type="number">
+    <input name="scheduleNew.course.courseId" type="number">
+    <input name="scheduleNew.classroom.classroomId" type="number">
+    <input name="scheduleNew.lessonStartTime" type="datetime-local">
+    <input name="scheduleNew.lessonEndTime" type="datetime-local">
+    <input name="scheduleOld.scheduleId" type="datetime-local">
+    <input type="submit" value="Update schedule">
+</update>
+
+<del action="/deleteSchedule" method="post" th:object="${schedule}">
+    <input name="scheduleId" type="number">
+    <input type="submit" value="Delete schedule">
+</del>
+<div>
+    <h2><span th:text="${scheduleId}"></span></h2>
+</div>
+</body>
+</html>

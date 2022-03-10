@@ -3,18 +3,18 @@ package com.foxminded.controllers;
 import com.foxminded.model.Classroom;
 import com.foxminded.services.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
-
 @Controller
-@RequestMapping("/classroom")
+@Component
 public class ClassroomController {
 
     @Autowired
-    ClassroomService classroomService;
+    private  ClassroomService classroomService;
 
     @PostMapping("/createClassroom")
     public String create(@ModelAttribute Classroom classroom) {
@@ -35,7 +35,8 @@ public class ClassroomController {
     }
 
     @DeleteMapping("/deleteClassroom")
-    public void delete(@ModelAttribute Classroom classroom) {
+    public String delete(@ModelAttribute Classroom classroom) {
         classroomService.delete(classroom);
+        return HttpStatus.OK.toString();
     }
 }

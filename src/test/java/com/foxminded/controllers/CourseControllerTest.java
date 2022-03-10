@@ -1,7 +1,7 @@
 package com.foxminded.controllers;
 
-import com.foxminded.dto.ClassroomDTO;
-import com.foxminded.services.ClassroomService;
+import com.foxminded.dto.CourseDTO;
+import com.foxminded.services.CourseService;
 import com.foxminded.testconfig.WebTestConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,21 +9,21 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@ContextConfiguration(classes={WebTestConfig.class})
-@WebMvcTest(ClassroomController.class)
-class ClassroomControllerTest {
+@WebMvcTest(value = CourseController.class)
+@ContextConfiguration(classes = {WebTestConfig.class})
+class CourseControllerTest {
 
     @MockBean
-    private ClassroomService classroomService;
+    private CourseService courseService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -31,37 +31,37 @@ class ClassroomControllerTest {
     @Test
     void create() throws Exception {
         Assertions.assertNotNull(mockMvc);
-        Mockito.when(classroomService.create(Mockito.any())).thenReturn(new ClassroomDTO(22,1));
+        Mockito.when(courseService.create(Mockito.any())).thenReturn(new CourseDTO("matem",1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/createClassroom"))
+                .perform(MockMvcRequestBuilders.post("/createCourse"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.view().name("redirect:/create-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("redirect:/create-course"));
     }
 
     @Test
     void findAll() throws Exception {
         Assertions.assertNotNull(mockMvc);
-        Mockito.when(classroomService.create(Mockito.any())).thenReturn(new ClassroomDTO(22,1));
+        Mockito.when(courseService.create(Mockito.any())).thenReturn(new CourseDTO("matem",1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/allClassrooms"))
+                .perform(MockMvcRequestBuilders.get("/allCourse"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/create-classroom"));
+                .andExpect(view().name("/create-course"));
     }
 
     @Test
     void update() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.put("/updateClassroom"))
+                .perform(MockMvcRequestBuilders.put("/updateCourse"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.view().name("redirect:/create-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("redirect:/create-course"));
     }
 
     @Test
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete("/deleteClassroom"))
+                .perform(MockMvcRequestBuilders.delete("/deleteCourse"))
                 .andExpect(status().isOk());
     }
 }
