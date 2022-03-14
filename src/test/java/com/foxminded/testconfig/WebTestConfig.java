@@ -18,8 +18,7 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
-@ComponentScan("com.foxminded.testconfig")
-@EnableWebMvc
+@ComponentScan("com.foxminded.controllers")
 public class WebTestConfig implements WebMvcConfigurer  {
 
 

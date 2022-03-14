@@ -15,7 +15,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan
+@ComponentScan(basePackages = "com.foxminded.controllers")
 public class WebConfig implements WebMvcConfigurer {
 
     private ApplicationContext applicationContext;
