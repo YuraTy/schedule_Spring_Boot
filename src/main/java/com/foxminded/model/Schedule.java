@@ -17,6 +17,8 @@ public class Schedule {
     private LocalDateTime lessonEndTime;
     private int scheduleId;
 
+    public Schedule() {}
+
     public Schedule(Group group, Teacher teacher, Course course, Classroom classroom, LocalDateTime lessonStartTime, LocalDateTime lessonEndTime, int scheduleId) {
         this.group = group;
         this.teacher = teacher;

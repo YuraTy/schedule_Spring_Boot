@@ -1,8 +1,7 @@
 package com.foxminded.controllers;
 
-import com.foxminded.dto.ClassroomDTO;
-import com.foxminded.model.Classroom;
-import com.foxminded.services.ClassroomService;
+import com.foxminded.dto.TeacherDTO;
+import com.foxminded.services.TeacherService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,62 +19,61 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@ContextConfiguration(classes = ClassroomController.class)
+@ContextConfiguration(classes = TeacherController.class)
 @WebMvcTest
-class ClassroomControllerTest {
+class TeacherControllerTest {
 
     @Autowired
     private WebApplicationContext context;
 
+    @MockBean
+    private TeacherService teacherService;
+
+    private MockMvc mockMvc;
+
     @BeforeEach
-    void setup() {
+    void set() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
     }
 
-    @MockBean
-    private ClassroomService classroomService;
-
-    private MockMvc mockMvc;
-
     @Test
     void create() throws Exception {
         Assertions.assertNotNull(mockMvc);
-        Mockito.when(classroomService.create(Mockito.any())).thenReturn(new ClassroomDTO(22,1));
+        Mockito.when(teacherService.create(Mockito.any())).thenReturn(new TeacherDTO("Vova", "Tesluk", 1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/createClassroom",new ClassroomDTO(22,1)))
+                .perform(MockMvcRequestBuilders.post("/createTeacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("create-teacher"));
     }
 
     @Test
     void findAll() throws Exception {
         Assertions.assertNotNull(mockMvc);
-        Mockito.when(classroomService.findAll()).thenReturn(new ArrayList<>());
+        Mockito.when(teacherService.findAll()).thenReturn(new ArrayList<>());
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/allClassrooms"))
+                .perform(MockMvcRequestBuilders.get("/allTeachers"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("create-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("create-teacher"));
     }
 
     @Test
     void update() throws Exception {
         Assertions.assertNotNull(mockMvc);
-        Mockito.when(classroomService.update(Mockito.any(),Mockito.any())).thenReturn(new ClassroomDTO(22,1));
+        Mockito.when(teacherService.update(Mockito.any(), Mockito.any())).thenReturn(new TeacherDTO("Vova", "Ivanov", 1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.put("/updateClassroom",new Classroom(22,2),new Classroom(12,2)))
+                .perform(MockMvcRequestBuilders.put("/updateTeacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("create-teacher"));
     }
 
     @Test
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete("/deleteClassroom",new Classroom(22,2)))
+                .perform(MockMvcRequestBuilders.delete("/deleteTeacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("create-teacher"));
     }
 }

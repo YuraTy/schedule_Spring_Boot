@@ -1,8 +1,8 @@
 package com.foxminded.controllers;
 
-import com.foxminded.dto.ClassroomDTO;
-import com.foxminded.model.Classroom;
-import com.foxminded.services.ClassroomService;
+import com.foxminded.dto.GroupDTO;
+import com.foxminded.services.GroupService;
+import lombok.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,62 +20,62 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@ContextConfiguration(classes = ClassroomController.class)
+
+@ContextConfiguration(classes = GroupController.class)
 @WebMvcTest
-class ClassroomControllerTest {
+class GroupControllerTest {
 
     @Autowired
     private WebApplicationContext context;
 
+    @MockBean
+    private GroupService groupService;
+
+    private MockMvc mockMvc;
+
     @BeforeEach
-    void setup() {
+    void set() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
     }
 
-    @MockBean
-    private ClassroomService classroomService;
-
-    private MockMvc mockMvc;
-
     @Test
     void create() throws Exception {
         Assertions.assertNotNull(mockMvc);
-        Mockito.when(classroomService.create(Mockito.any())).thenReturn(new ClassroomDTO(22,1));
+        Mockito.when(groupService.create(Mockito.any())).thenReturn(new GroupDTO("22-DE",1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/createClassroom",new ClassroomDTO(22,1)))
+                .perform(MockMvcRequestBuilders.post("/createGroup",new GroupDTO("22-DE",1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("create-group"));
     }
 
     @Test
     void findAll() throws Exception {
         Assertions.assertNotNull(mockMvc);
-        Mockito.when(classroomService.findAll()).thenReturn(new ArrayList<>());
+        Mockito.when(groupService.findAll()).thenReturn(new ArrayList<>());
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/allClassrooms"))
+                .perform(MockMvcRequestBuilders.get("/allGroups"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("create-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("create-group"));
     }
 
     @Test
     void update() throws Exception {
         Assertions.assertNotNull(mockMvc);
-        Mockito.when(classroomService.update(Mockito.any(),Mockito.any())).thenReturn(new ClassroomDTO(22,1));
+        Mockito.when(groupService.update(Mockito.any(),Mockito.any())).thenReturn(new GroupDTO("22-DE",1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.put("/updateClassroom",new Classroom(22,2),new Classroom(12,2)))
+                .perform(MockMvcRequestBuilders.put("/updateGroup",new GroupDTO("22-DE",1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("create-group"));
     }
 
     @Test
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete("/deleteClassroom",new Classroom(22,2)))
+                .perform(MockMvcRequestBuilders.delete("/deleteGroup",new GroupDTO("22-DE",1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("create-group"));
     }
 }
