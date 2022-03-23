@@ -13,27 +13,27 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
-    private static final String PAGE_TEACHER = "create-teacher";
+    private static final String PAGE_TEACHER = "page-teacher";
 
-    @PostMapping("/createTeacher")
+    @PostMapping("/create-teacher")
     public String create(@ModelAttribute Teacher teacher) {
         teacherService.create(teacher);
         return PAGE_TEACHER;
     }
 
-    @GetMapping("/allTeachers")
+    @GetMapping("/all-teachers")
     public String findAll(Model model) {
         model.addAttribute("allTeachers",teacherService.findAll());
         return PAGE_TEACHER;
     }
 
-    @PutMapping("/updateTeacher")
+    @PutMapping("/update-teacher")
     public String update(@ModelAttribute Teacher teacherNew , Teacher teacherOld) {
         teacherService.update(teacherNew, teacherOld);
         return PAGE_TEACHER;
     }
 
-    @DeleteMapping("/deleteTeacher")
+    @DeleteMapping("/delete-teacher")
     public String delete(@ModelAttribute Teacher teacher) {
         teacherService.delete(teacher);
         return PAGE_TEACHER;

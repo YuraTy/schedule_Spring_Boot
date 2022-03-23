@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="../css/stylecss.css" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Group</title>
+</head>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="page-group.html">Group</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link " aria-current="page" href="page-classroom.html">Classroom</a>
+                <a class="nav-link " href="page-course.html">Course</a>
+                <a class="nav-link" href="page-teacher.html">Teacher</a>
+                <a class="nav-link " href="page-schedule.html" tabindex="-1"
+                   aria-disabled="true">Schedule</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<body>
+<div class="container overflow-hidden">
+
+    <form th:action="/create-group" method="post" th:object="${group}">
+        <div class="input-group mb-3">
+            <input type="text" name="nameGroup" class="form-control" placeholder="Name group"
+                   aria-label="Name group" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">Create group</button>
+            </div>
+        </div>
+    </form>
+    <h3>List group</h3>
+    <table class="table table-striped">
+        <caption>List group</caption>
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name group</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th.each="group : ${/all-groups}">
+            <tr>
+                <td th:text="${group.groupId}"></td>
+                <td th:text="${group.nameGroup}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <form action="/update-group" method="post" th:object="${group}" th:object="${group}">
+        <div class="input-group mb-3">
+            <input type="text" name="nameGroup" class="form-control" placeholder="New group"
+                   aria-label="New group" aria-describedby="basic-addon2">
+            <input type="text" name="nameGroup" class="form-control" placeholder="Old group"
+                   aria-label="Old group" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">Update group</button>
+            </div>
+        </div>
+    </form>
+
+    <form action="/delete-group" method="post" th:object="${group}">
+        <div class="input-group mb-3">
+            <input type="text" name="nameGroup" class="form-control" placeholder="Name group for delete"
+                   aria-label="Name group for delete" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">Delete group</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

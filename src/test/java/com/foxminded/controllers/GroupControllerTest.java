@@ -45,9 +45,9 @@ class GroupControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(groupService.create(Mockito.any())).thenReturn(new GroupDTO("22-DE",1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/createGroup",new GroupDTO("22-DE",1)))
+                .perform(MockMvcRequestBuilders.post("/create-group",new GroupDTO("22-DE",1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-group"));
+                .andExpect(MockMvcResultMatchers.view().name("page-group"));
     }
 
     @Test
@@ -55,9 +55,9 @@ class GroupControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(groupService.findAll()).thenReturn(new ArrayList<>());
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/allGroups"))
+                .perform(MockMvcRequestBuilders.get("/all-groups"))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-group"));
+                .andExpect(MockMvcResultMatchers.view().name("page-group"));
     }
 
     @Test
@@ -65,17 +65,17 @@ class GroupControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(groupService.update(Mockito.any(),Mockito.any())).thenReturn(new GroupDTO("22-DE",1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.put("/updateGroup",new GroupDTO("22-DE",1)))
+                .perform(MockMvcRequestBuilders.put("/update-group",new GroupDTO("22-DE",1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-group"));
+                .andExpect(MockMvcResultMatchers.view().name("page-group"));
     }
 
     @Test
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete("/deleteGroup",new GroupDTO("22-DE",1)))
+                .perform(MockMvcRequestBuilders.delete("/delete-group",new GroupDTO("22-DE",1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-group"));
+                .andExpect(MockMvcResultMatchers.view().name("page-group"));
     }
 }

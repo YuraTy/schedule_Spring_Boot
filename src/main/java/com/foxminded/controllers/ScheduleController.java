@@ -14,33 +14,33 @@ public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
 
-    private static final String PAGE_SCHEDULE = "create-schedule";
+    private static final String PAGE_SCHEDULE = "page-schedule";
 
-    @PostMapping("/createSchedule")
+    @PostMapping("/create-schedule")
     public String create(@ModelAttribute Schedule schedule , Model model) {
         model.addAttribute("createSchedule",scheduleService.create(schedule));
         return PAGE_SCHEDULE;
     }
 
-    @GetMapping("/allSchedule")
+    @GetMapping("/all-schedule")
     public String findAll(Model model) {
         model.addAttribute("allSchedule", scheduleService.findAll());
         return PAGE_SCHEDULE;
     }
 
-    @GetMapping("/takeScheduleToTeacher")
+    @GetMapping("/take-schedule-to-teacher")
     public String takeScheduleToTeacher(@ModelAttribute Teacher teacher , Model model) {
         model.addAttribute("takeScheduleToTeacher",scheduleService.takeScheduleToTeacher(teacher));
         return PAGE_SCHEDULE;
     }
 
-    @PutMapping("/updateSchedule")
+    @PutMapping("/update-schedule")
     public String update(@ModelAttribute Schedule scheduleNew, Schedule scheduleOld) {
         scheduleService.update(scheduleNew, scheduleOld);
         return PAGE_SCHEDULE;
     }
 
-    @DeleteMapping("/deleteSchedule")
+    @DeleteMapping("/delete-schedule")
     public String delete(@ModelAttribute Schedule schedule) {
         scheduleService.delete(schedule);
         return PAGE_SCHEDULE;

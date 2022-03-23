@@ -6,9 +6,9 @@ public class Group {
 
     private int groupId;
 
-    public Group(String nameGroup, int groupId) {
+    public Group(String nameGroup, int id) {
         this.nameGroup = nameGroup;
-        this.groupId = groupId;
+        this.groupId = id;
     }
 
     public int getGroupId() {

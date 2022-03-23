@@ -2,10 +2,13 @@ package com.foxminded.dao;
 
 import com.foxminded.testconfig.TestConfig;
 import com.foxminded.model.Group;
+import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,12 +24,14 @@ import java.util.List;
 })
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+
 class GroupDaoImplTest {
 
     @Autowired
     private GroupDaoImpl groupDao;
 
-    @BeforeEach
+    @AfterEach
     void deleteDate() {
         groupDao.findAll()
                 .forEach(p -> groupDao.delete(p));

@@ -2,10 +2,12 @@ package com.foxminded.dao;
 
 import com.foxminded.model.Classroom;
 import com.foxminded.testconfig.TestConfig;
+import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,6 +24,7 @@ import java.util.List;
 })
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class ClassroomDaoImplTest {
 
     @Autowired
@@ -35,7 +38,7 @@ class ClassroomDaoImplTest {
 
     @Test
     void create() {
-        classroomDaoImpl.create(new Classroom(123));
+        classroomDaoImpl.create(new Classroom(123,1));
         int expectedNumber = 123;
         int actualNumber = classroomDaoImpl.findAll().get(0).getNumberClassroom();
         Assertions.assertEquals(expectedNumber, actualNumber);
@@ -44,19 +47,19 @@ class ClassroomDaoImplTest {
     @Test
     void findAll() throws SQLException {
         classroomDaoImpl.creteTable();
-        classroomDaoImpl.create(new Classroom(111));
-        classroomDaoImpl.create(new Classroom(222));
+        classroomDaoImpl.create(new Classroom(111,1));
+        classroomDaoImpl.create(new Classroom(222,2));
         List<Classroom> expectedList = new ArrayList<>();
-        expectedList.add(new Classroom(111));
-        expectedList.add(new Classroom(222));
+        expectedList.add(new Classroom(111,1));
+        expectedList.add(new Classroom(222,2));
         List<Classroom> actualList = classroomDaoImpl.findAll();
         Assertions.assertEquals(expectedList, actualList);
     }
 
     @Test
     void update() {
-        classroomDaoImpl.create(new Classroom(111));
-        classroomDaoImpl.update(new Classroom(122), new Classroom(111));
+        classroomDaoImpl.create(new Classroom(111,1));
+        classroomDaoImpl.update(new Classroom(122,1), new Classroom(111,1));
         int expectedNumber = 122;
         int actualNumber = classroomDaoImpl.findAll().get(0).getNumberClassroom();
         Assertions.assertEquals(expectedNumber, actualNumber);
@@ -64,11 +67,11 @@ class ClassroomDaoImplTest {
 
     @Test
     void delete() {
-        classroomDaoImpl.create(new Classroom(111));
-        classroomDaoImpl.create(new Classroom(222));
-        classroomDaoImpl.delete(new Classroom(111));
+        classroomDaoImpl.create(new Classroom(111,1));
+        classroomDaoImpl.create(new Classroom(222,2));
+        classroomDaoImpl.delete(new Classroom(111,1));
         List<Classroom> expectedList = new ArrayList<>();
-        expectedList.add(new Classroom(222));
+        expectedList.add(new Classroom(222,2));
         List<Classroom> actualList = classroomDaoImpl.findAll();
         Assertions.assertEquals(expectedList, actualList);
     }

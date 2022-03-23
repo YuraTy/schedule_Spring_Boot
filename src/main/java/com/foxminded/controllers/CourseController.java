@@ -14,27 +14,27 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    private static final String PAGE_COURSE = "create-course";
+    private static final String PAGE_COURSE = "page-course";
 
-    @PostMapping("/createCourse")
+    @PostMapping("/create-course")
     public String create(@ModelAttribute Course course) {
         courseService.create(course);
         return PAGE_COURSE;
     }
 
-    @GetMapping("/allCourses")
+    @GetMapping("/all-courses")
     public String findAll(Model model) {
         model.addAttribute("allCourses",courseService.findAll());
         return PAGE_COURSE;
     }
 
-    @PutMapping("/updateCourse")
+    @PutMapping("/update-course")
     public String update(@ModelAttribute Course courseNew, Course courseOld) {
         courseService.update(courseNew, courseOld);
         return PAGE_COURSE;
     }
 
-    @DeleteMapping("/deleteCourse")
+    @DeleteMapping("/delete-course")
     public String delete(@ModelAttribute Course course) {
         courseService.delete(course);
         return PAGE_COURSE;

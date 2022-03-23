@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Schedule</h1>
-<form action="/createSchedule" method="post" th:object="${schedule}">
+<form action="/create-schedule" method="post" th:object="${schedule}">
     <input name="group.groupId" type="number">
     <input name="teacher.teacherId" type="number">
     <input name="course.courseId" type="number">
@@ -27,7 +27,7 @@
         <th>Lesson Start Time</th>
         <th>Lesson End Time</th>
     </tr>
-    <th:block th.each="schedule : ${/allSchedule}">
+    <th:block th.each="schedule : ${/all-schedule}">
         <tr>
             <td th:text="${schedule.scheduleId}"></td>
             <td th:text="${schedule.classroom.numberClassroom}"></td>
@@ -40,7 +40,7 @@
     </th:block>
 </table>
 
-<update action="/updateSchedule" method="post" th:object="${scheduleNew}" th:object="${scheduleOld}">
+<update action="/update-schedule" method="post" th:object="${scheduleNew}" th:object="${scheduleOld}">
     <input name="scheduleNew.group.groupId" type="number">
     <input name="scheduleNew.teacher.teacherId" type="number">
     <input name="scheduleNew.course.courseId" type="number">
@@ -51,7 +51,7 @@
     <input type="submit" value="Update schedule">
 </update>
 
-<del action="/deleteSchedule" method="post" th:object="${schedule}">
+<del action="/delete-schedule" method="post" th:object="${schedule}">
     <input name="scheduleId" type="number">
     <input type="submit" value="Delete schedule">
 </del>

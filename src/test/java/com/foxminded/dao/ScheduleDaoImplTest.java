@@ -6,13 +6,20 @@ import com.foxminded.testconfig.TestConfig;
 import com.foxminded.model.Group;
 import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,8 +35,9 @@ import java.util.stream.Collectors;
         @ContextConfiguration(classes = ScheduleDaoImpl.class)
 })
 @ExtendWith(SpringExtension.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ScheduleDaoImplTest {
 
     @Autowired
@@ -55,6 +63,14 @@ class ScheduleDaoImplTest {
         courseDao.create(testCourse);
     }
 
+    @AfterAll
+    void delDate() {
+        teacherDao.findAll().forEach(p -> teacherDao.delete(p));
+        groupDao.findAll().forEach(p -> groupDao.delete(p));
+        classroomDao.findAll().forEach(p -> classroomDao.delete(p));
+        courseDao.findAll().forEach(p -> courseDao.delete(p));
+    }
+
     @AfterEach
     void deleteDate() {
         scheduleDao.findAll()
@@ -62,9 +78,9 @@ class ScheduleDaoImplTest {
     }
 
     private Group testGroup = new Group("GT-22",1);
-    private Teacher testTeacher = new Teacher("Ivan","Ivanov",9);
+    private Teacher testTeacher = new Teacher("Ivan","Ivanov",1);
     private Classroom testClassroom = new Classroom(12,7);
-    private Course testCourse = new Course("History",9);
+    private Course testCourse = new Course("History",1);
 
 
     @Test
@@ -90,7 +106,7 @@ class ScheduleDaoImplTest {
 
     @Test
     void takeScheduleToTeacher() {
-        groupDao.findAll().stream().peek(p-> System.out.println(p.getGroupId())).collect(Collectors.toList());
+        groupDao.findAll().stream().peek(p-> System.out.println(p.getNameGroup() + " - " + p.getGroupId())).collect(Collectors.toList());
         scheduleDao.create(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));
         List<Schedule> expectedScheduleList = new ArrayList<>();
         expectedScheduleList.add(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));

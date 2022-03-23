@@ -43,9 +43,9 @@ class TeacherControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(teacherService.create(Mockito.any())).thenReturn(new TeacherDTO("Vova", "Tesluk", 1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/createTeacher",new TeacherDTO("Vova", "Tesluk", 1)))
+                .perform(MockMvcRequestBuilders.post("/create-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-teacher"));
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
     }
 
     @Test
@@ -53,9 +53,9 @@ class TeacherControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(teacherService.findAll()).thenReturn(new ArrayList<>());
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/allTeachers"))
+                .perform(MockMvcRequestBuilders.get("/all-teachers"))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-teacher"));
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
     }
 
     @Test
@@ -63,17 +63,17 @@ class TeacherControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(teacherService.update(Mockito.any(), Mockito.any())).thenReturn(new TeacherDTO("Vova", "Ivanov", 1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.put("/updateTeacher",new TeacherDTO("Vova", "Tesluk", 1)))
+                .perform(MockMvcRequestBuilders.put("/update-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-teacher"));
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
     }
 
     @Test
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete("/deleteTeacher",new TeacherDTO("Vova", "Tesluk", 1)))
+                .perform(MockMvcRequestBuilders.delete("/delete-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("create-teacher"));
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
     }
 }
