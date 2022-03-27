@@ -24,7 +24,7 @@ public class TestConfig {
 
     @Bean
     public DataSource dataSource() {
-        var dataSource = new DriverManagerDataSource();
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driver);
         dataSource.setUrl(url);
         dataSource.setUsername(login);
@@ -34,7 +34,7 @@ public class TestConfig {
 
     @Bean
     public JdbcTemplate jdbcTemplate() {
-        var template = new JdbcTemplate();
+        JdbcTemplate template = new JdbcTemplate();
         template.setDataSource(dataSource());
         return template;
     }

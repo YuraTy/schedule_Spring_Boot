@@ -6,7 +6,6 @@ import com.foxminded.testconfig.TestConfig;
 import com.foxminded.model.Group;
 import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;

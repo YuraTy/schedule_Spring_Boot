@@ -112,7 +112,12 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @PostConstruct
     public void creteTable() {
-        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8", new ClassPathResource("createTableSchedule.sql"));
+        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
+        resourceDatabasePopulator.addScript(new ClassPathResource("createTableClassroom.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("createTableCourses.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("createTableGroups.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("createTableTeachers.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("createTableSchedule.sql"));
         resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
     }
 

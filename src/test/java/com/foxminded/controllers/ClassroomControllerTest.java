@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@ContextConfiguration(classes = ClassroomController.class)
 @WebMvcTest
+@ContextConfiguration(classes = {ClassroomController.class})
 class ClassroomControllerTest {
 
     @Autowired
@@ -56,8 +56,8 @@ class ClassroomControllerTest {
         Mockito.when(classroomService.findAll()).thenReturn(new ArrayList<>());
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/all-classrooms"))
-                .andExpect(status().isOk());
-                //.andExpect(view().name( "page-classroom"));
+                .andExpect(status().isOk())
+                .andExpect(view().name( "page-classroom"));
     }
 
     @Test
