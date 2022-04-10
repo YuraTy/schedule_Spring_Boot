@@ -1,5 +1,8 @@
 package com.foxminded.model;
 
+import lombok.Builder;
+
+@Builder
 public class Course {
 
     private String nameCourse;

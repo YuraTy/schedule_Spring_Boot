@@ -1,19 +1,15 @@
 package com.foxminded.config;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Description;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.*;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
-import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 
@@ -21,6 +17,15 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @Configuration
 @ComponentScan(basePackages = "com.foxminded.controllers")
 public class WebConfig implements WebMvcConfigurer {
+
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    private WebApplicationContext context;
+
+    public WebConfig(ApplicationContext appContext) {
+        this.applicationContext = appContext;
+    }
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -31,21 +36,15 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    @Description("Spring Message Resolver")
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("Message");
-        return messageSource;
-    }
-
-    @Bean
     @Description("Thymeleaf Template Resolver")
     public ServletContextTemplateResolver templateResolver() {
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(webApplicationContext.getServletContext());
-        templateResolver.setPrefix("/webapp/WEB-INF/templates/");
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context.getServletContext());
+        templateResolver.setPrefix("/WEB-INF/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
+
         return templateResolver;
+       // SpringResourceTemplateResolver  templateResolver = new SpringResourceTemplateResolver ();
     }
 
     @Bean
@@ -54,7 +53,6 @@ public class WebConfig implements WebMvcConfigurer {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setTemplateEngineMessageSource(messageSource());
-        templateEngine.setEnableSpringELCompiler(true);
         return templateEngine;
     }
 
@@ -66,4 +64,16 @@ public class WebConfig implements WebMvcConfigurer {
         viewResolver.setOrder(1);
         return viewResolver;
     }
+
+    @Bean
+    @Description("Spring Message Resolver")
+    public ResourceBundleMessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("messages");
+        return messageSource;
+    }
+
+
+
+
 }

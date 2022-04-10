@@ -36,6 +36,14 @@ public class TestConfig {
     public JdbcTemplate jdbcTemplate() {
         JdbcTemplate template = new JdbcTemplate();
         template.setDataSource(dataSource());
+        template.update("DROP TABLE IF EXISTS schedule;");
+        template.update("DROP TABLE IF EXISTS classrooms;");
+        template.update("DROP TABLE IF EXISTS groups;");
+        template.update("DROP TABLE IF EXISTS courses;");
+        template.update("DROP TABLE IF EXISTS teachers;");
+
         return template;
     }
+
+
 }

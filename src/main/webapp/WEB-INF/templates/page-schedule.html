@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Schedule</h1>
-<form action="/create-schedule" method="post" th:object="${schedule}">
+<form action="#" th:action="@{/create-schedule}" method="post" th:object="${schedule}">
     <input name="group.groupId" type="number">
     <input name="teacher.teacherId" type="number">
     <input name="course.courseId" type="number">

@@ -33,7 +33,10 @@ public class GroupDaoImpl implements GroupDao {
         return jdbcTemplate.query(sqlInquiry, new RowMapper<Group>() {
             @Override
             public Group mapRow(@NotNull ResultSet rs, int rowNum) throws SQLException {
-                return new Group(rs.getString("name_group"),rs.getInt("groups.id"));
+                return Group.builder()
+                        .groupId(rs.getInt("id"))
+                        .nameGroup(rs.getString("name_group"))
+                        .build();
             }
         });
     }

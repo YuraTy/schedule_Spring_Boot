@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -27,7 +30,15 @@ public class CourseDaoImpl implements CourseDao {
     @Override
     public List<Course> findAll() {
         String sqlInquiry = "SELECT name_course,id FROM courses";
-        return jdbcTemplate.query(sqlInquiry, BeanPropertyRowMapper.newInstance(Course.class));
+        return jdbcTemplate.query(sqlInquiry, new RowMapper<Course>() {
+            @Override
+            public Course mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return Course.builder()
+                        .courseId(rs.getInt("id"))
+                        .nameCourse(rs.getString("name_course"))
+                        .build();
+            }
+        });
     }
 
     @Override

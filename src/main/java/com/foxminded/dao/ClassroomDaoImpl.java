@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -27,7 +30,15 @@ public class ClassroomDaoImpl implements ClassroomDao {
     @Override
     public List<Classroom> findAll() {
         String sqlInquiry = "SELECT number_classroom,id FROM classrooms";
-        return jdbcTemplate.query(sqlInquiry, BeanPropertyRowMapper.newInstance(Classroom.class));
+        return jdbcTemplate.query(sqlInquiry, new RowMapper<Classroom>() {
+            @Override
+            public Classroom mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return Classroom.builder()
+                        .classroomId(rs.getInt("id"))
+                        .numberClassroom(rs.getInt("number_classroom"))
+                        .build();
+            }
+        });
     }
 
     @Override

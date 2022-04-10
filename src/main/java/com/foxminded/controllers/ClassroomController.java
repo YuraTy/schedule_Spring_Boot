@@ -8,34 +8,59 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping(value = "classroom")
 public class ClassroomController {
 
     @Autowired
-    private  ClassroomService classroomService;
+    private ClassroomService classroomService;
 
     private static final String PAGE_CLASSROOM = "page-classroom";
 
-    @PostMapping("/create-classroom")
-    public String create(@ModelAttribute Classroom classroom) {
+    @PostMapping(value = "/create-classroom")
+    public String create(Model model,@ModelAttribute("classroom") Classroom classroom) {
+        model.addAttribute("classroom", new Classroom());
         classroomService.create(classroom);
         return PAGE_CLASSROOM;
     }
 
-    @GetMapping("/all-classrooms")
+    @GetMapping(value = "/create-classroom")
+    public String showCreate(Model model) {
+        model.addAttribute("classroom", new Classroom());
+        return PAGE_CLASSROOM;
+    }
+
+    @RequestMapping("/all-classroom")
     public String findAll(Model model) {
-        model.addAttribute("allClassrooms",classroomService.findAll());
+        model.addAttribute("allClassrooms", classroomService.findAll());
+        return "all-classroom";
+    }
+
+    @PostMapping("/update-classroom")
+    public String update(@RequestParam(required = false, name = "numberNew") Integer numberNew,
+                         @RequestParam(required = false, name = "numberOld") Integer numberOld,
+                         Model model) {
+        model.addAttribute("classroom",new Classroom());
+        classroomService.update(new Classroom(numberNew), new Classroom(numberOld));
         return PAGE_CLASSROOM;
     }
 
-    @PutMapping("/update-classroom")
-    public String update(@ModelAttribute Classroom classroomNew, Classroom classroomOld) {
-        classroomService.update(classroomNew, classroomOld);
+        @GetMapping("/update-classroom")
+    public String update(Model model) {
+        model.addAttribute("classroom", new Classroom());
         return PAGE_CLASSROOM;
     }
 
-    @DeleteMapping("/delete-classroom")
-    public String delete(@ModelAttribute Classroom classroom) {
+
+    @PostMapping(value = "/delete-classroom")
+    public String delete(Model model, @ModelAttribute("classroom") Classroom classroom) {
+        model.addAttribute("classroom", new Classroom());
         classroomService.delete(classroom);
+        return PAGE_CLASSROOM;
+    }
+
+    @GetMapping(value = "/delete-classroom")
+    public String showDelete(Model model) {
+        model.addAttribute("classroom", new Classroom());
         return PAGE_CLASSROOM;
     }
 }
