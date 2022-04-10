@@ -18,7 +18,8 @@ public class CourseController {
     private static final String PAGE_COURSE = "page-course";
 
     @PostMapping(value = "/create-course")
-    public String create(@ModelAttribute Course course) {
+    public String create(Model  model, @ModelAttribute Course course) {
+        model.addAttribute("course",new Course());
         courseService.create(course);
         return PAGE_COURSE;
     }
@@ -37,14 +38,29 @@ public class CourseController {
 
     @PutMapping("/update-course")
     public String update(@RequestParam(required = false, name = "courseNew") String courseNew,
-                         @RequestParam(required = false, name = "courseOld") String courseOld) {
+                         @RequestParam(required = false, name = "courseOld") String courseOld,
+                         Model model) {
+        model.addAttribute("course",new Course());
         courseService.update(new Course(courseNew), new Course(courseOld));
         return PAGE_COURSE;
     }
 
+    @GetMapping("/update-course")
+    public String update(Model model) {
+        model.addAttribute("course",new Course());
+        return PAGE_COURSE;
+    }
+
     @DeleteMapping("/delete-course")
-    public String delete(@ModelAttribute Course course) {
+    public String delete(Model model, @ModelAttribute Course course) {
+        model.addAttribute("course",new Course());
         courseService.delete(course);
+        return PAGE_COURSE;
+    }
+
+    @GetMapping("/delete-course")
+    public String delete(Model model) {
+        model.addAttribute("course",new Course());
         return PAGE_COURSE;
     }
 }

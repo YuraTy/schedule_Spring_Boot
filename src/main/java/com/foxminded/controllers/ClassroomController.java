@@ -17,7 +17,7 @@ public class ClassroomController {
     private static final String PAGE_CLASSROOM = "page-classroom";
 
     @PostMapping(value = "/create-classroom")
-    public String create(Model model,@ModelAttribute("classroom") Classroom classroom) {
+    public String create(Model model, @ModelAttribute("classroom") Classroom classroom) {
         model.addAttribute("classroom", new Classroom());
         classroomService.create(classroom);
         return PAGE_CLASSROOM;
@@ -39,12 +39,12 @@ public class ClassroomController {
     public String update(@RequestParam(required = false, name = "numberNew") Integer numberNew,
                          @RequestParam(required = false, name = "numberOld") Integer numberOld,
                          Model model) {
-        model.addAttribute("classroom",new Classroom());
+        model.addAttribute("classroom", new Classroom());
         classroomService.update(new Classroom(numberNew), new Classroom(numberOld));
         return PAGE_CLASSROOM;
     }
 
-        @GetMapping("/update-classroom")
+    @GetMapping("/update-classroom")
     public String update(Model model) {
         model.addAttribute("classroom", new Classroom());
         return PAGE_CLASSROOM;

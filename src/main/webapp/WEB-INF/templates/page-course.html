@@ -28,6 +28,7 @@
 </nav>
 <body>
 <div class="container overflow-hidden">
+
     <form th:action="/create-course" method="post" th:object="${course}">
         <div class="input-group mb-3">
             <input type="text" name="nameCourse" class="form-control" placeholder="Name course"
