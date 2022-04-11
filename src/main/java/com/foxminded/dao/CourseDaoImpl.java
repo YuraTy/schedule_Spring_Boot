@@ -44,7 +44,7 @@ public class CourseDaoImpl implements CourseDao {
     @Override
     public Course update(Course courseNew, Course courseOld) {
         String sqlInquiry = "UPDATE courses SET name_course = ? WHERE name_course = ?";
-        jdbcTemplate.update(sqlInquiry, courseOld.getNameCourse(), courseNew.getNameCourse());
+        jdbcTemplate.update(sqlInquiry, courseNew.getNameCourse(), courseOld.getNameCourse());
         return courseNew;
     }
 

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("schedule")
 public class ScheduleController {
 
     @Autowired
@@ -17,8 +18,15 @@ public class ScheduleController {
     private static final String PAGE_SCHEDULE = "page-schedule";
 
     @PostMapping("/create-schedule")
-    public String create(@ModelAttribute Schedule schedule , Model model) {
-        model.addAttribute("createSchedule",scheduleService.create(schedule));
+    public String create(@ModelAttribute("schedule") Schedule schedule , Model model) {
+        model.addAttribute("schedule", new Schedule());
+        scheduleService.create(schedule);
+        return PAGE_SCHEDULE;
+    }
+
+    @GetMapping("/create-schedule")
+    public String create(Model model) {
+        model.addAttribute("schedule", new Schedule());
         return PAGE_SCHEDULE;
     }
 
