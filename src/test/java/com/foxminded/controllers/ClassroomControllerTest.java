@@ -3,6 +3,7 @@ package com.foxminded.controllers;
 import com.foxminded.dto.ClassroomDTO;
 import com.foxminded.model.Classroom;
 import com.foxminded.services.ClassroomService;
+import org.eclipse.core.commands.IParameterValues;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,37 +46,37 @@ class ClassroomControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(classroomService.create(Mockito.any())).thenReturn(new ClassroomDTO(22,1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/create-classroom",new ClassroomDTO(22,1)))
+                .perform(MockMvcRequestBuilders.get("/classroom/create-classroom",new ClassroomDTO(22,1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-classroom"));
     }
 
-//    @Test
-//    void findAll() throws Exception {
-//        Assertions.assertNotNull(mockMvc);
-//        Mockito.when(classroomService.findAll()).thenReturn(new ArrayList<>());
-//        this.mockMvc
-//                .perform(MockMvcRequestBuilders.get("/all-classrooms"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name( "page-classroom"));
-//    }
-//
-//    @Test
-//    void update() throws Exception {
-//        Assertions.assertNotNull(mockMvc);
-//        Mockito.when(classroomService.update(Mockito.any(),Mockito.any())).thenReturn(new ClassroomDTO(22,1));
-//        this.mockMvc
-//                .perform(MockMvcRequestBuilders.put("/update-classroom",new Classroom(22,2),new Classroom(12,2)))
-//                .andExpect(status().isOk())
-//                .andExpect(MockMvcResultMatchers.view().name("page-classroom"));
-//    }
-//
-//    @Test
-//    void delete() throws Exception {
-//        Assertions.assertNotNull(mockMvc);
-//        this.mockMvc
-//                .perform(MockMvcRequestBuilders.delete("/delete-classroom",new Classroom(22,2)))
-//                .andExpect(status().isOk())
-//                .andExpect(MockMvcResultMatchers.view().name("page-classroom"));
-//    }
+    @Test
+    void findAll() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        Mockito.when(classroomService.findAll()).thenReturn(new ArrayList<>());
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/classroom/all-classroom"))
+                .andExpect(status().isOk())
+                .andExpect(view().name( "page-classroom"));
+    }
+
+    @Test
+    void update() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        Mockito.when(classroomService.update(Mockito.any(),Mockito.any())).thenReturn(new ClassroomDTO(22,1));
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/classroom/update-classroom",33,2))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-classroom"));
+    }
+
+    @Test
+    void delete() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/classroom/delete-classroom",new Classroom(22,2)))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-classroom"));
+    }
 }

@@ -48,7 +48,7 @@ class ScheduleControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(scheduleService.create(Mockito.any())).thenReturn(new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/create-schedule",new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1)))
+                .perform(MockMvcRequestBuilders.post("/schedule/create-schedule",new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule"));
     }
@@ -58,7 +58,7 @@ class ScheduleControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(scheduleService.findAll()).thenReturn(new ArrayList<>());
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/all-schedule"))
+                .perform(MockMvcRequestBuilders.get("/schedule/all-schedule"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule"));
 
@@ -69,17 +69,17 @@ class ScheduleControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(scheduleService.takeScheduleToTeacher(Mockito.any())).thenReturn(new ArrayList<>());
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/take-schedule-to-teacher",new Teacher("Ivan", "Ivanov", 1)))
+                .perform(MockMvcRequestBuilders.get("/schedule/take-schedule-to-teacher",new Teacher("Ivan", "Ivanov", 1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule"));
     }
 
     @Test
     void update() throws Exception {
-        Assertions.assertNotNull(mockMvc);
+        assertNotNull(mockMvc);
         Mockito.when(scheduleService.update(Mockito.any(),Mockito.any())).thenReturn(new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.put("/update-schedule", new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1),new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Sidorov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1)))
+                .perform(MockMvcRequestBuilders.post("/schedule/update-schedule", new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1),1))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule"));
     }
@@ -88,7 +88,7 @@ class ScheduleControllerTest {
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete("/delete-schedule",new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1)))
+                .perform(MockMvcRequestBuilders.post("/schedule/delete-schedule",new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule"));
     }

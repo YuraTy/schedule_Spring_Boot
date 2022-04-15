@@ -5,6 +5,7 @@ import com.foxminded.model.Course;
 import com.foxminded.model.Group;
 import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -48,7 +49,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 "INNER JOIN teachers teachers ON teachers.id = schedule.teacher_id";
         return jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
             @Override
-            public Schedule mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
                 return Schedule.builder()
                         .group(buildGroup(resultSet))
                         .teacher(buildTeacher(resultSet))
@@ -122,33 +123,33 @@ public class ScheduleDaoImpl implements ScheduleDao {
     }
 
     private Group buildGroup(ResultSet resultSet) throws SQLException {
-        return new Group(resultSet.getString("groups.name_group"),resultSet.getInt("groups.id"));
+        return new Group(resultSet.getString("name_group"),resultSet.getInt("id"));
     }
 
     private Teacher buildTeacher(ResultSet resultSet) throws SQLException {
-        return  new Teacher(resultSet.getString("teachers.first_name"),resultSet.getString("teachers.last_name"),resultSet.getInt("teachers.id"));
+        return  new Teacher(resultSet.getString("first_name"),resultSet.getString("last_name"),resultSet.getInt("id"));
     }
 
     private Course buildCourse(ResultSet resultSet) throws SQLException {
-        return new Course(resultSet.getString("courses.name_course"),resultSet.getInt("courses.id"));
+        return new Course(resultSet.getString("name_course"),resultSet.getInt("id"));
     }
 
     private Classroom buildClassroom(ResultSet resultSet) throws SQLException {
-        return new Classroom(resultSet.getInt("classrooms.number_classroom"),resultSet.getInt("classrooms.id"));
+        return new Classroom(resultSet.getInt("number_classroom"),resultSet.getInt("id"));
     }
 
     private static final String DATA_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private LocalDateTime buildStartTime(ResultSet resultSet) throws SQLException {
-        return LocalDateTime.parse(resultSet.getString("schedule.lesson_start_time"), DateTimeFormatter.ofPattern(DATA_PATTERN));
+        return LocalDateTime.parse(resultSet.getString("lesson_start_time"), DateTimeFormatter.ofPattern(DATA_PATTERN));
     }
 
     private LocalDateTime buildEndTime(ResultSet resultSet) throws SQLException {
-        return LocalDateTime.parse(resultSet.getString("schedule.lesson_end_time"), DateTimeFormatter.ofPattern(DATA_PATTERN));
+        return LocalDateTime.parse(resultSet.getString("lesson_end_time"), DateTimeFormatter.ofPattern(DATA_PATTERN));
     }
 
     private int buildScheduleId(ResultSet resultSet) throws SQLException {
-        return resultSet.getInt("schedule.schedule_id");
+        return resultSet.getInt("schedule_id");
     }
 
 }

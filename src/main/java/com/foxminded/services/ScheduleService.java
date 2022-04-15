@@ -76,10 +76,10 @@ public class ScheduleService {
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
-            logger.trace("The data in the database has been changed from group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} to group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} ", scheduleOld.getGroup().getGroupId(),scheduleOld.getTeacher().getTeacherId(),scheduleOld.getCourse().getCourseId(),scheduleOld.getClassroom().getClassroomId(),scheduleOld.getLessonStartTime(),scheduleOld.getLessonEndTime(),scheduleNew.getGroup().getGroupId(),scheduleNew.getTeacher().getTeacherId(),scheduleNew.getCourse().getCourseId(),scheduleNew.getClassroom().getClassroomId(),scheduleNew.getLessonStartTime(),scheduleNew.getLessonEndTime());
+            logger.trace("The data in the database has been changed from scheduleId = {} to group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} ", scheduleOld.getScheduleId(),scheduleNew.getGroup().getGroupId(),scheduleNew.getTeacher().getTeacherId(),scheduleNew.getCourse().getCourseId(),scheduleNew.getClassroom().getClassroomId(),scheduleNew.getLessonStartTime(),scheduleNew.getLessonEndTime());
             return scheduleDTO;
         }catch (CommonServiceException e){
-            logger.warn("Could not find data in database to replace group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {}", scheduleOld.getGroup().getGroupId(),scheduleOld.getTeacher().getTeacherId(),scheduleOld.getCourse().getCourseId(),scheduleOld.getClassroom().getClassroomId(),scheduleOld.getLessonStartTime(),scheduleOld.getLessonEndTime());
+            logger.warn("Could not find data in database to replace scheduleId = {}",scheduleOld.getScheduleId());
             logger.error("Error when accessing the database : {} , {}", e.getMessage(), e.getStackTrace());
         }
         return mapping(scheduleNew);
@@ -89,12 +89,12 @@ public class ScheduleService {
         try {
             try {
                 scheduleDao.delete(schedule);
-                logger.info("Data deleted successfully group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {}", schedule.getGroup().getGroupId(),schedule.getTeacher().getTeacherId(),schedule.getCourse().getCourseId(),schedule.getClassroom().getClassroomId(),schedule.getLessonStartTime(),schedule.getLessonEndTime());
+                logger.info("Data deleted successfully schedule id = {}", schedule.getScheduleId());
             } catch (Exception e) {
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
         } catch (CommonServiceException e) {
-            logger.warn("Data in database group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} not found for deletion", schedule.getGroup().getGroupId(),schedule.getTeacher().getTeacherId(),schedule.getCourse().getCourseId(),schedule.getClassroom().getClassroomId(),schedule.getLessonStartTime(),schedule.getLessonEndTime());
+            logger.warn("Data in database schedule id = {} not found for deletion", schedule.getScheduleId());
             logger.error("Error while deleting data from database: {} , {}", e.getStackTrace(), e.getMessage());
         }
     }

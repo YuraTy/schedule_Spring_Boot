@@ -1,6 +1,7 @@
 package com.foxminded.testconfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,15 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @ComponentScan
 public class WebTestConfig implements WebMvcConfigurer  {
 
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    private WebApplicationContext context;
+
+    public WebTestConfig(ApplicationContext appContext) {
+        this.applicationContext = appContext;
+    }
+
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -40,7 +50,7 @@ public class WebTestConfig implements WebMvcConfigurer  {
     @Bean
     @Description("Thymeleaf Template Resolver")
     public ServletContextTemplateResolver templateResolver() {
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(webApplicationContext.getServletContext());
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context.getServletContext());
         templateResolver.setPrefix("/WEB-INF/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");

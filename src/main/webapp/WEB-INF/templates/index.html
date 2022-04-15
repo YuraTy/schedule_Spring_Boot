@@ -8,19 +8,20 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Course</title>
 </head>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="page-course.html">Course</a>
+        <a class="navbar-brand" th:href="@{/course/all-course}">Course</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link " aria-current="page" href="classroom/create-classroom">Classroom</a>
-                <a class="nav-link " th:href="page-course">Course</a>
-                <a class="nav-link" href="page-teacher.html">Teacher</a>
-                <a class="nav-link " href="page-schedule.html" tabindex="-1"
+                <a class="nav-link " aria-current="page" th:href="@{/classroom/all-classroom}">Classroom</a>
+                <a class="nav-link " th:href="@{/group/all-group}">Group</a>
+                <a class="nav-link" th:href="@{/teacher/all-teacher}">Teacher</a>
+                <a class="nav-link " th:href="@{/schedule/all-schedule}" tabindex="-1"
                    aria-disabled="true">Schedule</a>
             </div>
         </div>
@@ -28,7 +29,15 @@
 </nav>
 
 <body>
-<h1>Hello</h1>
+
+<div class="container p-3 my-3 border">
+    <div class="mx-auto" style="width:200px">
+<h1>Hello user</h1>
+    </div>
+</div>
+
+</body>
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

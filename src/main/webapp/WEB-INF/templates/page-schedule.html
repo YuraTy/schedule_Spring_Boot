@@ -9,6 +9,7 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <title>Schedule</title>
+
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -20,7 +21,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link " aria-current="page" th:href="@{/course/create-course}">Course</a>
+                <a class="nav-link " aria-current="page" th:href="@{/course/all-course}">Course</a>
                 <a class="nav-link " th:href="@{/group/all-group}">Group</a>
                 <a class="nav-link" th:href="@{/teacher/all-teacher}">Teacher</a>
                 <a class="nav-link " th:href="@{/classroom/all-classroom}" tabindex="-1"
@@ -31,57 +32,119 @@
 </nav>
 
 <body>
-<h1>Schedule</h1>
-<form action="#" th:action="@{/create-schedule}" method="post" th:object="${schedule}">
-    <input name="group.groupId" type="number">
-    <input name="teacher.teacherId" type="number">
-    <input name="course.courseId" type="number">
-    <input name="classroom.classroomId" type="number">
-    <input name="lessonStartTime" type="datetime-local">
-    <input name="lessonEndTime" type="datetime-local">
-    <input type="submit" value="Create schedule">
-</form>
-<table>
-    <caption>List schedule</caption>
-    <tr>
-        <th>Id</th>
-        <th>Classroom</th>
-        <th>Group</th>
-        <th>Course</th>
-        <th>Teacher</th>
-        <th>Lesson Start Time</th>
-        <th>Lesson End Time</th>
-    </tr>
-    <th:block th.each="schedule : ${/all-schedule}">
+
+<div class="container overflow-hidden">
+
+    <div class="btn-group me-2" role="group" aria-label="Second group">
+        <a th:href="@{create-schedule}" class="btn btn-secondary">create</a>
+        <a th:href="@{delete-schedule}" class="btn btn-secondary">delete</a>
+        <a th:href="@{all-schedule}" class="btn btn-secondary">all</a>
+        <a th:href="@{take-schedule-to-teacher}" class="btn btn-secondary">find teacher</a>
+        <a th:href="@{update-schedule}" class="btn btn-secondary">update</a>
+    </div>
+
+    <form th:href="@{/create-schedule}" method="post" th:object="${schedule}">
+        <div class="input-group mb-3">
+            <input th:field="*{group.groupId}" type="number" min="0" class="form-control" placeholder="Id group"
+                   aria-label="Id group" aria-describedby="basic-addon2">
+            <input th:field="*{teacher.teacherId}" type="number" min="0" class="form-control" placeholder="Id teacher"
+                   aria-label="Id teacher" aria-describedby="basic-addon2">
+            <input th:field="*{course.courseId}" type="number" min="0" class="form-control" placeholder="Id course"
+                   aria-label="Id course" aria-describedby="basic-addon2">
+            <input th:field="*{classroom.classroomId}" type="number" min="0" class="form-control"
+                   placeholder="Id classroom"
+                   aria-label="Id classroom" aria-describedby="basic-addon2">
+            <input th:field="*{lessonStartTime}" type="datetime-local" class="form-control" placeholder="StartTime"
+                   aria-label="StartTime" aria-describedby="basic-addon2">
+            <input th:field="*{lessonEndTime}" type="datetime-local" class="form-control" placeholder="EndTime"
+                   aria-label="EndTime" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <input type="submit" value="Create schedule" class="btn btn-outline-secondary">
+            </div>
+        </div>
+    </form>
+
+    <form th:href="@{/delete-schedule}" method="post" th:object="${schedule}">
+        <div class="input-group mb-3">
+            <input th:field="*{scheduleId}" type="number" min="0" class="form-control" placeholder="Id schedule"
+                   aria-label="Id schedule" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <input type="submit" value="Delete schedule" class="btn btn-outline-secondary">
+            </div>
+        </div>
+    </form>
+
+    <form th:href="@{/take-schedule-to-teacher}" method="post" th:object="${teacher}">
+        <div class="input-group mb-3">
+            <input th:field="*{teacherId}" type="number" min="0" class="form-control" placeholder="Id teacher"
+                   aria-label="Id teacher" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <input type="submit" value="Search schedule" class="btn btn-outline-secondary">
+            </div>
+        </div>
+    </form>
+
+    <form th:href="@{/update-schedule}" method="post" th:object="${schedule}">
+        <div class="input-group mb-3">
+            <input th:field="*{group.groupId}" type="number" min="0" class="form-control" placeholder="Id group"
+                   aria-label="Id group" aria-describedby="basic-addon2">
+            <input th:field="*{teacher.teacherId}" type="number" min="0" class="form-control" placeholder="Id teacher"
+                   aria-label="Id teacher" aria-describedby="basic-addon2">
+            <input th:field="*{course.courseId}" type="number" min="0" class="form-control" placeholder="Id course"
+                   aria-label="Id course" aria-describedby="basic-addon2">
+            <input th:field="*{classroom.classroomId}" type="number" min="0" class="form-control"
+                   placeholder="Id classroom"
+                   aria-label="Id classroom" aria-describedby="basic-addon2">
+            <input th:field="*{lessonStartTime}" type="datetime-local" class="form-control" placeholder="StartTime"
+                   aria-label="StartTime" aria-describedby="basic-addon2">
+            <input th:field="*{lessonEndTime}" type="datetime-local" class="form-control" placeholder="EndTime"
+                   aria-label="EndTime" aria-describedby="basic-addon2">
+            <input th:name="idOldSchedule" type="number" min="0" class="form-control" placeholder="Id old schedule"
+                   aria-label="Id old schedule" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <input type="submit" value="Update schedule" class="btn btn-outline-secondary">
+            </div>
+        </div>
+    </form>
+
+    <h3>Schedule all</h3>
+    <table class="table table-striped">
+        <caption></caption>
+        <thead>
         <tr>
-            <td th:text="${schedule.scheduleId}"></td>
-            <td th:text="${schedule.classroom.numberClassroom}"></td>
-            <td th:text="${schedule.group.nameGroup}"></td>
-            <td th:text="${schedule.course.nameCourse}"></td>
-            <td th:text="${schedule.teacher.firstName} + ${schedule.teacher.lastName}"></td>
-            <td th:text="${classroom.lessonStartTime}"></td>
-            <td th:text="${classroom.lessonEndTime}"></td>
+            <th>Id</th>
+            <th>Classroom</th>
+            <th>Group</th>
+            <th>Course</th>
+            <th>Teacher</th>
+            <th>Lesson Start Time</th>
+            <th>Lesson End Time</th>
         </tr>
-    </th:block>
-</table>
+        </thead>
+        <tbody>
+        <tr th:each="schedule : ${allSchedule}">
+            <td th:text="${schedule.scheduleId}">Id schedule</td>
+            <td th:text="${schedule.classroom.numberClassroom}">Number classroom</td>
+            <td th:text="${schedule.group.nameGroup}">Name group</td>
+            <td th:text="${schedule.course.nameCourse}">Name course</td>
+            <td th:text="${schedule.teacher.firstName} + ${ schedule.teacher.lastName}"> Teacher</td>
+            <td th:text="${#temporals.format(schedule.lessonStartTime, 'dd-MM-yyyy HH:mm')}">Lesson start time</td>
+            <td th:text="${#temporals.format(schedule.lessonEndTime, 'dd-MM-yyyy HH:mm')}">Lesson end time</td>
+        </tr>
+        </tbody>
+    </table>
 
-<update action="/update-schedule" method="post" th:object="${scheduleNew}" th:object="${scheduleOld}">
-    <input name="scheduleNew.group.groupId" type="number">
-    <input name="scheduleNew.teacher.teacherId" type="number">
-    <input name="scheduleNew.course.courseId" type="number">
-    <input name="scheduleNew.classroom.classroomId" type="number">
-    <input name="scheduleNew.lessonStartTime" type="datetime-local">
-    <input name="scheduleNew.lessonEndTime" type="datetime-local">
-    <input name="scheduleOld.scheduleId" type="datetime-local">
-    <input type="submit" value="Update schedule">
-</update>
 
-<del action="/delete-schedule" method="post" th:object="${schedule}">
-    <input name="scheduleId" type="number">
-    <input type="submit" value="Delete schedule">
-</del>
-<div>
-    <h2><span th:text="${scheduleId}"></span></h2>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
 </div>
 </body>
 </html>

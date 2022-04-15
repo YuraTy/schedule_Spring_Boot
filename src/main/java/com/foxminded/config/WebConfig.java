@@ -7,9 +7,13 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.*;
+import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+import org.thymeleaf.spring5.ISpringTemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 
@@ -42,9 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
         templateResolver.setPrefix("/WEB-INF/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
-
         return templateResolver;
-       // SpringResourceTemplateResolver  templateResolver = new SpringResourceTemplateResolver ();
     }
 
     @Bean
@@ -52,6 +54,7 @@ public class WebConfig implements WebMvcConfigurer {
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.addDialect(new Java8TimeDialect());
         templateEngine.setTemplateEngineMessageSource(messageSource());
         return templateEngine;
     }
@@ -73,7 +76,8 @@ public class WebConfig implements WebMvcConfigurer {
         return messageSource;
     }
 
-
-
-
+    @Bean
+    public IDialect conditionalCommentDialect() {
+        return new Java8TimeDialect();
+    }
 }

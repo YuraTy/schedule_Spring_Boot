@@ -1,6 +1,7 @@
 package com.foxminded.controllers;
 
 import com.foxminded.dto.CourseDTO;
+import com.foxminded.model.Course;
 import com.foxminded.services.CourseService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ class CourseControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(courseService.create(Mockito.any())).thenReturn(new CourseDTO("matem",1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/create-course",new CourseDTO("matem",1)))
+                .perform(MockMvcRequestBuilders.post("/course/create-course",new Course("matem",1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-course"));
     }
@@ -54,7 +55,7 @@ class CourseControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(courseService.findAll()).thenReturn(new ArrayList<>());
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/all-courses"))
+                .perform(MockMvcRequestBuilders.get("/course/all-course"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("page-course"));
     }
@@ -64,7 +65,7 @@ class CourseControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(courseService.update(Mockito.any(),Mockito.any())).thenReturn(new CourseDTO("matem",1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.put("/update-course"))
+                .perform(MockMvcRequestBuilders.post("/course/update-course"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-course"));
     }
@@ -73,7 +74,7 @@ class CourseControllerTest {
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete("/delete-course",new CourseDTO("matem",1)))
+                .perform(MockMvcRequestBuilders.post("/course/delete-course",new CourseDTO("matem",1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-course"));
 

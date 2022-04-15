@@ -43,7 +43,7 @@ class TeacherControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(teacherService.create(Mockito.any())).thenReturn(new TeacherDTO("Vova", "Tesluk", 1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/create-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
+                .perform(MockMvcRequestBuilders.post("/teacher/create-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
     }
@@ -53,7 +53,7 @@ class TeacherControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(teacherService.findAll()).thenReturn(new ArrayList<>());
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/all-teachers"))
+                .perform(MockMvcRequestBuilders.get("/teacher/all-teacher"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
     }
@@ -63,7 +63,7 @@ class TeacherControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(teacherService.update(Mockito.any(), Mockito.any())).thenReturn(new TeacherDTO("Vova", "Ivanov", 1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.put("/update-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
+                .perform(MockMvcRequestBuilders.post("/teacher/update-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
     }
@@ -72,7 +72,7 @@ class TeacherControllerTest {
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.delete("/delete-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
+                .perform(MockMvcRequestBuilders.post("/teacher/delete-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
     }

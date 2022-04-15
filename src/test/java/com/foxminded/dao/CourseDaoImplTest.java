@@ -59,7 +59,7 @@ class CourseDaoImplTest {
     void update() {
         courseDao.create(new Course("geogrfi"));
         courseDao.create(new Course("matem"));
-        courseDao.update(new Course("matem"), new Course("astronomia"));
+        courseDao.update(new Course("astronomia"), new Course("matem"));
         courseDao.create(new Course("history"));
         List<Course> expectedList = new ArrayList<>();
         expectedList.add(new Course("geogrfi"));
