@@ -1,12 +1,14 @@
 package com.foxminded.dto;
 
 public class GroupDTO {
-    private String nameGroup;
-    private int groupId;
 
-    public GroupDTO(String nameGroup, int groupId) {
+    private String nameGroup;
+
+    private int id;
+
+    public GroupDTO(String nameGroup, int id) {
         this.nameGroup = nameGroup;
-        this.groupId = groupId;
+        this.id = id;
     }
 
     public GroupDTO() {
@@ -20,12 +22,12 @@ public class GroupDTO {
         this.nameGroup = nameGroup;
     }
 
-    public int getGroupId() {
-        return groupId;
+    public int getId() {
+        return id;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    public void setId(int id) {
+        this.id = id;
     }
 
 

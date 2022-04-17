@@ -7,19 +7,19 @@ public class Course {
 
     private String nameCourse;
 
-    private int courseId;
+    private int id;
 
-    public Course(String nameCourse, int courseId) {
+    public Course(String nameCourse, int id) {
         this.nameCourse = nameCourse;
-        this.courseId = courseId;
+        this.id = id;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public int getId() {
+        return id;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Course(String nameCourse) {

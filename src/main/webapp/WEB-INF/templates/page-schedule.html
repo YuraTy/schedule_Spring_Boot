@@ -45,13 +45,13 @@
 
     <form th:href="@{/create-schedule}" method="post" th:object="${schedule}">
         <div class="input-group mb-3">
-            <input th:field="*{group.groupId}" type="number" min="0" class="form-control" placeholder="Id group"
+            <input th:field="*{group.id}" type="number" min="0" class="form-control" placeholder="Id group"
                    aria-label="Id group" aria-describedby="basic-addon2">
-            <input th:field="*{teacher.teacherId}" type="number" min="0" class="form-control" placeholder="Id teacher"
+            <input th:field="*{teacher.id}" type="number" min="0" class="form-control" placeholder="Id teacher"
                    aria-label="Id teacher" aria-describedby="basic-addon2">
-            <input th:field="*{course.courseId}" type="number" min="0" class="form-control" placeholder="Id course"
+            <input th:field="*{course.id}" type="number" min="0" class="form-control" placeholder="Id course"
                    aria-label="Id course" aria-describedby="basic-addon2">
-            <input th:field="*{classroom.classroomId}" type="number" min="0" class="form-control"
+            <input th:field="*{classroom.id}" type="number" min="0" class="form-control"
                    placeholder="Id classroom"
                    aria-label="Id classroom" aria-describedby="basic-addon2">
             <input th:field="*{lessonStartTime}" type="datetime-local" class="form-control" placeholder="StartTime"
@@ -76,7 +76,7 @@
 
     <form th:href="@{/take-schedule-to-teacher}" method="post" th:object="${teacher}">
         <div class="input-group mb-3">
-            <input th:field="*{teacherId}" type="number" min="0" class="form-control" placeholder="Id teacher"
+            <input th:field="*{id}" type="number" min="0" class="form-control" placeholder="Id teacher"
                    aria-label="Id teacher" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <input type="submit" value="Search schedule" class="btn btn-outline-secondary">
@@ -86,13 +86,13 @@
 
     <form th:href="@{/update-schedule}" method="post" th:object="${schedule}">
         <div class="input-group mb-3">
-            <input th:field="*{group.groupId}" type="number" min="0" class="form-control" placeholder="Id group"
+            <input th:field="*{group.id}" type="number" min="0" class="form-control" placeholder="Id group"
                    aria-label="Id group" aria-describedby="basic-addon2">
-            <input th:field="*{teacher.teacherId}" type="number" min="0" class="form-control" placeholder="Id teacher"
+            <input th:field="*{teacher.id}" type="number" min="0" class="form-control" placeholder="Id teacher"
                    aria-label="Id teacher" aria-describedby="basic-addon2">
-            <input th:field="*{course.courseId}" type="number" min="0" class="form-control" placeholder="Id course"
+            <input th:field="*{course.id}" type="number" min="0" class="form-control" placeholder="Id course"
                    aria-label="Id course" aria-describedby="basic-addon2">
-            <input th:field="*{classroom.classroomId}" type="number" min="0" class="form-control"
+            <input th:field="*{classroom.id}" type="number" min="0" class="form-control"
                    placeholder="Id classroom"
                    aria-label="Id classroom" aria-describedby="basic-addon2">
             <input th:field="*{lessonStartTime}" type="datetime-local" class="form-control" placeholder="StartTime"

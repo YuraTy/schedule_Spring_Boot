@@ -7,25 +7,24 @@ public class Classroom {
 
     private int numberClassroom;
 
-    private int classroomId;
+    private int id;
 
-    public Classroom(int numberClassroom, int classroomId) {
-        this.numberClassroom = numberClassroom;
-        this.classroomId = classroomId;
+    public int getId() {
+        return id;
     }
 
-    public int getClassroomId() {
-        return classroomId;
-    }
-
-    public void setClassroomId(int classroomId) {
-        this.classroomId = classroomId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Classroom(int numberClassroom) {
         this.numberClassroom = numberClassroom;
     }
 
+    public Classroom(int numberClassroom, int id) {
+        this.numberClassroom = numberClassroom;
+        this.id = id;
+    }
     public Classroom() {
     }
     public int getNumberClassroom() {

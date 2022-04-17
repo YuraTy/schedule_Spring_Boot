@@ -1,12 +1,14 @@
 package com.foxminded.dto;
 
 public class CourseDTO {
-    private String nameCourse;
-    private int courseId;
 
-    public CourseDTO(String nameCourse, int courseId) {
+    private String nameCourse;
+
+    private int id;
+
+    public CourseDTO(String nameCourse, int id) {
         this.nameCourse = nameCourse;
-        this.courseId = courseId;
+        this.id = id;
     }
 
     public CourseDTO() {}
@@ -19,11 +21,11 @@ public class CourseDTO {
         this.nameCourse = nameCourse;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public int getId() {
+        return id;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setId(int id) {
+        this.id = id;
     }
 }

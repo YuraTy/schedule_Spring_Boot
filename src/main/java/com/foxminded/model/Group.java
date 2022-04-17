@@ -7,19 +7,19 @@ public class Group {
 
     private String nameGroup;
 
-    private int groupId;
+    private int id;
 
     public Group(String nameGroup, int id) {
         this.nameGroup = nameGroup;
-        this.groupId = id;
+        this.id = id;
     }
 
-    public int getGroupId() {
-        return groupId;
+    public int getId() {
+        return id;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Group(String nameGroup) {

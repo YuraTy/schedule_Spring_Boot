@@ -38,7 +38,7 @@ public class ClassroomService {
         try {
             List<ClassroomDTO> classroomDTOLIst = classroomDao.findAll().stream()
                     .map(p -> mapping(p))
-                    .peek(p -> logger.trace("Found data in the database id = {} class number = {}. And the DTO object was created with id = {} , class number = {}", p.getClassroomId(), p.getNumberClassroom(), p.getClassroomId(), p.getNumberClassroom()))
+                    .peek(p -> logger.trace("Found data in the database id = {} class number = {}. And the DTO object was created with id = {} , class number = {}", p.getId(), p.getNumberClassroom(), p.getId(), p.getNumberClassroom()))
                     .collect(Collectors.toList());
             if (classroomDTOLIst.isEmpty()) {
                 throw new CommonServiceException(ERROR_MESSAGE);

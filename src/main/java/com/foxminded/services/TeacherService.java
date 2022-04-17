@@ -38,7 +38,7 @@ public class TeacherService {
         try {
             List<TeacherDTO> teacherDTOList = teacherDao.findAll().stream()
                     .map(p -> mapping(p))
-                    .peek(p -> logger.trace("Found data teacher id = {},teacher first name = {}, teacher last name = {} to the database, Returned DTO object with data teacher id = {}, teacher first name = {}, teacher last name = {}", p.getTeacherId(),p.getFirstName(),p.getLastName(),p.getTeacherId(),p.getFirstName(),p.getLastName()))
+                    .peek(p -> logger.trace("Found data teacher id = {},teacher first name = {}, teacher last name = {} to the database, Returned DTO object with data teacher id = {}, teacher first name = {}, teacher last name = {}", p.getId(),p.getFirstName(),p.getLastName(),p.getId(),p.getFirstName(),p.getLastName()))
                     .collect(Collectors.toList());
             if (teacherDTOList.isEmpty()){
                 throw new CommonServiceException(ERROR_MESSAGE);

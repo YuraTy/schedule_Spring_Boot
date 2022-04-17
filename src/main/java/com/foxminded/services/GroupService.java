@@ -38,7 +38,7 @@ public class GroupService {
         try {
             List<GroupDTO> groupDTOList = groupDao.findAll().stream()
                     .map(p -> mapping(p))
-                    .peek(p -> logger.trace("Found data group id = {}, group name = {} to the database, Returned DTO object with data group id = {}, group name = {}", p.getGroupId(),p.getNameGroup(), p.getGroupId(),p.getNameGroup()))
+                    .peek(p -> logger.trace("Found data group id = {}, group name = {} to the database, Returned DTO object with data group id = {}, group name = {}", p.getId(),p.getNameGroup(), p.getId(),p.getNameGroup()))
                     .collect(Collectors.toList());
             if (groupDTOList.isEmpty()) {
                 throw new CommonServiceException(ERROR_MESSAGE);

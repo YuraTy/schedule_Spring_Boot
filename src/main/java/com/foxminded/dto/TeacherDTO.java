@@ -3,12 +3,12 @@ package com.foxminded.dto;
 public class TeacherDTO {
     private String firstName;
     private String lastName;
-    private int teacherId;
+    private int id;
 
-    public TeacherDTO(String firstName, String lastName, int teacherId) {
+    public TeacherDTO(String firstName, String lastName, int id) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.teacherId = teacherId;
+        this.id = id;
     }
 
     public TeacherDTO() {}
@@ -29,11 +29,11 @@ public class TeacherDTO {
         this.lastName = lastName;
     }
 
-    public int getTeacherId() {
-        return teacherId;
+    public int getId() {
+        return id;
     }
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setId(int id) {
+        this.id = id;
     }
 }

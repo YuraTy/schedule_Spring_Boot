@@ -7,20 +7,20 @@ public class Teacher {
 
     private String firstName;
     private String lastName;
-    private int teacherId;
+    private int id;
 
-    public Teacher(String firstName, String lastName, int teacherId) {
+    public Teacher(String firstName, String lastName, int id) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.teacherId = teacherId;
+        this.id = id;
     }
 
-    public int getTeacherId() {
-        return teacherId;
+    public int getId() {
+        return id;
     }
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Teacher(String firstName, String lastName) {

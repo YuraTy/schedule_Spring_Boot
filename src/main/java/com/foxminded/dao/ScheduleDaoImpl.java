@@ -29,10 +29,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
     @Override
     public Schedule create(Schedule schedule) {
         String sqlInquiry = "INSERT INTO schedule (group_id,teacher_id,course_id,classroom_id,lesson_start_time,lesson_end_time) VALUES (?,?,?,?,?,?)";
-        int groupId = schedule.getGroup().getGroupId();
-        int teacherId = schedule.getTeacher().getTeacherId();
-        int courseId = schedule.getCourse().getCourseId();
-        int classroomId = schedule.getClassroom().getClassroomId();
+        int groupId = schedule.getGroup().getId();
+        int teacherId = schedule.getTeacher().getId();
+        int courseId = schedule.getCourse().getId();
+        int classroomId = schedule.getClassroom().getId();
         LocalDateTime startTime = schedule.getLessonStartTime();
         LocalDateTime endTime = schedule.getLessonEndTime();
         jdbcTemplate.update(sqlInquiry, groupId, teacherId, courseId, classroomId, startTime, endTime);
@@ -65,7 +65,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public List<Schedule> takeScheduleToTeacher(Teacher teacher) {
-        int teacherId = teacher.getTeacherId();
+        int teacherId = teacher.getId();
         String sqlInquiry = "SELECT schedule.schedule_id,classrooms.id,classrooms.number_classroom,courses.id,courses.name_course,groups.id,groups.name_group,teachers.id,teachers.first_name,teachers.last_name,schedule.lesson_start_time,schedule.lesson_end_time\n" +
                 "FROM schedule schedule\n" +
                 "INNER JOIN classrooms classrooms ON classrooms.id = schedule.classroom_id\n" +
@@ -94,10 +94,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
         String sqlInquiry = "UPDATE schedule SET  group_id = ?,teacher_id = ?,course_id = ?,classroom_id = ?,lesson_start_time = ?,lesson_end_time = ?\n" +
                 "WHERE schedule_id = ?;";
         int scheduleOldId = scheduleOld.getScheduleId();
-        int groupId = scheduleNew.getGroup().getGroupId();
-        int teacherId = scheduleNew.getTeacher().getTeacherId();
-        int courseId = scheduleNew.getCourse().getCourseId();
-        int classroomId = scheduleNew.getClassroom().getClassroomId();
+        int groupId = scheduleNew.getGroup().getId();
+        int teacherId = scheduleNew.getTeacher().getId();
+        int courseId = scheduleNew.getCourse().getId();
+        int classroomId = scheduleNew.getClassroom().getId();
         LocalDateTime startTime = scheduleNew.getLessonStartTime();
         LocalDateTime endTime = scheduleNew.getLessonEndTime();
         jdbcTemplate.update(sqlInquiry, groupId, teacherId, courseId, classroomId, startTime, endTime, scheduleOldId);
@@ -114,10 +114,6 @@ public class ScheduleDaoImpl implements ScheduleDao {
     @PostConstruct
     public void creteTable() {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-        resourceDatabasePopulator.addScript(new ClassPathResource("createTableClassroom.sql"));
-        resourceDatabasePopulator.addScript(new ClassPathResource("createTableCourses.sql"));
-        resourceDatabasePopulator.addScript(new ClassPathResource("createTableGroups.sql"));
-        resourceDatabasePopulator.addScript(new ClassPathResource("createTableTeachers.sql"));
         resourceDatabasePopulator.addScript(new ClassPathResource("createTableSchedule.sql"));
         resourceDatabasePopulator.execute(jdbcTemplate.getDataSource());
     }
