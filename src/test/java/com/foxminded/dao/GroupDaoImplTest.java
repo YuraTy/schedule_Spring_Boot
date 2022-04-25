@@ -2,17 +2,14 @@ package com.foxminded.dao;
 
 import com.foxminded.testconfig.TestConfig;
 import com.foxminded.model.Group;
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -23,8 +20,8 @@ import java.util.List;
         @ContextConfiguration(classes = GroupDaoImpl.class)
 })
 @ExtendWith(SpringExtension.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = {"classpath:createTableGroups.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 
 class GroupDaoImplTest {
 
@@ -50,8 +47,8 @@ class GroupDaoImplTest {
         groupDao.create(new Group("GE-22"));
         groupDao.create(new Group("DT-12"));
         List<Group> expectedList = new ArrayList<>();
-        expectedList.add(new Group("GE-22"));
-        expectedList.add(new Group("DT-12"));
+        expectedList.add(new Group("GE-22",1));
+        expectedList.add(new Group("DT-12",2));
         List<Group> actualList = groupDao.findAll();
         Assertions.assertEquals(expectedList, actualList);
     }

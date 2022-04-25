@@ -8,6 +8,7 @@ import com.foxminded.model.Teacher;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -19,6 +20,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ScheduleDaoImpl implements ScheduleDao {
@@ -41,27 +43,103 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
     @Override
     public List<Schedule> findAll() {
-        String sqlInquiry = "SELECT schedule.schedule_id,classrooms.id,classrooms.number_classroom,courses.id,courses.name_course,groups.id,groups.name_group,teachers.id,teachers.first_name,teachers.last_name,schedule.lesson_start_time,schedule.lesson_end_time\n" +
+        String sqlInquiryClassroom = "SELECT schedule.schedule_id,classrooms.id,classrooms.number_classroom\n" +
                 "FROM schedule schedule\n" +
-                "INNER JOIN classrooms classrooms ON classrooms.id = schedule.classroom_id\n" +
-                "INNER JOIN courses courses ON courses.id = schedule.course_id\n" +
-                "INNER JOIN groups groups ON groups.id = schedule.group_id\n" +
-                "INNER JOIN teachers teachers ON teachers.id = schedule.teacher_id";
-        return jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
+                "INNER JOIN classrooms classrooms ON classrooms.id = schedule.classroom_id";
+        List<Schedule> scheduleClassroom =  jdbcTemplate.query(sqlInquiryClassroom, new RowMapper<Schedule>() {
+            @Override
+            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
+                return Schedule.builder()
+                        .classroom(buildClassroom(resultSet))
+                        .scheduleId(buildScheduleId(resultSet))
+                        .build();
+            }
+        });
+
+        String sqlInquiryCourse = "SELECT schedule.schedule_id,courses.id,courses.name_course\n" +
+                "FROM schedule schedule\n" +
+                "INNER JOIN courses courses ON courses.id = schedule.course_id";
+        List<Schedule> scheduleCourse =  jdbcTemplate.query(sqlInquiryCourse, new RowMapper<Schedule>() {
+            @Override
+            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
+                return Schedule.builder()
+                        .course(buildCourse(resultSet))
+                        .scheduleId(buildScheduleId(resultSet))
+                        .build();
+            }
+        });
+
+        String sqlInquiryGroup = "SELECT schedule.schedule_id,groups.id,groups.name_group\n" +
+                "FROM schedule schedule\n" +
+                "INNER JOIN groups groups ON groups.id = schedule.group_id";
+        List<Schedule> scheduleGroup =  jdbcTemplate.query(sqlInquiryGroup, new RowMapper<Schedule>() {
             @Override
             public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
                 return Schedule.builder()
                         .group(buildGroup(resultSet))
+                        .scheduleId(buildScheduleId(resultSet))
+                        .build();
+            }
+        });
+
+        String sqlInquiryTeacher = "SELECT schedule.schedule_id,teachers.id,teachers.first_name,teachers.last_name\n" +
+                "FROM schedule schedule\n" +
+                "INNER JOIN teachers teachers ON teachers.id = schedule.teacher_id";
+        List<Schedule> scheduleTeacher =  jdbcTemplate.query(sqlInquiryTeacher, new RowMapper<Schedule>() {
+            @Override
+            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
+                return Schedule.builder()
                         .teacher(buildTeacher(resultSet))
-                        .classroom(buildClassroom(resultSet))
-                        .course(buildCourse(resultSet))
+                        .scheduleId(buildScheduleId(resultSet))
+                        .build();
+            }
+        });
+
+                String sqlInquiry = "SELECT schedule.schedule_id,schedule.lesson_start_time,schedule.lesson_end_time\n" +
+                "FROM schedule schedule";
+        List<Schedule> scheduleId = jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
+            @Override
+            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
+                return Schedule.builder()
                         .lessonStartTime(buildStartTime(resultSet))
                         .lessonEndTime(buildEndTime(resultSet))
                         .scheduleId(buildScheduleId(resultSet))
                         .build();
             }
         });
+        return scheduleId.stream()
+                .peek(p -> {
+                    p.setClassroom(scheduleClassroom.stream().filter(r -> r.getScheduleId() == p.getScheduleId()).findFirst().get().getClassroom());
+                    p.setCourse(scheduleCourse.stream().filter(r -> r.getScheduleId() == p.getScheduleId()).findFirst().get().getCourse());
+                    p.setGroup(scheduleGroup.stream().filter(r -> r.getScheduleId() == p.getScheduleId()).findFirst().get().getGroup());
+                    p.setTeacher(scheduleTeacher.stream().filter(r -> r.getScheduleId() == p.getScheduleId()).findFirst().get().getTeacher());
+                })
+                .collect(Collectors.toList());
     }
+
+//    @Override
+//    public List<Schedule> findAll() {
+//        String sqlInquiry = "SELECT schedule.schedule_id,classrooms.id,classrooms.number_classroom,courses.id,courses.name_course,groups.id,groups.name_group,teachers.id,teachers.first_name,teachers.last_name,schedule.lesson_start_time,schedule.lesson_end_time\n" +
+//                "FROM schedule schedule\n" +
+//                "INNER JOIN classrooms classrooms ON classrooms.id = schedule.classroom_id\n" +
+//                "INNER JOIN courses courses ON courses.id = schedule.course_id\n" +
+//                "INNER JOIN groups groups ON groups.id = schedule.group_id\n" +
+//                "INNER JOIN teachers teachers ON teachers.id = schedule.teacher_id";
+//        return jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
+//            @Override
+//            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
+//                return Schedule.builder()
+//                        .group(buildGroup(resultSet))
+//                        .teacher(buildTeacher(resultSet))
+//                        .classroom(buildClassroom(resultSet))
+//                        .course(buildCourse(resultSet))
+//                        .lessonStartTime(buildStartTime(resultSet))
+//                        .lessonEndTime(buildEndTime(resultSet))
+//                        .scheduleId(buildScheduleId(resultSet))
+//                        .build();
+//            }
+//        });
+//    }
 
     @Override
     public List<Schedule> takeScheduleToTeacher(Teacher teacher) {

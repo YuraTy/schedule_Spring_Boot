@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.SQLException;
@@ -25,6 +26,9 @@ import java.util.List;
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = {"classpath:createTableClassroom.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+
 class ClassroomDaoImplTest {
 
     @Autowired
@@ -46,9 +50,8 @@ class ClassroomDaoImplTest {
 
     @Test
     void findAll() throws SQLException {
-        classroomDaoImpl.creteTable();
-        classroomDaoImpl.create(new Classroom(111,1));
-        classroomDaoImpl.create(new Classroom(222,2));
+        classroomDaoImpl.create(new Classroom(111));
+        classroomDaoImpl.create(new Classroom(222));
         List<Classroom> expectedList = new ArrayList<>();
         expectedList.add(new Classroom(111,1));
         expectedList.add(new Classroom(222,2));

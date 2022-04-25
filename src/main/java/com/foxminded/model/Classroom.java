@@ -2,9 +2,14 @@ package com.foxminded.model;
 
 import lombok.Builder;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 @Builder
 public class Classroom {
 
+    @NotNull
+    @Min(1)
     private int numberClassroom;
 
     private int id;
@@ -21,7 +26,7 @@ public class Classroom {
         this.numberClassroom = numberClassroom;
     }
 
-    public Classroom(int numberClassroom, int id) {
+    public Classroom(Integer numberClassroom, int id) {
         this.numberClassroom = numberClassroom;
         this.id = id;
     }
@@ -31,7 +36,7 @@ public class Classroom {
         return numberClassroom;
     }
 
-    public void setNumberClassroom(int numberClassroom) {
+    public void setNumberClassroom(@NotNull int numberClassroom) {
         this.numberClassroom = numberClassroom;
     }
 

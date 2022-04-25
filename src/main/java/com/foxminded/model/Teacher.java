@@ -58,4 +58,9 @@ public class Teacher {
         Teacher teacher = (Teacher) obj;
         return this.firstName.equals(teacher.firstName) && this.lastName.equals(teacher.lastName);
     }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

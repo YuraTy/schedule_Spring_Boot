@@ -27,7 +27,6 @@ import java.util.List;
         @ContextConfiguration(classes = ScheduleDaoImpl.class)
 })
 @ExtendWith(SpringExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(scripts = {"classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableGroups.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class ScheduleDaoImplTest {
