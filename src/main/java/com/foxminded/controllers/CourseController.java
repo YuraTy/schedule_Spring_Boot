@@ -34,13 +34,13 @@ public class CourseController {
         model.addAttribute(NAME_ATTRIBUTE_COURSE, new Course());
         boolean existenceCheck = courseService.findAll().stream().anyMatch(courseDTO -> courseDTO.getNameCourse().equals(course.getNameCourse()));
         if (bindingResult.hasErrors() || existenceCheck) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
             model.addAttribute(MESSAGE_INFO, "Such a course already exists");
             return PAGE_CREATE;
         }
         courseService.create(course);
-        model.addAttribute(SAVE_ALL,true);
+        model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
         model.addAttribute(MESSAGE_INFO, "Added course " + course.getNameCourse());
         return PAGE_CREATE;
@@ -68,18 +68,18 @@ public class CourseController {
         boolean existenceCheckOld = courseService.findAll().stream().anyMatch(courseDTO -> courseDTO.getNameCourse().equals(courseOld));
         boolean existenceCheckNew = courseService.findAll().stream().anyMatch(courseDTO -> courseDTO.getNameCourse().equals(courseNew));
         if (!existenceCheckOld) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
             model.addAttribute(MESSAGE_INFO, "Course with name " + courseOld + " not found");
             return PAGE_UPDATE;
         } else if (existenceCheckNew) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
             model.addAttribute(MESSAGE_INFO, "Course already " + courseNew + " exists");
             return PAGE_UPDATE;
         }
         courseService.update(new Course(courseNew), new Course(courseOld));
-        model.addAttribute(SAVE_ALL,true);
+        model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
         model.addAttribute(MESSAGE_INFO, "Course changed from " + courseOld + " to " + courseNew);
         return PAGE_UPDATE;
@@ -96,21 +96,25 @@ public class CourseController {
     public String delete(Model model, @ModelAttribute(NAME_ATTRIBUTE_COURSE) Course course, BindingResult bindingResult) {
         model.addAttribute(NAME_ATTRIBUTE_COURSE, new Course());
         boolean existenceCheck = courseService.findAll().stream().anyMatch(courseDTO -> courseDTO.getNameCourse().equals(course.getNameCourse()));
-        int idCourse = courseService.findAll().stream().filter(p -> p.getNameCourse().equals(course.getNameCourse())).findFirst().get().getId();
-        boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getCourse().getId() == idCourse);
+
         if (bindingResult.hasErrors() || !existenceCheck) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
             model.addAttribute(MESSAGE_INFO, "No such course found for deletion " + course.getNameCourse());
             return PAGE_DELETE;
-        }else if (includedInTheSchedule) {
-            model.addAttribute(HAS_ERRORS,true);
+        }
+
+        int idCourse = courseService.findAll().stream().filter(p -> p.getNameCourse().equals(course.getNameCourse())).findFirst().get().getId();
+        boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getCourse().getId() == idCourse);
+
+        if (includedInTheSchedule) {
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
             model.addAttribute(MESSAGE_INFO, "Cannot delete while course is on schedule");
             return PAGE_DELETE;
         }
         courseService.delete(course);
-        model.addAttribute(SAVE_ALL,true);
+        model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
         model.addAttribute(MESSAGE_INFO, "Deleted course " + course.getNameCourse());
         return PAGE_DELETE;

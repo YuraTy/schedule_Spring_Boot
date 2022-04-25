@@ -34,12 +34,12 @@ public class ClassroomController {
         model.addAttribute(NAME_ATTRIBUTE_CLASSROOM, new Classroom());
         boolean existenceCheck = classroomService.findAll().stream().anyMatch(classroomDTO -> classroomDTO.getNumberClassroom() == classroom.getNumberClassroom());
         if (bindingResult.hasErrors() || existenceCheck) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
             model.addAttribute(MESSAGE_INFO, "Such a class already exists");
             return PAGE_CREATE;
         }
-        model.addAttribute(SAVE_ALL,true);
+        model.addAttribute(SAVE_ALL, true);
         classroomService.create(classroom);
         model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
         model.addAttribute(MESSAGE_INFO, "Added number classroom  " + classroom.getNumberClassroom());
@@ -68,18 +68,18 @@ public class ClassroomController {
         boolean existenceCheckOld = classroomService.findAll().stream().anyMatch(classroomDTO -> classroomDTO.getNumberClassroom() == numberOld);
         boolean existenceCheckNew = classroomService.findAll().stream().anyMatch(classroomDTO -> classroomDTO.getNumberClassroom() == numberNew);
         if (!existenceCheckOld) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
             model.addAttribute(MESSAGE_INFO, "Class with number " + numberOld + " not found");
             return PAGE_UPDATE;
         } else if (existenceCheckNew) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
             model.addAttribute(MESSAGE_INFO, "Classroom already " + numberNew + " exists");
             return PAGE_UPDATE;
         }
         classroomService.update(new Classroom(numberNew), new Classroom(numberOld));
-        model.addAttribute(SAVE_ALL,true);
+        model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
         model.addAttribute(MESSAGE_INFO, "Number changed from " + numberOld + " to " + numberNew);
         return PAGE_UPDATE;
@@ -95,22 +95,25 @@ public class ClassroomController {
     @PostMapping(value = "/delete-classroom")
     public String delete(Model model, @ModelAttribute(NAME_ATTRIBUTE_CLASSROOM) Classroom classroom, BindingResult bindingResult) {
         model.addAttribute(NAME_ATTRIBUTE_CLASSROOM, new Classroom());
-        int idClassroom = classroomService.findAll().stream().filter(p -> p.getNumberClassroom() == classroom.getNumberClassroom()).findFirst().get().getId();
-        boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getClassroom().getId() == idClassroom);
         boolean existenceCheck = classroomService.findAll().stream().anyMatch(classroomDTO -> classroomDTO.getNumberClassroom() == classroom.getNumberClassroom());
         if (bindingResult.hasErrors() || !existenceCheck) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
             model.addAttribute(MESSAGE_INFO, "No such class found for deletion " + classroom.getNumberClassroom());
             return PAGE_DELETE;
-        }else if (includedInTheSchedule) {
-            model.addAttribute(HAS_ERRORS,true);
+        }
+
+        int idClassroom = classroomService.findAll().stream().filter(p -> p.getNumberClassroom() == classroom.getNumberClassroom()).findFirst().get().getId();
+        boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getClassroom().getId() == idClassroom);
+
+        if (includedInTheSchedule) {
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(MESSAGE_INFO, "Cannot delete while class is on schedule");
             model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
             return PAGE_DELETE;
         }
         classroomService.delete(classroom);
-        model.addAttribute(SAVE_ALL,true);
+        model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
         model.addAttribute(MESSAGE_INFO, "Deleted number classroom  " + classroom.getNumberClassroom());
         return PAGE_DELETE;

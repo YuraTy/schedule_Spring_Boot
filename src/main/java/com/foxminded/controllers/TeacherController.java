@@ -1,6 +1,7 @@
 package com.foxminded.controllers;
 
 import com.foxminded.model.Teacher;
+import com.foxminded.services.ScheduleService;
 import com.foxminded.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,9 @@ public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private ScheduleService scheduleService;
 
     private static final String NAME_ATTRIBUTE_TEACHER = "teacher";
     private static final String NAME_ATTRIBUTE_ALL = "allTeacher";
@@ -29,13 +33,13 @@ public class TeacherController {
         model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
         boolean existenceCheck = teacherService.findAll().stream().anyMatch((teacherDTO -> teacherDTO.getFirstName().equals(teacher.getFirstName()) && (teacherDTO.getLastName().equals(teacher.getLastName()))));
         if (bindingResult.hasErrors() || existenceCheck) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
             model.addAttribute(MESSAGE_INFO, "Such a teacher already exists");
             return PAGE_CREATE;
         }
         teacherService.create(teacher);
-        model.addAttribute(SAVE_ALL,true);
+        model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
         model.addAttribute(MESSAGE_INFO, "Added teacher " + teacher);
         return PAGE_CREATE;
@@ -67,16 +71,17 @@ public class TeacherController {
         boolean existenceCheckOld = teacherService.findAll().stream().anyMatch((teacherDTO -> teacherDTO.getFirstName().equals(firstNameOld) && (teacherDTO.getLastName().equals(lastNameOld))));
         boolean existenceCheckNew = teacherService.findAll().stream().anyMatch((teacherDTO -> teacherDTO.getFirstName().equals(firstNameNew) && (teacherDTO.getLastName().equals(lastNameNew))));
         try {
-            model.addAttribute(HAS_ERRORS,true);
             if (!existenceCheckOld) {
+                model.addAttribute(HAS_ERRORS, true);
                 model.addAttribute(MESSAGE_INFO, "Teacher with name " + teacherOld + " not found");
                 return PAGE_UPDATE;
             } else if (existenceCheckNew) {
+                model.addAttribute(HAS_ERRORS, true);
                 model.addAttribute(MESSAGE_INFO, "Teacher already " + teacherNew + " exists");
                 return PAGE_UPDATE;
             }
             teacherService.update(teacherNew, teacherOld);
-            model.addAttribute(SAVE_ALL,true);
+            model.addAttribute(SAVE_ALL, true);
             model.addAttribute(MESSAGE_INFO, "Teacher changed from " + teacherOld + " to " + teacherNew);
             return PAGE_UPDATE;
         } finally {
@@ -96,13 +101,23 @@ public class TeacherController {
         model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
         boolean existenceCheck = teacherService.findAll().stream().anyMatch((teacherDTO -> teacherDTO.getFirstName().equals(teacher.getFirstName()) && (teacherDTO.getLastName().equals(teacher.getLastName()))));
         if (bindingResult.hasErrors() || !existenceCheck) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
             model.addAttribute(MESSAGE_INFO, "No such teacher found for deletion " + teacher);
             return PAGE_DELETE;
         }
+
+        int idTeacher = teacherService.findAll().stream().filter(p -> (p.getLastName().equals(teacher.getLastName())) && (p.getFirstName().equals(teacher.getFirstName()))).findFirst().get().getId();
+        boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getClassroom().getId() == idTeacher);
+
+        if (includedInTheSchedule) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "Cannot delete while teacher is on schedule");
+            model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
+            return PAGE_DELETE;
+        }
         teacherService.delete(teacher);
-        model.addAttribute(SAVE_ALL,true);
+        model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
         model.addAttribute(MESSAGE_INFO, "Deleted teacher " + teacher);
         return PAGE_DELETE;

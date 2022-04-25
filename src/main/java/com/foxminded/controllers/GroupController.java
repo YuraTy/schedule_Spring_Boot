@@ -2,6 +2,7 @@ package com.foxminded.controllers;
 
 import com.foxminded.model.Group;
 import com.foxminded.services.GroupService;
+import com.foxminded.services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,9 @@ public class GroupController {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private ScheduleService scheduleService;
 
     private static final String NAME_ATTRIBUTE_GROUP = "group";
     private static final String NAME_ATTRIBUTE_ALL = "allGroup";
@@ -29,13 +33,13 @@ public class GroupController {
         model.addAttribute(NAME_ATTRIBUTE_GROUP, new Group());
         boolean existenceCheck = groupService.findAll().stream().anyMatch(groupDTO -> groupDTO.getNameGroup().equals(group.getNameGroup()));
         if (bindingResult.hasErrors() || existenceCheck) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, groupService.findAll());
             model.addAttribute(MESSAGE_INFO, "Such a group already exists");
             return PAGE_CREATE;
         }
         groupService.create(group);
-        model.addAttribute(SAVE_ALL,true);
+        model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, groupService.findAll());
         model.addAttribute(MESSAGE_INFO, "Added group " + group.getNameGroup());
         return PAGE_CREATE;
@@ -64,16 +68,16 @@ public class GroupController {
         boolean existenceCheckNew = groupService.findAll().stream().anyMatch(groupDTO -> groupDTO.getNameGroup().equals(groupNew));
         try {
             if (!existenceCheckOld) {
-                model.addAttribute(HAS_ERRORS,true);
+                model.addAttribute(HAS_ERRORS, true);
                 model.addAttribute(MESSAGE_INFO, "Group with name " + groupOld + " not found");
                 return PAGE_UPDATE;
             } else if (existenceCheckNew) {
-                model.addAttribute(HAS_ERRORS,true);
+                model.addAttribute(HAS_ERRORS, true);
                 model.addAttribute(MESSAGE_INFO, "Group already " + groupNew + " exists");
                 return PAGE_UPDATE;
             }
             groupService.update(new Group(groupNew), new Group(groupOld));
-            model.addAttribute(SAVE_ALL,true);
+            model.addAttribute(SAVE_ALL, true);
             model.addAttribute(MESSAGE_INFO, "Group changed from " + groupOld + " to " + groupNew);
             return PAGE_UPDATE;
         } finally {
@@ -93,13 +97,23 @@ public class GroupController {
         model.addAttribute(NAME_ATTRIBUTE_GROUP, new Group());
         boolean existenceCheck = groupService.findAll().stream().anyMatch(groupDTO -> groupDTO.getNameGroup().equals(group.getNameGroup()));
         if (bindingResult.hasErrors() || !existenceCheck) {
-            model.addAttribute(HAS_ERRORS,true);
+            model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, groupService.findAll());
             model.addAttribute(MESSAGE_INFO, "No such group found for deletion " + group.getNameGroup());
             return PAGE_DELETE;
         }
+
+        int idGroup = groupService.findAll().stream().filter(p -> p.getNameGroup() == group.getNameGroup()).findFirst().get().getId();
+        boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getClassroom().getId() == idGroup);
+
+        if (includedInTheSchedule) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "Cannot delete while group is on schedule");
+            model.addAttribute(NAME_ATTRIBUTE_ALL, groupService.findAll());
+            return PAGE_DELETE;
+        }
         groupService.delete(group);
-        model.addAttribute(SAVE_ALL,true);
+        model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, groupService.findAll());
         model.addAttribute(MESSAGE_INFO, "Deleted group " + group.getNameGroup());
         return PAGE_DELETE;
