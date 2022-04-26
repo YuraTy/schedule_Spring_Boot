@@ -103,7 +103,7 @@ public class GroupController {
             return PAGE_DELETE;
         }
 
-        int idGroup = groupService.findAll().stream().filter(p -> p.getNameGroup() == group.getNameGroup()).findFirst().get().getId();
+        int idGroup = groupService.findAll().stream().filter(p -> p.getNameGroup().equals(group.getNameGroup())).findFirst().get().getId();
         boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getClassroom().getId() == idGroup);
 
         if (includedInTheSchedule) {
