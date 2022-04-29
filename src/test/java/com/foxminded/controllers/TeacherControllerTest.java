@@ -1,6 +1,7 @@
 package com.foxminded.controllers;
 
 import com.foxminded.dto.TeacherDTO;
+import com.foxminded.services.ScheduleService;
 import com.foxminded.services.TeacherService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -18,10 +20,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ContextConfiguration(classes = TeacherController.class)
 @WebMvcTest
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 class TeacherControllerTest {
 
     @Autowired
@@ -29,6 +33,9 @@ class TeacherControllerTest {
 
     @MockBean
     private TeacherService teacherService;
+
+    @MockBean
+    private ScheduleService scheduleService;
 
     private MockMvc mockMvc;
 
@@ -45,7 +52,7 @@ class TeacherControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/teacher/create-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher-create"));
     }
 
     @Test
@@ -55,7 +62,7 @@ class TeacherControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/teacher/all-teacher"))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher-create"));
     }
 
     @Test
@@ -65,7 +72,7 @@ class TeacherControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/teacher/update-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher-update"));
     }
 
     @Test
@@ -74,6 +81,6 @@ class TeacherControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/teacher/delete-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-teacher"));
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher-delete"));
     }
 }

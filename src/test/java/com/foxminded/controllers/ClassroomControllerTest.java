@@ -3,7 +3,7 @@ package com.foxminded.controllers;
 import com.foxminded.dto.ClassroomDTO;
 import com.foxminded.model.Classroom;
 import com.foxminded.services.ClassroomService;
-import org.eclipse.core.commands.IParameterValues;
+import com.foxminded.services.ScheduleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,11 +21,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @WebMvcTest
 @ContextConfiguration(classes = {ClassroomController.class})
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 class ClassroomControllerTest {
 
     @Autowired
@@ -39,6 +42,9 @@ class ClassroomControllerTest {
     @MockBean
     private ClassroomService classroomService;
 
+    @MockBean
+    private ScheduleService scheduleService;
+
     private MockMvc mockMvc;
 
     @Test
@@ -48,7 +54,7 @@ class ClassroomControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/classroom/create-classroom",new ClassroomDTO(22,1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("page-classroom-create"));
     }
 
     @Test
@@ -58,7 +64,7 @@ class ClassroomControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/classroom/all-classroom"))
                 .andExpect(status().isOk())
-                .andExpect(view().name( "page-classroom"));
+                .andExpect(view().name( "page-classroom-create"));
     }
 
     @Test
@@ -68,7 +74,7 @@ class ClassroomControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/classroom/update-classroom",33,2))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("page-classroom-update"));
     }
 
     @Test
@@ -77,6 +83,6 @@ class ClassroomControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/classroom/delete-classroom",new Classroom(22,2)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-classroom"));
+                .andExpect(MockMvcResultMatchers.view().name("page-classroom-delete"));
     }
 }

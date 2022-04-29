@@ -2,6 +2,7 @@ package com.foxminded.controllers;
 
 import com.foxminded.dto.GroupDTO;
 import com.foxminded.services.GroupService;
+import com.foxminded.services.ScheduleService;
 import lombok.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -19,11 +21,13 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @ContextConfiguration(classes = GroupController.class)
 @WebMvcTest
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 class GroupControllerTest {
 
     @Autowired
@@ -31,6 +35,9 @@ class GroupControllerTest {
 
     @MockBean
     private GroupService groupService;
+
+    @MockBean
+    private ScheduleService scheduleService;
 
     private MockMvc mockMvc;
 
@@ -47,7 +54,7 @@ class GroupControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/group/create-group",new GroupDTO("22-DE",1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-group"));
+                .andExpect(MockMvcResultMatchers.view().name("page-group-create"));
     }
 
     @Test
@@ -57,7 +64,7 @@ class GroupControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/group/all-group"))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-group"));
+                .andExpect(MockMvcResultMatchers.view().name("page-group-create"));
     }
 
     @Test
@@ -67,7 +74,7 @@ class GroupControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/group/update-group",new GroupDTO("22-DE",1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-group"));
+                .andExpect(MockMvcResultMatchers.view().name("page-group-update"));
     }
 
     @Test
@@ -76,6 +83,6 @@ class GroupControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/group/delete-group",new GroupDTO("22-DE",1)))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("page-group"));
+                .andExpect(MockMvcResultMatchers.view().name("page-group-delete"));
     }
 }

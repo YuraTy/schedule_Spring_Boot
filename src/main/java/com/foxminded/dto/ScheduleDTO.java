@@ -4,10 +4,12 @@ import com.foxminded.model.Classroom;
 import com.foxminded.model.Course;
 import com.foxminded.model.Group;
 import com.foxminded.model.Teacher;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Builder
 public class ScheduleDTO {
     private Group group;
     private Teacher teacher;

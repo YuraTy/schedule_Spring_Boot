@@ -43,8 +43,6 @@ public class ScheduleController {
 
     @PostMapping("/create-schedule")
     public String create(@ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) Schedule schedule, Model model, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
         try {
             if (!existenceCheckClassroom(schedule)) {
                 model.addAttribute(HAS_ERRORS, true);

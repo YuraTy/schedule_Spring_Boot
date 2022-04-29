@@ -6,17 +6,23 @@ import com.foxminded.testconfig.TestConfig;
 import com.foxminded.model.Group;
 import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 @ContextHierarchy({
         @ContextConfiguration(classes = TestConfig.class),
@@ -28,11 +34,9 @@ import java.util.List;
 })
 @ExtendWith(SpringExtension.class)
 @Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-@Sql(scripts = {"classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableGroups.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = {"classpath:createTableGroups.sql","classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 class ScheduleDaoImplTest {
-
-    @Autowired
-    private ScheduleDaoImpl scheduleDao;
 
     @Autowired
     private TeacherDaoImpl teacherDao;
@@ -45,6 +49,9 @@ class ScheduleDaoImplTest {
 
     @Autowired
     private CourseDaoImpl courseDao;
+
+    @Autowired
+    private ScheduleDaoImpl scheduleDao;
 
     @BeforeEach
     void addDate() {
@@ -79,9 +86,12 @@ class ScheduleDaoImplTest {
         List<Schedule> actualScheduleList = scheduleDao.findAll();
         Assertions.assertEquals(expectedScheduleList,actualScheduleList);
     }
-
     @Test
     void takeScheduleToTeacher() {
+        teacherDao.create(testTeacher);
+        groupDao.create(testGroup);
+        classroomDao.create(testClassroom);
+        courseDao.create(testCourse);
         scheduleDao.create(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));
         List<Schedule> expectedScheduleList = new ArrayList<>();
         expectedScheduleList.add(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));
