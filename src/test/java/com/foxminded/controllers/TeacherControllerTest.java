@@ -56,6 +56,15 @@ class TeacherControllerTest {
     }
 
     @Test
+    void getCreate() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/teacher/create-teacher"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher-create"));
+    }
+
+    @Test
     void findAll() throws Exception {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(teacherService.findAll()).thenReturn(new ArrayList<>());
@@ -76,10 +85,28 @@ class TeacherControllerTest {
     }
 
     @Test
+    void getUpdate() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/teacher/update-teacher"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher-update"));
+    }
+
+    @Test
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/teacher/delete-teacher",new TeacherDTO("Vova", "Tesluk", 1)))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-teacher-delete"));
+    }
+
+    @Test
+    void getDelete() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/teacher/delete-teacher"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-teacher-delete"));
     }

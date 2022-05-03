@@ -58,6 +58,15 @@ class GroupControllerTest {
     }
 
     @Test
+    void getCrete() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/group/create-group"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-group-create"));
+    }
+
+    @Test
     void findAll() throws Exception {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(groupService.findAll()).thenReturn(new ArrayList<>());
@@ -78,10 +87,28 @@ class GroupControllerTest {
     }
 
     @Test
+    void getUpdate() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/group/update-group"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-group-update"));
+    }
+
+    @Test
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/group/delete-group",new GroupDTO("22-DE",1)))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-group-delete"));
+    }
+
+    @Test
+    void getDelete() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/group/delete-group"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-group-delete"));
     }

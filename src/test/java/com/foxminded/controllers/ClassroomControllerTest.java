@@ -52,9 +52,19 @@ class ClassroomControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(classroomService.create(Mockito.any())).thenReturn(new ClassroomDTO(22,1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/classroom/create-classroom",new ClassroomDTO(22,1)))
+                .perform(MockMvcRequestBuilders.post("/classroom/create-classroom",new ClassroomDTO(22,1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-classroom-create"));
+    }
+
+    @Test
+    void getCreate() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/classroom/create-classroom"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-classroom-create"));
+
     }
 
     @Test
@@ -78,10 +88,29 @@ class ClassroomControllerTest {
     }
 
     @Test
+    void getUpdate() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/classroom/update-classroom"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-classroom-update"));
+    }
+
+
+    @Test
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/classroom/delete-classroom",new Classroom(22,2)))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-classroom-delete"));
+    }
+
+    @Test
+    void getDelete() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/classroom/delete-classroom",new Classroom(22,2)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-classroom-delete"));
     }

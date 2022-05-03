@@ -58,6 +58,15 @@ class CourseControllerTest {
     }
 
     @Test
+    void getCreate() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/course/create-course",new Course("matem",1)))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-course-create"));
+    }
+
+    @Test
     void findAll() throws Exception {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(courseService.findAll()).thenReturn(new ArrayList<>());
@@ -78,10 +87,29 @@ class CourseControllerTest {
     }
 
     @Test
+    void getUpdate() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/course/update-course"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-course-update"));
+    }
+
+    @Test
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/course/delete-course",new CourseDTO("matem",1)))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-course-delete"));
+
+    }
+
+    @Test
+    void getDelete() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/course/delete-course",new CourseDTO("matem",1)))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-course-delete"));
 

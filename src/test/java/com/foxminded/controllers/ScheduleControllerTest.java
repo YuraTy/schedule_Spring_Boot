@@ -91,6 +91,15 @@ class ScheduleControllerTest {
     }
 
     @Test
+    void getCreate() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/schedule/create-schedule"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-schedule-create"));
+    }
+
+    @Test
     void findAll() throws Exception {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(scheduleService.findAll()).thenReturn(new ArrayList<>());
@@ -111,6 +120,15 @@ class ScheduleControllerTest {
                 .perform(MockMvcRequestBuilders.post("/schedule/take-schedule-to-teacher")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("id","2"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("schedule-to-teacher"));
+    }
+
+    @Test
+    void getTakeScheduleToTeacher() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/schedule/take-schedule-to-teacher"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("schedule-to-teacher"));
     }
@@ -139,6 +157,15 @@ class ScheduleControllerTest {
     }
 
     @Test
+    void getUpdate() throws Exception {
+        assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/schedule/update-schedule"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
+    }
+
+    @Test
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         List<ScheduleDTO> testList = new ArrayList<>();
@@ -148,6 +175,15 @@ class ScheduleControllerTest {
                 .perform(MockMvcRequestBuilders.post("/schedule/delete-schedule")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("scheduleId","2"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-schedule-delete"));
+    }
+
+    @Test
+    void getDelete() throws Exception {
+        Assertions.assertNotNull(mockMvc);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/schedule/delete-schedule"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule-delete"));
     }
