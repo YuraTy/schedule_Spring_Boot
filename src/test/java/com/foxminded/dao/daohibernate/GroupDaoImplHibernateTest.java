@@ -52,7 +52,7 @@ class GroupDaoImplHibernateTest {
     void update() {
         groupDao.create(new Group("GE-22"));
         groupDao.create(new Group("DT-12"));
-        groupDao.update(new Group("DT-13",2), new Group("DT-12",2));
+        groupDao.update(new Group("DT-13"), new Group("DT-12"));
         groupDao.create(new Group("DT-14"));
         List<Group> expectedList = new ArrayList<>();
         expectedList.add(new Group("GE-22"));
@@ -66,7 +66,7 @@ class GroupDaoImplHibernateTest {
     void delete() {
         groupDao.create(new Group("GE-22"));
         groupDao.create(new Group("DT-12"));
-        groupDao.delete(new Group("DT-12",2));
+        groupDao.delete(new Group("DT-12"));
         List<Group> expectedList = new ArrayList<>();
         expectedList.add(new Group("GE-22",1));
         List<Group> actualList = groupDao.findAll();

@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
 @ContextHierarchy({
@@ -97,10 +96,6 @@ class ScheduleDaoImplTest {
             @Sql(scripts = {"classpath:createTableGroups.sql","classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"})
     })
     void takeScheduleToTeacher() {
-        teacherDao.create(testTeacher);
-        groupDao.create(testGroup);
-        classroomDao.create(testClassroom);
-        courseDao.create(testCourse);
         scheduleDao.create(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));
         List<Schedule> expectedScheduleList = new ArrayList<>();
         expectedScheduleList.add(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));

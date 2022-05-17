@@ -7,14 +7,19 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "TEACHERS")
+@SqlResultSetMapping(name = "mappingTeacher", entities = @EntityResult(entityClass = Teacher.class))
+@NamedNativeQuery(name = "selectTeacherByName", query = "SELECT id,first_name,last_name FROM teachers WHERE first_name = ?1 AND last_name = ?2", resultSetMapping = "mappingTeacher")
 public class Teacher {
 
+    @Column(name = "FIRST_NAME")
     private String firstName;
 
+    @Column(name = "LAST_NAME")
     private String lastName;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private int id;
 
     public Teacher(String firstName, String lastName, int id) {

@@ -34,6 +34,7 @@ public class ScheduleDaoImplHibernate implements ScheduleDao {
     @Override
     public Schedule update(Schedule scheduleNew, Schedule scheduleOld) {
         entityManager.detach(scheduleOld);
+        scheduleNew.setScheduleId(scheduleOld.getScheduleId());
         entityManager.merge(scheduleNew);
         return scheduleNew;
     }

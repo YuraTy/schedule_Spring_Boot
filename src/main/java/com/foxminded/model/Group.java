@@ -7,12 +7,16 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "GROUPS")
+@SqlResultSetMapping(name = "mappingGroup", entities = @EntityResult(entityClass = Group.class))
+@NamedNativeQuery(name = "getGroupByName", query = "SELECT id, name_group FROM groups WHERE name_group = ?1", resultSetMapping = "mappingGroup")
 public class Group {
 
+    @Column(name = "NAME_GROUP")
     private String nameGroup;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private int id;
 
     public Group(String nameGroup, int id) {

@@ -55,7 +55,7 @@ class TeacherDaoImplHibernateTest {
     void update() {
         teacherDao.create(new Teacher("Ivan","Ivanov"));
         teacherDao.create(new Teacher("Ivan","Sidorov"));
-        teacherDao.update(new Teacher("Georgiy","Keba",2),new Teacher("Ivan","Sidorov",2));
+        teacherDao.update(new Teacher("Georgiy","Keba"),new Teacher("Ivan","Sidorov"));
         List<Teacher> expectedList = new ArrayList<>();
         expectedList.add(new Teacher("Ivan","Ivanov",1));
         expectedList.add(new Teacher("Georgiy","Keba",2));
@@ -67,7 +67,7 @@ class TeacherDaoImplHibernateTest {
     void delete() {
         teacherDao.create(new Teacher("Ivan","Ivanov"));
         teacherDao.create(new Teacher("Ivan","Sidorov"));
-        teacherDao.delete(new Teacher("Ivan","Sidorov",2));
+        teacherDao.delete(new Teacher("Ivan","Sidorov"));
         List<Teacher> expectedList = new ArrayList<>();
         expectedList.add(new Teacher("Ivan","Ivanov",1));
         List<Teacher> actualList = teacherDao.findAll();

@@ -24,7 +24,6 @@ import java.util.List;
 })
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-
 @Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(scripts = {"classpath:createTableTeachers.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 
@@ -32,12 +31,6 @@ class TeacherDaoImplTest {
 
     @Autowired
     private TeacherDaoImpl teacherDao;
-
-    @AfterEach
-    void deleteDate() {
-        teacherDao.findAll()
-                .forEach(p -> teacherDao.delete(p));
-    }
 
     @Test
     void create() {

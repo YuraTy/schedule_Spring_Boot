@@ -26,14 +26,22 @@ public class GroupDaoImplHibernate implements GroupDao {
 
     @Override
     public Group update(Group groupNew, Group groupOld) {
-        entityManager.detach(groupOld);
+        Group groupBookOld = getGroupByName(groupOld);
+        entityManager.detach(groupBookOld);
+        groupNew.setId(groupBookOld.getId());
         entityManager.merge(groupNew);
         return groupNew;
     }
 
     @Override
     public void delete(Group group) {
-        Group book = entityManager.find(Group.class, group.getId());
+        Group book = getGroupByName(group);
         entityManager.remove(book);
+    }
+
+    private Group getGroupByName(Group group) {
+        return entityManager.createNamedQuery("getGroupByName",Group.class)
+                .setParameter(1,group.getNameGroup())
+                .getResultList().get(0);
     }
 }

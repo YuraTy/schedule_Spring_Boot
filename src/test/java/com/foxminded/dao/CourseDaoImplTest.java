@@ -33,12 +33,6 @@ class CourseDaoImplTest {
     @Autowired
     private CourseDaoImpl courseDao;
 
-    @AfterEach
-    void deleteDate() {
-        courseDao.findAll()
-                .forEach(p -> courseDao.delete(p));
-    }
-
     @Test
     void create() {
         courseDao.create(new Course("geogrfi"));

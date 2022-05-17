@@ -32,12 +32,6 @@ class GroupDaoImplTest {
     @Autowired
     private GroupDaoImpl groupDao;
 
-    @AfterEach
-    void deleteDate() {
-        groupDao.findAll()
-                .forEach(p -> groupDao.delete(p));
-    }
-
     @Test
     void create() {
         groupDao.create(new Group("GE-22"));

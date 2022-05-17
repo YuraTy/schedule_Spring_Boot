@@ -31,12 +31,6 @@ class ClassroomDaoImplTest {
     @Autowired
     ClassroomDaoImpl classroomDaoImpl;
 
-    @AfterEach
-    void deleteDate() {
-        classroomDaoImpl.findAll()
-                .forEach(p -> classroomDaoImpl.delete(p));
-    }
-
     @Test
     @SqlGroup({@Sql(scripts = "classpath:drop_all.sql"),
             @Sql(scripts = {"classpath:createTableClassroom.sql"})

@@ -26,14 +26,23 @@ public class TeacherDaoImplHibernate implements TeacherDao {
 
     @Override
     public Teacher update(Teacher teacherNew, Teacher teacherOld) {
-        entityManager.detach(teacherOld);
+        Teacher teacherBookOld = getTeacherByName(teacherOld);
+        entityManager.detach(teacherBookOld);
+        teacherNew.setId(teacherBookOld.getId());
         entityManager.merge(teacherNew);
         return teacherNew;
     }
 
     @Override
     public void delete(Teacher teacher) {
-        Teacher book = entityManager.find(Teacher.class,teacher.getId());
+        Teacher book = getTeacherByName(teacher);
         entityManager.remove(book);
+    }
+
+    private Teacher getTeacherByName(Teacher teacher) {
+        return entityManager.createNamedQuery("selectTeacherByName",Teacher.class)
+                .setParameter(1,teacher.getFirstName())
+                .setParameter(2,teacher.getLastName())
+                .getResultList().get(0);
     }
 }
