@@ -15,6 +15,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
 @ContextHierarchy({
         @ContextConfiguration(classes = TestConfig.class),
@@ -33,9 +35,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
         @ContextConfiguration(classes = ScheduleDaoImpl.class)
 })
 @ExtendWith(SpringExtension.class)
-@Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-@Sql(scripts = {"classpath:createTableGroups.sql","classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 class ScheduleDaoImplTest {
 
     @Autowired
@@ -67,6 +67,9 @@ class ScheduleDaoImplTest {
     private Course testCourse = new Course("History",1);
 
     @Test
+    @SqlGroup({ @Sql(scripts = "classpath:drop_all.sql"),
+            @Sql(scripts = {"classpath:createTableGroups.sql","classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"})
+    })
     void create() throws SQLException {
         scheduleDao.create(new Schedule(new Group("GT-22",1),testTeacher,testCourse,testClassroom,"2016-06-22 18:10:00","2016-06-22 19:10:25"));
         Schedule expectedSchedule = new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 18:10:00","2016-06-22 19:10:25");
@@ -75,6 +78,9 @@ class ScheduleDaoImplTest {
     }
 
     @Test
+    @SqlGroup({ @Sql(scripts = "classpath:drop_all.sql"),
+            @Sql(scripts = {"classpath:createTableGroups.sql","classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"})
+    })
     void findAll() {
         scheduleDao.create(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));
         scheduleDao.create(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 14:10:00","2016-06-22 15:10:25"));
@@ -87,6 +93,9 @@ class ScheduleDaoImplTest {
         Assertions.assertEquals(expectedScheduleList,actualScheduleList);
     }
     @Test
+    @SqlGroup({ @Sql(scripts = "classpath:drop_all.sql"),
+            @Sql(scripts = {"classpath:createTableGroups.sql","classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"})
+    })
     void takeScheduleToTeacher() {
         teacherDao.create(testTeacher);
         groupDao.create(testGroup);
@@ -100,6 +109,9 @@ class ScheduleDaoImplTest {
     }
 
     @Test
+    @SqlGroup({ @Sql(scripts = "classpath:drop_all.sql"),
+            @Sql(scripts = {"classpath:createTableGroups.sql","classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"})
+    })
     void update() {
         scheduleDao.create(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 18:10:00","2016-06-22 19:10:25"));
         scheduleDao.update(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 17:10:00","2016-06-22 18:10:25"),new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));
@@ -110,6 +122,9 @@ class ScheduleDaoImplTest {
     }
 
     @Test
+    @SqlGroup({ @Sql(scripts = "classpath:drop_all.sql"),
+            @Sql(scripts = {"classpath:createTableGroups.sql","classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"})
+    })
     void delete() {
         Schedule schedule0 = scheduleDao.create(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25",1));
         Schedule schedule1 = scheduleDao.create(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 14:10:00","2016-06-22 15:10:25",2));

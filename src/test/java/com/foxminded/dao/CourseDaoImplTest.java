@@ -23,8 +23,8 @@ import java.util.List;
         @ContextConfiguration(classes = CourseDaoImpl.class)
 })
 @ExtendWith(SpringExtension.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+
 @Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(scripts = {"classpath:createTableCourses.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 

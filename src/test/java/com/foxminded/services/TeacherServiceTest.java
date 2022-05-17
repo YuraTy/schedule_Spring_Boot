@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
 @ExtendWith(MockitoExtension.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 class TeacherServiceTest {
 
     @Mock

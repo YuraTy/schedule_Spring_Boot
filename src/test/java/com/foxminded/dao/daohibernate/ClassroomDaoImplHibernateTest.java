@@ -20,7 +20,7 @@ import java.util.List;
         @ContextConfiguration(classes = HibernateTestConfig.class),
         @ContextConfiguration(classes = ClassroomDaoImplHibernate.class)
 })
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
 @Transactional
 class ClassroomDaoImplHibernateTest {
