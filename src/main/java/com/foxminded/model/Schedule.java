@@ -1,19 +1,36 @@
 package com.foxminded.model;
 
 import lombok.Builder;
+import org.hibernate.annotations.Cascade;
+import org.modelmapper.internal.bytebuddy.implementation.bind.annotation.Empty;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Builder
+@Entity
+@Table(name = "SCHEDULE")
 public class Schedule {
 
+    @ManyToOne
+    @JoinColumn(name = "group_id")
     private Group group;
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
     private Course course;
+    @ManyToOne
+    @JoinColumn(name = "classroom_id",nullable = false)
     private Classroom classroom;
+    @Column(name = "lesson_start_time")
     private LocalDateTime lessonStartTime;
+    @Column(name = "lesson_end_time")
     private LocalDateTime lessonEndTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int scheduleId;
 
     public Schedule() {

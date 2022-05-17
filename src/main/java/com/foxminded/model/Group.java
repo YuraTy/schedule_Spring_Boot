@@ -2,11 +2,17 @@ package com.foxminded.model;
 
 import lombok.Builder;
 
+import javax.persistence.*;
+
 @Builder
+@Entity
+@Table(name = "GROUPS")
 public class Group {
 
     private String nameGroup;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     public Group(String nameGroup, int id) {

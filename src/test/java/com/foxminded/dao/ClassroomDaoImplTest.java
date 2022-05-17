@@ -25,7 +25,6 @@ import java.util.List;
 })
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(scripts = {"classpath:createTableClassroom.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class ClassroomDaoImplTest {

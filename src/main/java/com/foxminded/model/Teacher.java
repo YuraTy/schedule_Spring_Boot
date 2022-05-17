@@ -2,11 +2,19 @@ package com.foxminded.model;
 
 import lombok.Builder;
 
+import javax.persistence.*;
+
 @Builder
+@Entity
+@Table(name = "TEACHERS")
 public class Teacher {
 
     private String firstName;
+
     private String lastName;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     public Teacher(String firstName, String lastName, int id) {
