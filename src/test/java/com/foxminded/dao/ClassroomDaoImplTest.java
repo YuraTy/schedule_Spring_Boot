@@ -1,5 +1,6 @@
 package com.foxminded.dao;
 
+import com.foxminded.dao.daohibernate.ClassroomDaoImplHibernate;
 import com.foxminded.model.Classroom;
 import com.foxminded.testconfig.TestConfig;
 import org.junit.FixMethodOrder;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.jdbc.Sql;
@@ -26,10 +28,11 @@ import java.util.List;
 })
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@ActiveProfiles(profiles = "Jdbc")
 class ClassroomDaoImplTest {
 
     @Autowired
-    ClassroomDaoImpl classroomDaoImpl;
+    private ClassroomDao classroomDaoImpl;
 
     @Test
     @SqlGroup({@Sql(scripts = "classpath:drop_all.sql"),

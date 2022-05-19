@@ -1,5 +1,6 @@
 package com.foxminded.config;
 
+import java.util.Objects;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -12,52 +13,34 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+
 
 @Configuration
-@ComponentScan(basePackages = "com.foxminded.controllers")
 @EnableTransactionManagement
-@PropertySource("classpath:hibernate-cfg.properties")
-public class HibernateConfig {
+@PropertySource("classpath:hibernate.cfg.properties")
+public class HibernateConfig{
 
-    // The Environment class serves as the property holder
-    // and stores all the properties loaded by the @PropertySource
     @Autowired
     private Environment env;
 
     @Autowired
     private WebApplicationContext context;
 
-
-
-    @Bean
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource rb = new ResourceBundleMessageSource();
-        // Load property in message/validator.properties
-        rb.setBasenames(new String[] { "messages/validator"});
-        return rb;
-    }
-
-
-    @Bean(name = "viewResolver")
-    @Description("Thymeleaf Template Resolver")
-    public ServletContextTemplateResolver templateResolver() {
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(context.getServletContext());
-        templateResolver.setPrefix("/WEB-INF/templates/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML5");
-        templateResolver.setCharacterEncoding("UTF-8");
-        return templateResolver;
-    }
-
     @Bean(name = "dataSource")
-    public DataSource getDataSource() {
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName(env.getProperty("ds.database-driver"));
@@ -68,38 +51,44 @@ public class HibernateConfig {
         return dataSource;
     }
 
-    @Autowired
-    @Bean(name = "sessionFactory")
-    public SessionFactory getSessionFactory(DataSource dataSource) throws Exception {
-        Properties properties = new Properties();
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em
+                = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setPackagesToScan(new String[] {"com.foxminded.model"});
 
-        // See: ds-hibernate-cfg.properties
-        properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-        properties.put("current_session_context_class", env.getProperty("current_session_context_class"));
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        em.setJpaVendorAdapter(vendorAdapter);
+        em.setJpaProperties(additionalProperties());
 
-
-        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
-        factoryBean.setPackagesToScan(new String[] { "com.foxminded.controllers" });
-        factoryBean.setDataSource(dataSource);
-        factoryBean.setHibernateProperties(properties);
-        factoryBean.afterPropertiesSet();
-        //
-        SessionFactory sf = factoryBean.getObject();
-        return sf;
+        return em;
     }
 
-    @Autowired
-    @Bean(name = "transactionManager")
-    public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
         return transactionManager;
     }
 
-    @Bean(name = "courseDAO")
-    public CourseDao getApplicantDAO() {
-        return new CourseDaoImplHibernate();
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+        return new PersistenceExceptionTranslationPostProcessor();
+    }
+
+    Properties additionalProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto",env.getRequiredProperty("hbm2ddl.auto"));
+        properties.setProperty("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
+
+        return properties;
+    }
+
+    @Bean
+    public IDialect conditionalCommentDialect() {
+        return new Java8TimeDialect();
     }
 
 }

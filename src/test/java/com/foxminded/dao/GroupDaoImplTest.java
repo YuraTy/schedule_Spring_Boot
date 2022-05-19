@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.jdbc.Sql;
@@ -27,10 +28,11 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
 @Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(scripts = {"classpath:createTableGroups.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
+@ActiveProfiles(profiles = "Jdbc")
 class GroupDaoImplTest {
 
     @Autowired
-    private GroupDaoImpl groupDao;
+    private GroupDao groupDao;
 
     @Test
     void create() {
@@ -45,8 +47,8 @@ class GroupDaoImplTest {
         groupDao.create(new Group("GE-22"));
         groupDao.create(new Group("DT-12"));
         List<Group> expectedList = new ArrayList<>();
-        expectedList.add(new Group("GE-22",1));
-        expectedList.add(new Group("DT-12",2));
+        expectedList.add(new Group("GE-22", 1));
+        expectedList.add(new Group("DT-12", 2));
         List<Group> actualList = groupDao.findAll();
         Assertions.assertEquals(expectedList, actualList);
     }

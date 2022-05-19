@@ -1,5 +1,6 @@
 package com.foxminded.services;
 
+import com.foxminded.dao.ClassroomDao;
 import com.foxminded.model.Classroom;
 import com.foxminded.dao.ClassroomDaoImpl;
 import com.foxminded.dto.ClassroomDTO;
@@ -26,7 +27,7 @@ class ClassroomServiceTest {
     private ModelMapper modelMapper;
 
     @Mock
-    private ClassroomDaoImpl classroomDao;
+    private ClassroomDao classroomDao;
 
     @InjectMocks
     private ClassroomService classroomService;

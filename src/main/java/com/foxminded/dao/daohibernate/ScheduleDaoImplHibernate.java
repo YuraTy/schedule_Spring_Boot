@@ -3,13 +3,17 @@ package com.foxminded.dao.daohibernate;
 import com.foxminded.dao.ScheduleDao;
 import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional
+@Profile("Hibernate")
 public class ScheduleDaoImplHibernate implements ScheduleDao {
 
     @PersistenceContext

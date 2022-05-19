@@ -1,5 +1,6 @@
 package com.foxminded.dao.daohibernate;
 
+import com.foxminded.dao.ClassroomDao;
 import com.foxminded.model.Classroom;
 import com.foxminded.testconfig.HibernateTestConfig;
 import org.junit.jupiter.api.Assertions;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -23,10 +25,11 @@ import java.util.List;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
 @Transactional
+@ActiveProfiles("Hibernate")
 class ClassroomDaoImplHibernateTest {
 
     @Autowired
-    private ClassroomDaoImplHibernate classroomDao;
+    private ClassroomDao classroomDao;
 
     @Test
     void create() {
@@ -38,7 +41,7 @@ class ClassroomDaoImplHibernateTest {
     }
 
     @Test
-    void findAll() throws SQLException {
+    void findAll() {
         classroomDao.create(new Classroom(111));
         classroomDao.create(new Classroom(222));
         List<Classroom> expectedList = new ArrayList<>();

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.jdbc.Sql;
@@ -24,14 +25,13 @@ import java.util.List;
 })
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-
+@ActiveProfiles(profiles = "Jdbc")
 @Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(scripts = {"classpath:createTableCourses.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-
 class CourseDaoImplTest {
 
     @Autowired
-    private CourseDaoImpl courseDao;
+    private CourseDao courseDao;
 
     @Test
     void create() {

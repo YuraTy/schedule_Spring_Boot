@@ -1,5 +1,6 @@
 package com.foxminded.dao.daohibernate;
 
+import com.foxminded.dao.*;
 import com.foxminded.model.*;
 import com.foxminded.testconfig.HibernateTestConfig;
 import org.junit.jupiter.api.Assertions;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -28,23 +30,24 @@ import static org.junit.jupiter.api.Assertions.*;
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
+@ActiveProfiles("Hibernate")
 @Transactional
 class ScheduleDaoImplHibernateTest {
 
     @Autowired
-    private ClassroomDaoImplHibernate classroomDao;
+    private ClassroomDao classroomDao;
 
     @Autowired
-    private CourseDaoImplHibernate courseDao;
+    private CourseDao courseDao;
 
     @Autowired
-    private GroupDaoImplHibernate groupDao;
+    private GroupDao groupDao;
 
     @Autowired
-    private TeacherDaoImplHibernate teacherDao;
+    private TeacherDao teacherDao;
 
     @Autowired
-    private ScheduleDaoImplHibernate scheduleDao;
+    private ScheduleDao scheduleDao;
 
     @BeforeEach
     void addDate() {
@@ -84,8 +87,6 @@ class ScheduleDaoImplHibernateTest {
     void takeScheduleToTeacher() {
         scheduleDao.create(new Schedule(testGroup,new Teacher("Ivan","Ivanov",1),testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));
         teacherDao.create(new Teacher("Vasa","Petrov"));
-        List<Teacher> teachers = teacherDao.findAll();
-
         scheduleDao.create(new Schedule(testGroup,new Teacher("Vasa","Petrov",6),testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));
         List<Schedule> expectedScheduleList = new ArrayList<>();
         expectedScheduleList.add(new Schedule(testGroup,testTeacher,testCourse,testClassroom,"2016-06-22 19:10:00","2016-06-22 18:10:25"));

@@ -1,6 +1,7 @@
 package com.foxminded.services;
 
 import com.foxminded.commonserviceexception.CommonServiceException;
+import com.foxminded.dao.ClassroomDao;
 import org.slf4j.Logger;
 import com.foxminded.model.Classroom;
 import com.foxminded.dao.ClassroomDaoImpl;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 public class ClassroomService {
 
     @Autowired
-    private ClassroomDaoImpl classroomDao;
+    private ClassroomDao classroomDao;
 
     @Autowired
     private ModelMapper modelMapper;

@@ -1,6 +1,7 @@
 package com.foxminded.model;
 
 import lombok.Builder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,9 +29,11 @@ public class Schedule {
     private Classroom classroom;
 
     @Column(name = "lesson_start_time")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime lessonStartTime;
 
     @Column(name = "lesson_end_time")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime lessonEndTime;
 
     @Id
@@ -120,12 +123,12 @@ public class Schedule {
         this.classroom = classroom;
     }
 
-    public void setLessonStartTime(String startTime) {
-        this.lessonStartTime = LocalDateTime.parse(startTime, DateTimeFormatter.ISO_DATE_TIME);
+    public void setLessonStartTime(LocalDateTime lessonStartTime) {
+        this.lessonStartTime = lessonStartTime;
     }
 
-    public void setLessonEndTime(String sndTime) {
-        this.lessonEndTime = LocalDateTime.parse(sndTime, DateTimeFormatter.ISO_DATE_TIME);
+    public void setLessonEndTime(LocalDateTime lessonEndTime) {
+        this.lessonEndTime = lessonEndTime;
     }
 
     public void setGroup(Group group) {

@@ -138,17 +138,13 @@ public class ScheduleController {
                 model.addAttribute(HAS_ERRORS, true);
                 model.addAttribute(MESSAGE_INFO, "There is no teacher with ID " + schedule.getTeacher().getId());
                 return PAGE_UPDATE;
-            } else if (bindingResult.hasErrors() || existenceCheckSchedule(schedule)) {
+            } else if (existenceCheckSchedule(schedule)) {
                 model.addAttribute(HAS_ERRORS, true);
                 model.addAttribute(MESSAGE_INFO, "Such a schedule already exists");
                 return PAGE_UPDATE;
             }else if (!existenceCheckIdSchedule) {
                 model.addAttribute(HAS_ERRORS, true);
                 model.addAttribute(MESSAGE_INFO, "No ID " + idOldSchedule + " schedule found");
-                return PAGE_UPDATE;
-            } else if (existenceCheckSchedule(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "A new schedule already exists");
                 return PAGE_UPDATE;
             }
             scheduleService.update(schedule, new Schedule(idOldSchedule));

@@ -1,5 +1,6 @@
 package com.foxminded.services;
 
+import com.foxminded.dao.GroupDao;
 import com.foxminded.dao.GroupDaoImpl;
 import com.foxminded.dto.GroupDTO;
 import com.foxminded.model.Group;
@@ -32,7 +33,7 @@ class GroupServiceTest {
     private ModelMapper modelMapper;
 
     @Mock
-    private GroupDaoImpl groupDao;
+    private GroupDao groupDao;
 
     @InjectMocks
     private GroupService groupService;

@@ -2,6 +2,7 @@ package com.foxminded.dao;
 
 import com.foxminded.model.Course;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,6 +13,7 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Repository
+@Profile("Jdbc")
 public class CourseDaoImpl implements CourseDao {
 
     @Autowired

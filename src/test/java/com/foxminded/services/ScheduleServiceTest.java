@@ -32,7 +32,7 @@ class ScheduleServiceTest {
     private ModelMapper modelMapper;
 
     @Mock
-    private ScheduleDaoImpl scheduleDao;
+    private ScheduleDao scheduleDao;
 
     @InjectMocks
     private ScheduleService scheduleService;

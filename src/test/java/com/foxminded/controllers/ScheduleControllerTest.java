@@ -139,11 +139,68 @@ class ScheduleControllerTest {
         assertNotNull(mockMvc);
         List<ScheduleDTO> testList = new ArrayList<>();
         testList.add(testSchedule());
-        Mockito.when(scheduleService.findAll()).thenReturn(testList);
         Mockito.when(classroomService.findAll()).thenReturn(getListClassroom());
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("classroom.id","2")
+                        .param("course.id","1")
+                        .param("group.id","1")
+                        .param("teacher.id","1")
+                        .param("idOldSchedule","2"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
+
         Mockito.when(courseService.findAll()).thenReturn(getListCourse());
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("classroom.id","1")
+                        .param("course.id","2")
+                        .param("group.id","1")
+                        .param("teacher.id","1")
+                        .param("idOldSchedule","2"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
+
         Mockito.when(groupService.findAll()).thenReturn(getListGroup());
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("classroom.id","1")
+                        .param("course.id","1")
+                        .param("group.id","2")
+                        .param("teacher.id","1")
+                        .param("idOldSchedule","2"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
+
         Mockito.when(teacherService.findAll()).thenReturn(getListTeacher());
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("classroom.id","1")
+                        .param("course.id","1")
+                        .param("group.id","1")
+                        .param("teacher.id","2")
+                        .param("idOldSchedule","2"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
+
+        Mockito.when(scheduleService.findAll()).thenReturn(testList);
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("classroom.id","1")
+                        .param("course.id","1")
+                        .param("group.id","1")
+                        .param("teacher.id","1")
+                        .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
+                        .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
+                        .param("idOldSchedule","2"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
+
         Mockito.when(scheduleService.update(Mockito.any(),Mockito.any())).thenReturn(testSchedule());
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
@@ -152,7 +209,9 @@ class ScheduleControllerTest {
                         .param("course.id","1")
                         .param("group.id","1")
                         .param("teacher.id","1")
-                        .param("idOldSchedule","2"))
+                        .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
+                        .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:20")))
+                        .param("idOldSchedule","1"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
     }
@@ -215,10 +274,10 @@ class ScheduleControllerTest {
 
     private ScheduleDTO testSchedule() {
         return ScheduleDTO.builder()
-                .classroom(new Classroom(2,2))
-                .course(new Course("Fizika",2))
-                .group(new Group("WW-11",2))
-                .teacher(new Teacher("Yura","Odnorog",2))
+                .classroom(new Classroom(2,1))
+                .course(new Course("Fizika",1))
+                .group(new Group("WW-11",1))
+                .teacher(new Teacher("Yura","Odnorog",1))
                 .scheduleId(2)
                 .lessonStartTime(LocalDateTime.parse("2016-06-22T18:10"))
                 .lessonEndTime(LocalDateTime.parse("2016-06-22T19:10"))

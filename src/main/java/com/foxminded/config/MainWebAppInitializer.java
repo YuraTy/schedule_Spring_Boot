@@ -19,6 +19,8 @@ public class MainWebAppInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext root =
                 new AnnotationConfigWebApplicationContext();
 
+        root.getEnvironment().setActiveProfiles("Hibernate");
+
         root.scan("com.foxminded");
         sc.addListener(new ContextLoaderListener(root));
 

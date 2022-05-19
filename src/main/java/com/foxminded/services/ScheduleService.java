@@ -1,6 +1,7 @@
 package com.foxminded.services;
 
 import com.foxminded.commonserviceexception.CommonServiceException;
+import com.foxminded.dao.ScheduleDao;
 import com.foxminded.dao.ScheduleDaoImpl;
 import com.foxminded.dto.ScheduleDTO;
 import com.foxminded.model.Schedule;
@@ -22,7 +23,7 @@ public class ScheduleService {
     private ModelMapper modelMapper;
 
     @Autowired
-    private ScheduleDaoImpl scheduleDao;
+    private ScheduleDao scheduleDao;
 
     private final Logger logger = LoggerFactory.getLogger(ScheduleService.class);
 

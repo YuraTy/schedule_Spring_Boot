@@ -7,6 +7,7 @@ import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
+@Profile("Jdbc")
 public class ScheduleDaoImpl implements ScheduleDao {
 
     @Autowired

@@ -1,6 +1,7 @@
 package com.foxminded.services;
 
 import com.foxminded.commonserviceexception.CommonServiceException;
+import com.foxminded.dao.CourseDao;
 import com.foxminded.model.Course;
 import com.foxminded.dao.CourseDaoImpl;
 import com.foxminded.dto.CourseDTO;
@@ -21,7 +22,7 @@ public class CourseService {
     private ModelMapper modelMapper;
 
     @Autowired
-    private CourseDaoImpl courseDao;
+    private CourseDao courseDao;
 
     private final Logger logger = LoggerFactory.getLogger(CourseService.class);
 

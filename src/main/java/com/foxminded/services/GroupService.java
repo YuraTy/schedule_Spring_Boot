@@ -1,6 +1,7 @@
 package com.foxminded.services;
 
 import com.foxminded.commonserviceexception.CommonServiceException;
+import com.foxminded.dao.GroupDao;
 import com.foxminded.dao.GroupDaoImpl;
 import com.foxminded.model.Group;
 import com.foxminded.dto.GroupDTO;
@@ -21,7 +22,7 @@ public class GroupService {
     private ModelMapper modelMapper;
 
     @Autowired
-    private GroupDaoImpl groupDao;
+    private GroupDao groupDao;
 
     private final Logger logger = LoggerFactory.getLogger(GroupService.class);
 

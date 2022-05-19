@@ -3,7 +3,6 @@ package com.foxminded.model;
 import lombok.Builder;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Builder
 @Entity
@@ -42,7 +41,7 @@ public class Classroom {
         return numberClassroom;
     }
 
-    public void setNumberClassroom(@NotNull int numberClassroom) {
+    public void setNumberClassroom(int numberClassroom) {
         this.numberClassroom = numberClassroom;
     }
 

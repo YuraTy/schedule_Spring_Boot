@@ -1,5 +1,6 @@
 package com.foxminded.dao.daohibernate;
 
+import com.foxminded.dao.CourseDao;
 import com.foxminded.model.Course;
 import com.foxminded.testconfig.HibernateTestConfig;
 import org.junit.jupiter.api.Assertions;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -21,11 +23,12 @@ import java.util.List;
 })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(SpringExtension.class)
+@ActiveProfiles("Hibernate")
 @Transactional
 class CourseDaoImplHibernateTest {
 
     @Autowired
-    private CourseDaoImplHibernate courseDao;
+    private CourseDao courseDao;
 
     @Test
     void create() {

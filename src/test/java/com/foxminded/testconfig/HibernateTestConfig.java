@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 @Configuration
+@Profile("Hibernate")
 @EnableTransactionManagement
 @PropertySource("classpath:hibernate.cfg.properties")
 public class HibernateTestConfig {
