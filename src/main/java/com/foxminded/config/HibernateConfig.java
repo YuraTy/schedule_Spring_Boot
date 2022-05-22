@@ -32,16 +32,16 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource("classpath:hibernate.cfg.properties")
+@PropertySource(value="classpath:application.properties", ignoreResourceNotFound=true)
 public class HibernateConfig{
 
-    @Value("${ds.database-driver}")
+    @Value("${spring.datasource.driver}")
     private String driver;
-    @Value("${ds.url}")
+    @Value("${spring.datasource.url}")
     private String url;
-    @Value("${ds.username}")
+    @Value("${spring.datasource.username}")
     private String login;
-    @Value("${ds.password}")
+    @Value("${spring.datasource.password}")
     private String password;
     @Value("${hbm2ddl.auto}")
     private String hbm2ddl;

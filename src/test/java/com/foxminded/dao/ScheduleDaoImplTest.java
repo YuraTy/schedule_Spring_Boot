@@ -2,7 +2,6 @@ package com.foxminded.dao;
 
 import com.foxminded.model.Classroom;
 import com.foxminded.model.Course;
-import com.foxminded.testconfig.TestConfig;
 import com.foxminded.model.Group;
 import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;
@@ -11,29 +10,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
-@ContextHierarchy({
-        @ContextConfiguration(classes = TestConfig.class),
-        @ContextConfiguration(classes = GroupDaoImpl.class),
-        @ContextConfiguration(classes = TeacherDaoImpl.class),
-        @ContextConfiguration(classes = CourseDaoImpl.class),
-        @ContextConfiguration(classes = ClassroomDaoImpl.class),
-        @ContextConfiguration(classes = ScheduleDaoImpl.class)
-})
+@DataJdbcTest
+@Import({GroupDaoImpl.class,TeacherDaoImpl.class,CourseDaoImpl.class,ClassroomDaoImpl.class,ScheduleDaoImpl.class})
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 @ActiveProfiles("Jdbc")

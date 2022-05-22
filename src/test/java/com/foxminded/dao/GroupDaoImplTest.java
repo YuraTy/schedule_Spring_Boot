@@ -1,12 +1,13 @@
 package com.foxminded.dao;
 
-import com.foxminded.testconfig.TestConfig;
 import com.foxminded.model.Group;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,11 +21,9 @@ import java.util.List;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
-@ContextHierarchy({
-        @ContextConfiguration(classes = TestConfig.class),
-        @ContextConfiguration(classes = GroupDaoImpl.class)
-})
 @ExtendWith(SpringExtension.class)
+@DataJdbcTest
+@Import(GroupDaoImpl.class)
 @Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @Sql(scripts = {"classpath:createTableGroups.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
