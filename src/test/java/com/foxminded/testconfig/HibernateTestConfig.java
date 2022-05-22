@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -18,6 +19,9 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.context.WebApplicationContext;
+import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -27,20 +31,30 @@ import java.util.Properties;
 @Configuration
 @Profile("Hibernate")
 @EnableTransactionManagement
-@PropertySource("classpath:hibernate.cfg.properties")
+@PropertySource(value = "classpath:hibernate.cfg.properties", ignoreResourceNotFound = true)
 public class HibernateTestConfig {
 
-    @Autowired
-    private Environment env;
+    @Value("${ds.database-driver}")
+    private String driver;
+    @Value("${ds.url}")
+    private String url;
+    @Value("${ds.username}")
+    private String login;
+    @Value("${ds.password}")
+    private String password;
+    @Value("${hbm2ddl.auto}")
+    private String hbm2ddl;
+    @Value("${hibernate.dialect}")
+    private String dialect;
 
     @Bean(name = "dataSource")
-    public DataSource getDataSource() {
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-        dataSource.setDriverClassName(Objects.requireNonNull(env.getProperty("ds.database-driver")));
-        dataSource.setUrl(env.getProperty("ds.url"));
-        dataSource.setUsername(env.getProperty("ds.username"));
-        dataSource.setPassword(env.getProperty("ds.password"));
+        dataSource.setDriverClassName(driver);
+        dataSource.setUrl(url);
+        dataSource.setUsername(login);
+        dataSource.setPassword(password);
 
         return dataSource;
     }
@@ -49,7 +63,7 @@ public class HibernateTestConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(getDataSource());
+        em.setDataSource(dataSource());
         em.setPackagesToScan(new String[] {"com.foxminded.model"});
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -58,6 +72,7 @@ public class HibernateTestConfig {
 
         return em;
     }
+
     @Bean
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -73,10 +88,20 @@ public class HibernateTestConfig {
 
     Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto",env.getRequiredProperty("hbm2ddl.auto"));
-        properties.setProperty("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.hbm2ddl.auto",hbm2ddl);
+        properties.setProperty("hibernate.dialect",dialect);
 
         return properties;
+    }
+
+    @Bean
+    public IDialect conditionalCommentDialect() {
+        return new Java8TimeDialect();
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfig() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
 

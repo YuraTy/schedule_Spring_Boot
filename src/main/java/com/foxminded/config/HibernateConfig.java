@@ -9,8 +9,10 @@ import com.foxminded.dao.CourseDao;
 import com.foxminded.dao.daohibernate.CourseDaoImplHibernate;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -33,8 +35,18 @@ import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 @PropertySource("classpath:hibernate.cfg.properties")
 public class HibernateConfig{
 
-    @Autowired
-    private Environment env;
+    @Value("${ds.database-driver}")
+    private String driver;
+    @Value("${ds.url}")
+    private String url;
+    @Value("${ds.username}")
+    private String login;
+    @Value("${ds.password}")
+    private String password;
+    @Value("${hbm2ddl.auto}")
+    private String hbm2ddl;
+    @Value("${hibernate.dialect}")
+    private String dialect;
 
     @Autowired
     private WebApplicationContext context;
@@ -43,10 +55,10 @@ public class HibernateConfig{
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-        dataSource.setDriverClassName(env.getProperty("ds.database-driver"));
-        dataSource.setUrl(env.getProperty("ds.url"));
-        dataSource.setUsername(env.getProperty("ds.username"));
-        dataSource.setPassword(env.getProperty("ds.password"));
+        dataSource.setDriverClassName(driver);
+        dataSource.setUrl(url);
+        dataSource.setUsername(login);
+        dataSource.setPassword(password);
 
         return dataSource;
     }
@@ -80,8 +92,8 @@ public class HibernateConfig{
 
     Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto",env.getRequiredProperty("hbm2ddl.auto"));
-        properties.setProperty("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.hbm2ddl.auto",hbm2ddl);
+        properties.setProperty("hibernate.dialect",dialect);
 
         return properties;
     }
@@ -89,6 +101,11 @@ public class HibernateConfig{
     @Bean
     public IDialect conditionalCommentDialect() {
         return new Java8TimeDialect();
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfig() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
 }
