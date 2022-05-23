@@ -7,15 +7,15 @@ import com.foxminded.model.Group;
 import com.foxminded.dto.ScheduleDTO;
 import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runners.MethodSorters;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.ArrayList;
@@ -26,15 +26,17 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.*;
 
 @ExtendWith(MockitoExtension.class)
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
+@SpringBootTest(classes = ScheduleService.class)
+@AutoConfigureMockMvc
 class ScheduleServiceTest {
 
-    @Mock
+    @MockBean
     private ModelMapper modelMapper;
 
-    @Mock
+    @MockBean
     private ScheduleDao scheduleDao;
 
-    @InjectMocks
+    @Autowired
     private ScheduleService scheduleService;
 
     @Test

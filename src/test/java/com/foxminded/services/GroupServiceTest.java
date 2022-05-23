@@ -1,41 +1,38 @@
 package com.foxminded.services;
 
 import com.foxminded.dao.GroupDao;
-import com.foxminded.dao.GroupDaoImpl;
 import com.foxminded.dto.GroupDTO;
 import com.foxminded.model.Group;
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runners.MethodSorters;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
 
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 @ExtendWith(MockitoExtension.class)
-@Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-@Sql(scripts = {"classpath:createTableClassroom.sql", "classpath:createTableCourses.sql", "classpath:createTableGroups.sql", "classpath:createTableTeachers.sql", "classpath:createTableSchedule.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@SpringBootTest(classes = GroupService.class)
+@AutoConfigureMockMvc
 class GroupServiceTest {
 
-    @Mock
+    @MockBean
     private ModelMapper modelMapper;
 
-    @Mock
+    @MockBean
     private GroupDao groupDao;
 
-    @InjectMocks
+    @Autowired
     private GroupService groupService;
 
 

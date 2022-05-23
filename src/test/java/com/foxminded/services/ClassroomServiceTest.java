@@ -2,34 +2,34 @@ package com.foxminded.services;
 
 import com.foxminded.dao.ClassroomDao;
 import com.foxminded.model.Classroom;
-import com.foxminded.dao.ClassroomDaoImpl;
 import com.foxminded.dto.ClassroomDTO;
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runners.MethodSorters;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-
+@SpringBootTest(classes = ClassroomService.class)
+@AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ClassroomServiceTest {
 
-    @Mock
+    @MockBean
     private ModelMapper modelMapper;
 
-    @Mock
+    @MockBean
     private ClassroomDao classroomDao;
 
-    @InjectMocks
+    @Autowired
     private ClassroomService classroomService;
 
     @Test

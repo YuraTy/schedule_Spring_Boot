@@ -1,37 +1,36 @@
 package com.foxminded.services;
 
 import com.foxminded.dao.TeacherDao;
-import com.foxminded.dao.TeacherDaoImpl;
 import com.foxminded.dto.TeacherDTO;
 import com.foxminded.model.Teacher;
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runners.MethodSorters;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
 @ExtendWith(MockitoExtension.class)
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
+@SpringBootTest(classes = TeacherService.class)
+@AutoConfigureMockMvc
 class TeacherServiceTest {
 
-    @Mock
+    @MockBean
     private ModelMapper modelMapper;
 
-    @Mock
+    @MockBean
     private TeacherDao teacherDao;
 
-    @InjectMocks
+    @Autowired
     private TeacherService teacherService;
 
     @Test
