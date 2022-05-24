@@ -5,7 +5,7 @@ import com.foxminded.model.Course;
 import com.foxminded.model.Group;
 import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;
-import org.jetbrains.annotations.NotNull;
+import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;

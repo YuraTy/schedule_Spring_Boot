@@ -3,12 +3,11 @@ package com.foxminded.controllers;
 import com.foxminded.dto.*;
 import com.foxminded.model.*;
 import com.foxminded.services.*;
-import com.foxminded.testconfig.WebTestConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
+
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
