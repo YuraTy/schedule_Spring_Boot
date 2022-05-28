@@ -3,7 +3,6 @@ package com.foxminded.services;
 import com.foxminded.commonserviceexception.CommonServiceException;
 import com.foxminded.dao.CourseDao;
 import com.foxminded.model.Course;
-import com.foxminded.dao.CourseDaoImpl;
 import com.foxminded.dto.CourseDTO;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;

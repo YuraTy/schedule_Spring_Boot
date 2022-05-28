@@ -17,7 +17,7 @@ public class Classroom {
     private int id;
 
     @Column(name = "NUMBER_CLASSROOM")
-    private int numberClassroom;
+    private Integer numberClassroom;
 
     public int getId() {
         return id;
@@ -27,7 +27,7 @@ public class Classroom {
         this.id = id;
     }
 
-    public Classroom(int numberClassroom) {
+    public Classroom(Integer numberClassroom) {
         this.numberClassroom = numberClassroom;
     }
 
@@ -37,11 +37,11 @@ public class Classroom {
     }
     public Classroom() {
     }
-    public int getNumberClassroom() {
+    public Integer getNumberClassroom() {
         return numberClassroom;
     }
 
-    public void setNumberClassroom(int numberClassroom) {
+    public void setNumberClassroom(Integer numberClassroom) {
         this.numberClassroom = numberClassroom;
     }
 

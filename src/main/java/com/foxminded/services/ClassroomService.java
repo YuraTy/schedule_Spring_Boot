@@ -4,7 +4,6 @@ import com.foxminded.commonserviceexception.CommonServiceException;
 import com.foxminded.dao.ClassroomDao;
 import org.slf4j.Logger;
 import com.foxminded.model.Classroom;
-import com.foxminded.dao.ClassroomDaoImpl;
 import com.foxminded.dto.ClassroomDTO;
 import org.modelmapper.ModelMapper;
 import org.slf4j.LoggerFactory;

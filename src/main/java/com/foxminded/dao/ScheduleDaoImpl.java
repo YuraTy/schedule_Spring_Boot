@@ -5,7 +5,6 @@ import com.foxminded.model.Course;
 import com.foxminded.model.Group;
 import com.foxminded.model.Schedule;
 import com.foxminded.model.Teacher;
-import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
@@ -48,7 +47,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 "FROM schedule schedule";
         List<Schedule> scheduleId = jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
             @Override
-            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
+            public Schedule mapRow( ResultSet resultSet, int rowNum) throws SQLException {
                 return Schedule.builder()
                         .lessonStartTime(buildStartTime(resultSet))
                         .lessonEndTime(buildEndTime(resultSet))
@@ -134,7 +133,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 "INNER JOIN teachers teachers ON teachers.id = schedule.teacher_id";
         return jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
             @Override
-            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
+            public Schedule mapRow(ResultSet resultSet, int rowNum) throws SQLException {
                 return Schedule.builder()
                         .teacher(buildTeacher(resultSet))
                         .scheduleId(buildScheduleId(resultSet))
@@ -149,7 +148,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 "INNER JOIN groups groups ON groups.id = schedule.group_id";
         return jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
             @Override
-            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
+            public Schedule mapRow(ResultSet resultSet, int rowNum) throws SQLException {
                 return Schedule.builder()
                         .group(buildGroup(resultSet))
                         .scheduleId(buildScheduleId(resultSet))
@@ -164,7 +163,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 "INNER JOIN courses courses ON courses.id = schedule.course_id";
         return jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
             @Override
-            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
+            public Schedule mapRow( ResultSet resultSet, int rowNum) throws SQLException {
                 return Schedule.builder()
                         .course(buildCourse(resultSet))
                         .scheduleId(buildScheduleId(resultSet))
@@ -179,7 +178,7 @@ public class ScheduleDaoImpl implements ScheduleDao {
                 "INNER JOIN classrooms classrooms ON classrooms.id = schedule.classroom_id";
         return jdbcTemplate.query(sqlInquiry, new RowMapper<Schedule>() {
             @Override
-            public Schedule mapRow(@NotNull ResultSet resultSet, int rowNum) throws SQLException {
+            public Schedule mapRow(ResultSet resultSet, int rowNum) throws SQLException {
                 return Schedule.builder()
                         .classroom(buildClassroom(resultSet))
                         .scheduleId(buildScheduleId(resultSet))

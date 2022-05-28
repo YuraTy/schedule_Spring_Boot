@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -52,7 +53,9 @@ class ClassroomControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(classroomService.create(Mockito.any())).thenReturn(new ClassroomDTO(22,1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/classroom/create-classroom",new ClassroomDTO(22,1)))
+                .perform(MockMvcRequestBuilders.post("/classroom/create-classroom")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("numberClassroom","2"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-classroom-create"));
     }
