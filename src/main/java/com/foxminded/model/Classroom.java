@@ -3,6 +3,7 @@ package com.foxminded.model;
 import lombok.Builder;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Builder
 @Entity
@@ -54,6 +55,6 @@ public class Classroom {
         if (!(obj instanceof Classroom))
             return false;
         Classroom classroom = (Classroom) obj;
-        return this.numberClassroom == (classroom.numberClassroom) ;
+        return Objects.equals(this.numberClassroom, classroom.numberClassroom);
     }
 }
