@@ -28,7 +28,7 @@ public class TeacherService {
     private static final String ERROR_MESSAGE = "Error while getting data from database in table teachers";
 
     public TeacherDTO create(Teacher teacher) {
-        TeacherDTO teacherDTO = mapping(teacherDao.create(teacher));
+        TeacherDTO teacherDTO = mapping(teacherDao.save(teacher));
         logger.info("Data entered into the database using the ( create ) method");
         logger.trace("Added data teacher first name = {}, teacher last name = {} to the database, Returned DTO object with data teacher first name = {}, teacher last name = {}", teacher.getFirstName(),teacher.getLastName(),teacherDTO.getFirstName(),teacherDTO.getLastName());
         return teacherDTO;
@@ -53,8 +53,11 @@ public class TeacherService {
 
     public TeacherDTO update(Teacher teacherNew, Teacher teacherOld) {
         try {
+            Teacher teacherBook = teacherDao.findByFirstNameAndLastName(teacherOld.getFirstName(), teacherOld.getLastName());
+            teacherBook.setFirstName(teacherNew.getFirstName());
+            teacherBook.setLastName(teacherNew.getLastName());
             TeacherDTO teacherDTO;
-            if ((teacherDTO = mapping(teacherDao.update(teacherNew, teacherOld))) == null){
+            if ((teacherDTO = mapping(teacherDao.save(teacherBook))) == null){
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
@@ -70,7 +73,8 @@ public class TeacherService {
     public void delete(Teacher teacher) {
         try {
             try {
-                teacherDao.delete(teacher);
+                Teacher teacherBook = teacherDao.findByFirstNameAndLastName(teacher.getFirstName(), teacher.getLastName());
+                teacherDao.delete(teacherBook);
                 logger.info("Data deleted successfully teacher first name = {}, teacher last name = {}", teacher.getFirstName(),teacher.getLastName());
             }catch (Exception e){
                 throw new CommonServiceException(ERROR_MESSAGE);

@@ -1,16 +1,8 @@
 package com.foxminded.dao;
 
 import com.foxminded.model.Course;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface CourseDao {
-
-    Course create(Course course);
-
-    List<Course> findAll();
-
-    Course update(Course courseNew, Course courseOld);
-
-    void delete(Course course);
+public interface CourseDao extends JpaRepository<Course,Long> {
+  Course findByNameCourse (String nameCourse);
 }

@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "COURSES")
 @SqlResultSetMapping(name = "mappingCourse",entities = @EntityResult(entityClass = Course.class))
-@NamedNativeQuery(name = "selectCourseByName", query = "SELECT id, name_course FROM courses where name_course = ?1", resultSetMapping = "mappingCourse")
 public class Course {
 
     @Column(name = "NAME_COURSE")

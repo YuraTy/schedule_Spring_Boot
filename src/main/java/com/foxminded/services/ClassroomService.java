@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ClassroomService {
     private static final String ERROR_MESSAGE = "Error while getting data from database in table classrooms";
 
     public ClassroomDTO create(Classroom classroom) {
-        ClassroomDTO classroomDTO = mapping(classroomDao.create(classroom));
+        ClassroomDTO classroomDTO = mapping(classroomDao.save(classroom));
         logger.info("The data is added to the database using the ( create ) method");
         logger.trace("Added data class number = {} to the database, Returned DTO object with data class number = {}", classroom.getNumberClassroom(), classroomDTO.getNumberClassroom());
         return classroomDTO;
@@ -53,8 +54,10 @@ public class ClassroomService {
 
     public ClassroomDTO update(Classroom classroomNew, Classroom classroomOld) {
         try {
+            Classroom classroomBook = classroomDao.findByNumberClassroom(classroomOld.getNumberClassroom());
+            classroomBook.setNumberClassroom(classroomNew.getNumberClassroom());
             ClassroomDTO classroomDTO;
-            if ((classroomDTO = mapping(classroomDao.update(classroomNew, classroomOld))) == null) {
+            if ((classroomDTO = mapping(classroomDao.save(classroomBook))) == null) {
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
@@ -70,7 +73,8 @@ public class ClassroomService {
     public void delete(Classroom classroom) {
         try {
             try {
-                classroomDao.delete(classroom);
+                Classroom classroomBook = classroomDao.findByNumberClassroom(classroom.getNumberClassroom());
+                classroomDao.delete(classroomBook);
                 logger.info("Data deleted successfully class number = {}", classroom.getNumberClassroom());
             } catch (Exception e) {
                 throw new CommonServiceException(ERROR_MESSAGE);

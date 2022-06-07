@@ -29,7 +29,7 @@ public class ScheduleService {
     private static final String ERROR_MESSAGE = "Error while getting data from database in table schedule";
 
     public ScheduleDTO create(Schedule schedule) {
-        ScheduleDTO scheduleDTO = mapping(scheduleDao.create(schedule));
+        ScheduleDTO scheduleDTO = mapping(scheduleDao.save(schedule));
         logger.info("Data entered into the database using the ( create ) method");
         logger.trace("Added data group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} to the database, Returned DTO object with data group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {}", schedule.getGroup().getId(),schedule.getTeacher().getId(),schedule.getCourse().getId(),schedule.getClassroom().getId(),schedule.getLessonStartTime(),schedule.getLessonEndTime(),scheduleDTO.getGroup().getId(),scheduleDTO.getTeacher().getId(),scheduleDTO.getCourse().getId(),scheduleDTO.getClassroom().getId(),scheduleDTO.getLessonStartTime(),scheduleDTO.getLessonEndTime());
         return scheduleDTO;
@@ -54,7 +54,7 @@ public class ScheduleService {
 
     public List<ScheduleDTO> takeScheduleToTeacher(Teacher teacher) {
         try {
-            List<ScheduleDTO> scheduleDTOList =scheduleDao.takeScheduleToTeacher(teacher).stream()
+            List<ScheduleDTO> scheduleDTOList =scheduleDao.findByTeacherId(teacher.getId()).stream()
                     .map(p -> mapping(p))
                     .peek(p -> logger.trace("Found data schedule id ={}, group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} to the database, Returned DTO object with data schedule id ={}, group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {}", p.getScheduleId(),p.getGroup().getId(),p.getTeacher().getId(),p.getCourse().getId(),p.getClassroom().getId(),p.getLessonStartTime(),p.getLessonEndTime(),p.getScheduleId(),p.getGroup().getId(),p.getTeacher().getId(),p.getCourse().getId(),p.getClassroom().getId(),p.getLessonStartTime(),p.getLessonEndTime()))
                     .collect(Collectors.toList());
@@ -71,8 +71,9 @@ public class ScheduleService {
 
     public ScheduleDTO update(Schedule scheduleNew, Schedule scheduleOld) {
         try {
+            scheduleNew.setScheduleId(scheduleOld.getScheduleId());
             ScheduleDTO scheduleDTO;
-            if ((scheduleDTO = mapping(scheduleDao.update(scheduleNew, scheduleOld))) == null){
+            if ((scheduleDTO = mapping(scheduleDao.save(scheduleNew))) == null){
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");

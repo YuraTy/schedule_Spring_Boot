@@ -9,7 +9,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "CLASSROOMS")
 @SqlResultSetMapping(name = "mappingClassroom", entities = @EntityResult(entityClass = Classroom.class))
-@NamedNativeQuery(name = "selectClassroomByNumber",query = "SELECT id,number_classroom FROM classrooms WHERE number_classroom = ?1",resultSetMapping = "mappingClassroom")
 public class Classroom {
 
     @Id

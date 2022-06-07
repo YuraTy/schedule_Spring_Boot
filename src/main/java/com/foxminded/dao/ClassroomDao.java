@@ -1,13 +1,8 @@
 package com.foxminded.dao;
 
 import com.foxminded.model.Classroom;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface ClassroomDao {
-
-    Classroom create (Classroom classroom);
-    List<Classroom> findAll();
-    Classroom update (Classroom classroomNew , Classroom classroomOld);
-    void delete (Classroom classroom);
+public interface ClassroomDao extends JpaRepository<Classroom,Long> {
+    Classroom findByNumberClassroom(Integer numberClassroom);
 }

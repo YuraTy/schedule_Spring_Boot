@@ -40,7 +40,7 @@ class GroupServiceTest {
     void create() {
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new GroupDTO("WE-22",1));
         groupService.create(new Group("WE-22"));
-        Mockito.verify(groupDao).create(Mockito.any());
+        Mockito.verify(groupDao).save(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 
@@ -58,8 +58,9 @@ class GroupServiceTest {
     @Test
     void update() {
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new GroupDTO("WE-22",1));
+        Mockito.when(groupDao.findByNameGroup(Mockito.any())).thenReturn(new Group("WE-22",1));
         groupService.update(new Group("WE-22"), new Group("WE-23"));
-        Mockito.verify(groupDao).update(Mockito.any(), Mockito.any());
+        Mockito.verify(groupDao).save(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 

@@ -28,7 +28,7 @@ public class GroupService {
     private static final String ERROR_MESSAGE = "Error while getting data from database in table groups";
 
     public GroupDTO create(Group group) {
-        GroupDTO groupDTO = mapping(groupDao.create(group));
+        GroupDTO groupDTO = mapping(groupDao.save(group));
         logger.info("Data entered into the database using the ( create ) method");
         logger.trace("Added data group name = {} to the database, Returned DTO object with data group name = {}", group.getNameGroup(), groupDTO.getNameGroup());
         return groupDTO;
@@ -53,8 +53,10 @@ public class GroupService {
 
     public GroupDTO update(Group groupNew, Group groupOld) {
         try {
+            Group groupBook = groupDao.findByNameGroup(groupOld.getNameGroup());
+            groupBook.setNameGroup(groupNew.getNameGroup());
             GroupDTO groupDTO;
-            if ((groupDTO = mapping(groupDao.update(groupNew, groupOld))) == null) {
+            if ((groupDTO = mapping(groupDao.save(groupBook))) == null) {
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
@@ -70,7 +72,8 @@ public class GroupService {
     public void delete(Group group) {
         try {
             try {
-                groupDao.delete(group);
+                Group groupBook = groupDao.findByNameGroup(group.getNameGroup());
+                groupDao.delete(groupBook);
                 logger.info("Data deleted successfully group name = {}", group.getNameGroup());
             }catch (Exception e){
                 throw new CommonServiceException(ERROR_MESSAGE);

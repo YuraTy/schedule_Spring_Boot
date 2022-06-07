@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "TEACHERS")
 @SqlResultSetMapping(name = "mappingTeacher", entities = @EntityResult(entityClass = Teacher.class))
-@NamedNativeQuery(name = "selectTeacherByName", query = "SELECT id,first_name,last_name FROM teachers WHERE first_name = ?1 AND last_name = ?2", resultSetMapping = "mappingTeacher")
 public class Teacher {
 
     @Column(name = "FIRST_NAME")

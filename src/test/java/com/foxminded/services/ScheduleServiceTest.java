@@ -43,7 +43,7 @@ class ScheduleServiceTest {
     void create() {
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1));
         scheduleService.create(new Schedule(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25"));
-        Mockito.verify(scheduleDao).create(Mockito.any());
+        Mockito.verify(scheduleDao).save(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 
@@ -63,9 +63,9 @@ class ScheduleServiceTest {
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1));
         List<Schedule> testList = new ArrayList<>();
         testList.add(new Schedule(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25"));
-        Mockito.when(scheduleDao.takeScheduleToTeacher(Mockito.any())).thenReturn(testList);
+        Mockito.when(scheduleDao.findByTeacherId(Mockito.any())).thenReturn(testList);
         scheduleService.takeScheduleToTeacher(new Teacher("Ivan", "Ivanov", 1));
-        Mockito.verify(scheduleDao).takeScheduleToTeacher(Mockito.any());
+        Mockito.verify(scheduleDao).findByTeacherId(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 
@@ -73,7 +73,7 @@ class ScheduleServiceTest {
     void update() {
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new ScheduleDTO(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25", 1));
         scheduleService.update(new Schedule(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(12, 1), "2016-06-22 18:10:00", "2016-06-22 19:10:25"), new Schedule(new Group("GT-23", 1), new Teacher("Ivan", "Ivanov", 1), new Course("History", 1), new Classroom(13, 13), "2016-06-22 18:10:00", "2016-06-22 19:10:25"));
-        Mockito.verify(scheduleDao).update(Mockito.any(), Mockito.any());
+        Mockito.verify(scheduleDao).save(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 

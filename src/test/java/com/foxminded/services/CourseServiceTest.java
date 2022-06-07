@@ -38,7 +38,7 @@ class CourseServiceTest {
     void create() {
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new CourseDTO("history",1));
         courseService.create(new Course("history"));
-        Mockito.verify(courseDao).create(Mockito.any());
+        Mockito.verify(courseDao).save(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 
@@ -56,8 +56,9 @@ class CourseServiceTest {
     @Test
     void update() {
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new CourseDTO("history",1));
+        Mockito.when(courseDao.findByNameCourse(Mockito.any())).thenReturn(new Course("history",1));
         courseService.update(new Course("history"), new Course("space"));
-        Mockito.verify(courseDao).update(Mockito.any(), Mockito.any());
+        Mockito.verify(courseDao).save(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 

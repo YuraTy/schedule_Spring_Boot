@@ -28,7 +28,7 @@ public class CourseService {
     private static final String ERROR_MESSAGE = "Error while getting data from database in table courses";
 
     public CourseDTO create(Course course) {
-        CourseDTO courseDTO = mapping(courseDao.create(course));
+        CourseDTO courseDTO = mapping(courseDao.save(course));
         logger.info("Data entered into the database using the ( create ) method");
         logger.trace("Added data course name = {} to the database, Returned DTO object with data course name = {}",course.getNameCourse(),courseDTO.getNameCourse());
         return courseDTO;
@@ -53,8 +53,10 @@ public class CourseService {
 
     public CourseDTO update(Course courseNew, Course courseOld) {
         try {
+            Course courseBook = courseDao.findByNameCourse(courseOld.getNameCourse());
+            courseBook.setNameCourse(courseNew.getNameCourse());
             CourseDTO courseDTO;
-            if ((courseDTO = mapping(courseDao.update(courseNew, courseOld))) == null){
+            if ((courseDTO = mapping(courseDao.save(courseBook))) == null){
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
@@ -70,7 +72,8 @@ public class CourseService {
     public void delete(Course course) {
         try {
             try {
-                courseDao.delete(course);
+                Course courseBook = courseDao.findByNameCourse(course.getNameCourse());
+                courseDao.delete(courseBook);
                 logger.info("Data deleted successfully course name = {}", course.getNameCourse());
             }catch (Exception e) {
                 throw new CommonServiceException(ERROR_MESSAGE);

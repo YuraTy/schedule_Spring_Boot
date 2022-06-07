@@ -1,16 +1,9 @@
 package com.foxminded.dao;
 
 import com.foxminded.model.Group;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+public interface GroupDao extends JpaRepository<Group,Long> {
 
-public interface GroupDao {
-
-    Group create(Group group);
-
-    List<Group> findAll();
-
-    Group update(Group groupNew, Group groupOld);
-
-    void delete(Group group);
+    Group findByNameGroup(String nameGroup);
 }

@@ -1,19 +1,11 @@
 package com.foxminded.dao;
 
 import com.foxminded.model.Schedule;
-import com.foxminded.model.Teacher;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ScheduleDao {
+public interface ScheduleDao extends JpaRepository<Schedule,Long> {
 
-    Schedule create(Schedule schedule);
-
-    List<Schedule> findAll();
-
-    List<Schedule> takeScheduleToTeacher(Teacher teacher);
-
-    Schedule update(Schedule scheduleNew, Schedule scheduleOld);
-
-    void delete(Schedule schedule);
+    List<Schedule> findByTeacherId(Integer teacherId);
 }

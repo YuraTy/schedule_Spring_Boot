@@ -1,16 +1,9 @@
 package com.foxminded.dao;
 
 import com.foxminded.model.Teacher;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+public interface TeacherDao extends JpaRepository<Teacher,Long> {
 
-public interface TeacherDao {
-
-    Teacher create(Teacher teacher);
-
-    List<Teacher> findAll();
-
-    Teacher update(Teacher teacherNew, Teacher teacherOld);
-
-    void delete(Teacher teacher);
+    Teacher findByFirstNameAndLastName(String firstName, String lastName);
 }

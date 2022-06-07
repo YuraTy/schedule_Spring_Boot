@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "GROUPS")
 @SqlResultSetMapping(name = "mappingGroup", entities = @EntityResult(entityClass = Group.class))
-@NamedNativeQuery(name = "getGroupByName", query = "SELECT id, name_group FROM groups WHERE name_group = ?1", resultSetMapping = "mappingGroup")
 public class Group {
 
     @Column(name = "NAME_GROUP")
