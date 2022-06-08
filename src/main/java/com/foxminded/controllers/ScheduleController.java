@@ -40,45 +40,54 @@ public class ScheduleController {
     private static final String MESSAGE_INFO = "message";
     private static final String HAS_ERRORS = "hasErrors";
     private static final String SAVE_ALL = "savedSuccessful";
+    private boolean triggerCreate = false;
 
     @PostMapping("/create-schedule")
     public String create(@ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) Schedule schedule, Model model, BindingResult bindingResult) {
-        try {
-            if (!existenceCheckClassroom(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "There is no class with ID " + schedule.getClassroom().getId());
-                return PAGE_CREATE;
-            } else if (!existenceCheckCourse(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "There is no course with ID " + schedule.getCourse().getId());
-                return PAGE_CREATE;
-            } else if (!existenceCheckGroup(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "There is no group with ID " + schedule.getGroup().getId());
-                return PAGE_CREATE;
-            } else if (!existenceCheckTeacher(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "There is no teacher with ID " + schedule.getTeacher().getId());
-                return PAGE_CREATE;
-            } else if (bindingResult.hasErrors() || existenceCheckSchedule(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "Such a schedule already exists");
-                return PAGE_CREATE;
-            }
-            scheduleService.create(schedule);
-            model.addAttribute(SAVE_ALL, true);
-            model.addAttribute(MESSAGE_INFO, "Added new schedule");
-            return PAGE_CREATE;
-        } finally {
+        if (!existenceCheckClassroom(schedule)) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "There is no class with ID " + schedule.getClassroom().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_CREATE;
+        } else if (!existenceCheckCourse(schedule)) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "There is no course with ID " + schedule.getCourse().getId());
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_CREATE;
+        } else if (!existenceCheckGroup(schedule)) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "There is no group with ID " + schedule.getGroup().getId());
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_CREATE;
+        } else if (!existenceCheckTeacher(schedule)) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "There is no teacher with ID " + schedule.getTeacher().getId());
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_CREATE;
+        } else if (bindingResult.hasErrors() || existenceCheckSchedule(schedule)) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "Such a schedule already exists");
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_CREATE;
         }
+        scheduleService.create(schedule);
+        triggerCreate = true;
+        model.addAttribute(SAVE_ALL, true);
+        model.addAttribute(MESSAGE_INFO, "Added new schedule");
+        model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+        return "redirect:/schedule/create-schedule";
     }
 
     @GetMapping("/create-schedule")
     public String getCreate(Model model) {
+        if (triggerCreate) {
+            model.addAttribute(SAVE_ALL, true);
+            model.addAttribute(MESSAGE_INFO, "Added new schedule");
+        }
         model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
         model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
         model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+        triggerCreate = false;
         return PAGE_CREATE;
     }
 
@@ -121,39 +130,42 @@ public class ScheduleController {
         model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
         model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
         boolean existenceCheckIdSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getScheduleId() == idOldSchedule);
-        try {
-            if (!existenceCheckClassroom(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "There is no class with ID " + schedule.getClassroom().getId());
-                return PAGE_UPDATE;
-            } else if (!existenceCheckCourse(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "There is no course with ID " + schedule.getCourse().getId());
-                return PAGE_UPDATE;
-            } else if (!existenceCheckGroup(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "There is no group with ID " + schedule.getGroup().getId());
-                return PAGE_UPDATE;
-            } else if (!existenceCheckTeacher(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "There is no teacher with ID " + schedule.getTeacher().getId());
-                return PAGE_UPDATE;
-            } else if (existenceCheckSchedule(schedule)) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "Such a schedule already exists");
-                return PAGE_UPDATE;
-            }else if (!existenceCheckIdSchedule) {
-                model.addAttribute(HAS_ERRORS, true);
-                model.addAttribute(MESSAGE_INFO, "No ID " + idOldSchedule + " schedule found");
-                return PAGE_UPDATE;
-            }
-            scheduleService.update(schedule, new Schedule(idOldSchedule));
-            model.addAttribute(SAVE_ALL, true);
-            model.addAttribute(MESSAGE_INFO, "Schedule changed successfully");
-            return PAGE_UPDATE;
-        } finally {
+        if (!existenceCheckClassroom(schedule)) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "There is no class with ID " + schedule.getClassroom().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_UPDATE;
+        } else if (!existenceCheckCourse(schedule)) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "There is no course with ID " + schedule.getCourse().getId());
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_UPDATE;
+        } else if (!existenceCheckGroup(schedule)) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "There is no group with ID " + schedule.getGroup().getId());
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_UPDATE;
+        } else if (!existenceCheckTeacher(schedule)) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "There is no teacher with ID " + schedule.getTeacher().getId());
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_UPDATE;
+        } else if (existenceCheckSchedule(schedule)) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "Such a schedule already exists");
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_UPDATE;
+        } else if (!existenceCheckIdSchedule) {
+            model.addAttribute(HAS_ERRORS, true);
+            model.addAttribute(MESSAGE_INFO, "No ID " + idOldSchedule + " schedule found");
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_UPDATE;
         }
+        scheduleService.update(schedule, new Schedule(idOldSchedule));
+        model.addAttribute(SAVE_ALL, true);
+        model.addAttribute(MESSAGE_INFO, "Schedule changed successfully");
+        model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+        return PAGE_UPDATE;
     }
 
     @GetMapping("/update-schedule")

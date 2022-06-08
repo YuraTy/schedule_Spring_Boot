@@ -139,19 +139,19 @@ public class Schedule {
     @Override
     public String toString() {
         return new StringJoiner(" ")
-                .add("schedule id = ")
+                .add("schedule id =")
                 .add(Integer.toString(scheduleId))
-                .add("group id = ")
+                .add("group id =")
                 .add(Integer.toString(group.getId()))
-                .add("teacher id = ")
+                .add("teacher id =")
                 .add(Integer.toString(teacher.getId()))
-                .add("course id = ")
+                .add("course id =")
                 .add(Integer.toString(course.getId()))
-                .add("classroom id = ")
+                .add("classroom id =")
                 .add(Integer.toString(classroom.getId()))
-                .add("start time = ")
+                .add("start time =")
                 .add(lessonStartTime.toString())
-                .add("end time = ")
+                .add("end time =")
                 .add(lessonEndTime.toString())
                 .toString();
     }

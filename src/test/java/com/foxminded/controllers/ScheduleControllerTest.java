@@ -85,6 +85,8 @@ class ScheduleControllerTest {
                         .param("classroom.id","1")
                         .param("course.id","1")
                         .param("group.id","1")
+                        .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
+                        .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
                         .param("teacher.id","1"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule-create"));
@@ -146,6 +148,8 @@ class ScheduleControllerTest {
                         .param("course.id","1")
                         .param("group.id","1")
                         .param("teacher.id","1")
+                        .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
+                        .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
                         .param("idOldSchedule","2"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
@@ -158,6 +162,8 @@ class ScheduleControllerTest {
                         .param("course.id","2")
                         .param("group.id","1")
                         .param("teacher.id","1")
+                        .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
+                        .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
                         .param("idOldSchedule","2"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
@@ -170,6 +176,8 @@ class ScheduleControllerTest {
                         .param("course.id","1")
                         .param("group.id","2")
                         .param("teacher.id","1")
+                        .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
+                        .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
                         .param("idOldSchedule","2"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
@@ -182,6 +190,8 @@ class ScheduleControllerTest {
                         .param("course.id","1")
                         .param("group.id","1")
                         .param("teacher.id","2")
+                        .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
+                        .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
                         .param("idOldSchedule","2"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule-update"));
@@ -233,6 +243,12 @@ class ScheduleControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/schedule/delete-schedule")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("classroom.id","1")
+                        .param("course.id","1")
+                        .param("group.id","1")
+                        .param("teacher.id","1")
+                        .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
+                        .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:20")))
                         .param("scheduleId","2"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule-delete"));
