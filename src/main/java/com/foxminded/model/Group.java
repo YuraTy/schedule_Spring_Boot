@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "GROUPS")
-@SqlResultSetMapping(name = "mappingGroup", entities = @EntityResult(entityClass = Group.class))
 public class Group {
 
     @Column(name = "NAME_GROUP")

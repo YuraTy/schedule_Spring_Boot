@@ -27,11 +27,12 @@ public class ScheduleService {
     private final Logger logger = LoggerFactory.getLogger(ScheduleService.class);
 
     private static final String ERROR_MESSAGE = "Error while getting data from database in table schedule";
+    private static final String LOGGER_TRACE_MESSAGE = "Found data {} to the database, Returned DTO object with data {}";
 
     public ScheduleDTO create(Schedule schedule) {
         ScheduleDTO scheduleDTO = mapping(scheduleDao.save(schedule));
         logger.info("Data entered into the database using the ( create ) method");
-        logger.trace("Added data group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} to the database, Returned DTO object with data group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {}", schedule.getGroup().getId(),schedule.getTeacher().getId(),schedule.getCourse().getId(),schedule.getClassroom().getId(),schedule.getLessonStartTime(),schedule.getLessonEndTime(),scheduleDTO.getGroup().getId(),scheduleDTO.getTeacher().getId(),scheduleDTO.getCourse().getId(),scheduleDTO.getClassroom().getId(),scheduleDTO.getLessonStartTime(),scheduleDTO.getLessonEndTime());
+        logger.trace(LOGGER_TRACE_MESSAGE,schedule,scheduleDTO);
         return scheduleDTO;
     }
 
@@ -39,7 +40,7 @@ public class ScheduleService {
         try {
             List<ScheduleDTO> scheduleDTOList = scheduleDao.findAll().stream()
                     .map(p -> mapping(p))
-                    .peek(p -> logger.trace("Found data schedule id ={}, group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} to the database, Returned DTO object with data schedule id ={}, group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {}", p.getScheduleId(),p.getGroup().getId(),p.getTeacher().getId(),p.getCourse().getId(),p.getClassroom().getId(),p.getLessonStartTime(),p.getLessonEndTime(),p.getScheduleId(),p.getGroup().getId(),p.getTeacher().getId(),p.getCourse().getId(),p.getClassroom().getId(),p.getLessonStartTime(),p.getLessonEndTime()))
+                    .peek(p -> logger.trace(LOGGER_TRACE_MESSAGE,p,p))
                     .collect(Collectors.toList());
             if (scheduleDTOList.isEmpty()){
                 throw new CommonServiceException(ERROR_MESSAGE);
@@ -56,7 +57,7 @@ public class ScheduleService {
         try {
             List<ScheduleDTO> scheduleDTOList =scheduleDao.findByTeacherId(teacher.getId()).stream()
                     .map(p -> mapping(p))
-                    .peek(p -> logger.trace("Found data schedule id ={}, group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} to the database, Returned DTO object with data schedule id ={}, group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {}", p.getScheduleId(),p.getGroup().getId(),p.getTeacher().getId(),p.getCourse().getId(),p.getClassroom().getId(),p.getLessonStartTime(),p.getLessonEndTime(),p.getScheduleId(),p.getGroup().getId(),p.getTeacher().getId(),p.getCourse().getId(),p.getClassroom().getId(),p.getLessonStartTime(),p.getLessonEndTime()))
+                    .peek(p -> logger.trace(LOGGER_TRACE_MESSAGE,p,p))
                     .collect(Collectors.toList());
             if (scheduleDTOList.isEmpty()){
                 throw new CommonServiceException(ERROR_MESSAGE);
@@ -77,7 +78,7 @@ public class ScheduleService {
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
-            logger.trace("The data in the database has been changed from scheduleId = {} to group id = {}, teacher id = {}, course id = {}, classroom id = {}, start time = {}, end time = {} ", scheduleOld.getScheduleId(),scheduleNew.getGroup().getId(),scheduleNew.getTeacher().getId(),scheduleNew.getCourse().getId(),scheduleNew.getClassroom().getId(),scheduleNew.getLessonStartTime(),scheduleNew.getLessonEndTime());
+            logger.trace("The data in the database has been changed from scheduleId = {} to {} ", scheduleOld.getScheduleId(),scheduleNew);
             return scheduleDTO;
         }catch (CommonServiceException e){
             logger.warn("Could not find data in database to replace scheduleId = {}",scheduleOld.getScheduleId());

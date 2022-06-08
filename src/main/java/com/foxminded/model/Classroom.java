@@ -8,7 +8,6 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "CLASSROOMS")
-@SqlResultSetMapping(name = "mappingClassroom", entities = @EntityResult(entityClass = Classroom.class))
 public class Classroom {
 
     @Id

@@ -8,6 +8,7 @@ import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.StringJoiner;
 
 @Builder
 public class ScheduleDTO {
@@ -96,5 +97,25 @@ public class ScheduleDTO {
 
     public void setScheduleId(int scheduleId) {
         this.scheduleId = scheduleId;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(" ")
+                .add("schedule id = ")
+                .add(Integer.toString(scheduleId))
+                .add("group id = ")
+                .add(Integer.toString(group.getId()))
+                .add("teacher id = ")
+                .add(Integer.toString(teacher.getId()))
+                .add("course id = ")
+                .add(Integer.toString(course.getId()))
+                .add("classroom id = ")
+                .add(Integer.toString(classroom.getId()))
+                .add("start time = ")
+                .add(lessonStartTime.toString())
+                .add("end time = ")
+                .add(lessonEndTime.toString())
+                .toString();
     }
 }

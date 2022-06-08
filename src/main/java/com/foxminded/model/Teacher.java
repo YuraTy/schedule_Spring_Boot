@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "TEACHERS")
-@SqlResultSetMapping(name = "mappingTeacher", entities = @EntityResult(entityClass = Teacher.class))
 public class Teacher {
 
     @Column(name = "FIRST_NAME")

@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "COURSES")
-@SqlResultSetMapping(name = "mappingCourse",entities = @EntityResult(entityClass = Course.class))
 public class Course {
 
     @Column(name = "NAME_COURSE")
