@@ -39,7 +39,7 @@
         <a th:href="@{update-classroom}" class="btn btn-secondary">update</a>
     </div>
 
-    <form th:href="@{/delete-classroom}" method="post" th:object="${classroom}"  >
+    <form th:href="@{/delete-classroom}" method="post" th:object="${classroomDTO}"  >
         <div class="input-group mb-3">
             <input th:field="*{numberClassroom}" type="number" class="form-control" min="0" required>
             <div class="input-group-append">

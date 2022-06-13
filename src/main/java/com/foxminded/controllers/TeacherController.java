@@ -1,5 +1,6 @@
 package com.foxminded.controllers;
 
+import com.foxminded.dto.TeacherDTO;
 import com.foxminded.model.Teacher;
 import com.foxminded.services.ScheduleService;
 import com.foxminded.services.TeacherService;
@@ -19,7 +20,7 @@ public class TeacherController {
     @Autowired
     private ScheduleService scheduleService;
 
-    private static final String NAME_ATTRIBUTE_TEACHER = "teacher";
+    private static final String NAME_ATTRIBUTE_TEACHER = "teacherDTO";
     private static final String NAME_ATTRIBUTE_ALL = "allTeacher";
     private static final String PAGE_UPDATE = "page-teacher-update";
     private static final String PAGE_CREATE = "page-teacher-create";
@@ -29,32 +30,32 @@ public class TeacherController {
     private static final String SAVE_ALL = "savedSuccessful";
 
     @PostMapping("/create-teacher")
-    public String create(Model model, @ModelAttribute(NAME_ATTRIBUTE_TEACHER) Teacher teacher, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
-        boolean existenceCheck = teacherService.findAll().stream().anyMatch((teacherDTO -> teacherDTO.getFirstName().equals(teacher.getFirstName()) && (teacherDTO.getLastName().equals(teacher.getLastName()))));
+    public String create(Model model, @ModelAttribute(NAME_ATTRIBUTE_TEACHER) TeacherDTO teacherDTO, BindingResult bindingResult) {
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
+        boolean existenceCheck = teacherService.findAll().stream().anyMatch((findTeacherDTO -> findTeacherDTO.getFirstName().equals(teacherDTO.getFirstName()) && (findTeacherDTO.getLastName().equals(teacherDTO.getLastName()))));
         if (bindingResult.hasErrors() || existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
             model.addAttribute(MESSAGE_INFO, "Such a teacher already exists");
             return PAGE_CREATE;
         }
-        teacherService.create(teacher);
+        teacherService.create(teacherDTO);
         model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
-        model.addAttribute(MESSAGE_INFO, "Added teacher " + teacher);
+        model.addAttribute(MESSAGE_INFO, "Added teacher " + teacherDTO);
         return PAGE_CREATE;
     }
 
     @GetMapping("/create-teacher")
     public String getCreate(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
         return PAGE_CREATE;
     }
 
     @GetMapping("/all-teacher")
     public String findAll(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
         return PAGE_CREATE;
     }
@@ -65,9 +66,9 @@ public class TeacherController {
                          @RequestParam(required = false, name = "firstNameOld") String firstNameOld,
                          @RequestParam(required = false, name = "lastNameOld") String lastNameOld,
                          Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
-        Teacher teacherNew = new Teacher(firstNameNew, lastNameNew);
-        Teacher teacherOld = new Teacher(firstNameOld, lastNameOld);
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
+        TeacherDTO teacherNew = new TeacherDTO(firstNameNew, lastNameNew);
+        TeacherDTO teacherOld = new TeacherDTO(firstNameOld, lastNameOld);
         boolean existenceCheckOld = teacherService.findAll().stream().anyMatch((teacherDTO -> teacherDTO.getFirstName().equals(firstNameOld) && (teacherDTO.getLastName().equals(lastNameOld))));
         boolean existenceCheckNew = teacherService.findAll().stream().anyMatch((teacherDTO -> teacherDTO.getFirstName().equals(firstNameNew) && (teacherDTO.getLastName().equals(lastNameNew))));
         try {
@@ -91,24 +92,24 @@ public class TeacherController {
 
     @GetMapping("/update-teacher")
     public String getUpdate(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
         return PAGE_UPDATE;
     }
 
     @PostMapping("/delete-teacher")
-    public String delete(Model model, @ModelAttribute(NAME_ATTRIBUTE_TEACHER) Teacher teacher, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
-        boolean existenceCheck = teacherService.findAll().stream().anyMatch((teacherDTO -> teacherDTO.getFirstName().equals(teacher.getFirstName()) && (teacherDTO.getLastName().equals(teacher.getLastName()))));
+    public String delete(Model model, @ModelAttribute(NAME_ATTRIBUTE_TEACHER) TeacherDTO teacherDTO, BindingResult bindingResult) {
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
+        boolean existenceCheck = teacherService.findAll().stream().anyMatch((findTeacherDTO -> findTeacherDTO.getFirstName().equals(teacherDTO.getFirstName()) && (findTeacherDTO.getLastName().equals(teacherDTO.getLastName()))));
         if (bindingResult.hasErrors() || !existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
-            model.addAttribute(MESSAGE_INFO, "No such teacher found for deletion " + teacher);
+            model.addAttribute(MESSAGE_INFO, "No such teacher found for deletion " + teacherDTO);
             return PAGE_DELETE;
         }
 
-        int idTeacher = teacherService.findAll().stream().filter(p -> (p.getLastName().equals(teacher.getLastName())) && (p.getFirstName().equals(teacher.getFirstName()))).findFirst().get().getId();
-        boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getClassroom().getId() == idTeacher);
+        int idTeacher = teacherService.findAll().stream().filter(p -> (p.getLastName().equals(teacherDTO.getLastName())) && (p.getFirstName().equals(teacherDTO.getFirstName()))).findFirst().get().getId();
+        boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getClassroomDTO().getId() == idTeacher);
 
         if (includedInTheSchedule) {
             model.addAttribute(HAS_ERRORS, true);
@@ -116,16 +117,16 @@ public class TeacherController {
             model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
             return PAGE_DELETE;
         }
-        teacherService.delete(teacher);
+        teacherService.delete(teacherDTO);
         model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
-        model.addAttribute(MESSAGE_INFO, "Deleted teacher " + teacher);
+        model.addAttribute(MESSAGE_INFO, "Deleted teacher " + teacherDTO);
         return PAGE_DELETE;
     }
 
     @GetMapping("/delete-teacher")
     public String getDelete(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, teacherService.findAll());
         return PAGE_DELETE;
     }

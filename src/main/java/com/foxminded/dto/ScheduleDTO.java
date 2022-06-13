@@ -1,10 +1,7 @@
 package com.foxminded.dto;
 
-import com.foxminded.model.Classroom;
-import com.foxminded.model.Course;
-import com.foxminded.model.Group;
-import com.foxminded.model.Teacher;
 import lombok.Builder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,67 +9,86 @@ import java.util.StringJoiner;
 
 @Builder
 public class ScheduleDTO {
-    private Group group;
-    private Teacher teacher;
-    private Course course;
-    private Classroom classroom;
+    private GroupDTO groupDTO;
+    private TeacherDTO teacherDTO;
+    private CourseDTO courseDTO;
+    private ClassroomDTO classroomDTO;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime lessonStartTime;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime lessonEndTime;
     private int scheduleId;
 
-    public ScheduleDTO(Group group, Teacher teacher, Course course, Classroom classroom, LocalDateTime lessonStartTime, LocalDateTime lessonEndTime, int scheduleId) {
-        this.group = group;
-        this.teacher = teacher;
-        this.course = course;
-        this.classroom = classroom;
+    private static final String DATA_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
+
+    public ScheduleDTO(GroupDTO groupDTO, TeacherDTO teacherDTO, CourseDTO courseDTO, ClassroomDTO classroomDTO, LocalDateTime lessonStartTime, LocalDateTime lessonEndTime, int scheduleId) {
+        this.groupDTO = groupDTO;
+        this.teacherDTO = teacherDTO;
+        this.courseDTO = courseDTO;
+        this.classroomDTO = classroomDTO;
         this.lessonStartTime = lessonStartTime;
         this.lessonEndTime = lessonEndTime;
         this.scheduleId = scheduleId;
     }
 
-    public ScheduleDTO(Group group, Teacher teacher, Course course, Classroom classroom, String lessonStartTime, String lessonEndTime, int scheduleId) {
+    public ScheduleDTO(GroupDTO groupDTO, TeacherDTO teacherDTO, CourseDTO courseDTO, ClassroomDTO classroomDTO, String lessonStartTime, String lessonEndTime, int scheduleId) {
         String dataPattern = "yyyy-MM-dd HH:mm:ss";
-        this.group = group;
-        this.teacher = teacher;
-        this.course = course;
-        this.classroom = classroom;
+        this.groupDTO = groupDTO;
+        this.teacherDTO = teacherDTO;
+        this.courseDTO = courseDTO;
+        this.classroomDTO = classroomDTO;
         this.lessonStartTime = LocalDateTime.parse(lessonStartTime, DateTimeFormatter.ofPattern(dataPattern));
         this.lessonEndTime = LocalDateTime.parse(lessonEndTime, DateTimeFormatter.ofPattern(dataPattern));
         this.scheduleId = scheduleId;
     }
 
-    public ScheduleDTO() {}
-
-    public Group getGroup() {
-        return group;
+    public ScheduleDTO() {
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public ScheduleDTO(int scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public ScheduleDTO(GroupDTO groupDTO, TeacherDTO teacherDTO, CourseDTO courseDTO, ClassroomDTO classroomDTO, String lessonStartTime, String lessonEndTime) {
+        this.groupDTO = groupDTO;
+        this.teacherDTO = teacherDTO;
+        this.courseDTO = courseDTO;
+        this.classroomDTO = classroomDTO;
+        this.lessonStartTime = LocalDateTime.parse(lessonStartTime, DateTimeFormatter.ofPattern(DATA_PATTERN));
+        this.lessonEndTime = LocalDateTime.parse(lessonEndTime, DateTimeFormatter.ofPattern(DATA_PATTERN));
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public GroupDTO getGroupDTO() {
+        return groupDTO;
     }
 
-    public Course getCourse() {
-        return course;
+    public void setGroupDTO(GroupDTO groupDTO) {
+        this.groupDTO = groupDTO;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public TeacherDTO getTeacherDTO() {
+        return teacherDTO;
     }
 
-    public Classroom getClassroom() {
-        return classroom;
+    public void setTeacherDTO(TeacherDTO teacherDTO) {
+        this.teacherDTO = teacherDTO;
     }
 
-    public void setClassroom(Classroom classroom) {
-        this.classroom = classroom;
+    public CourseDTO getCourseDTO() {
+        return courseDTO;
+    }
+
+    public void setCourseDTO(CourseDTO courseDTO) {
+        this.courseDTO = courseDTO;
+    }
+
+    public ClassroomDTO getClassroomDTO() {
+        return classroomDTO;
+    }
+
+    public void setClassroomDTO(ClassroomDTO classroomDTO) {
+        this.classroomDTO = classroomDTO;
     }
 
     public LocalDateTime getLessonStartTime() {
@@ -105,13 +121,13 @@ public class ScheduleDTO {
                 .add("schedule id =")
                 .add(Integer.toString(scheduleId))
                 .add("group id =")
-                .add(Integer.toString(group.getId()))
+                .add(Integer.toString(groupDTO.getId()))
                 .add("teacher id =")
-                .add(Integer.toString(teacher.getId()))
+                .add(Integer.toString(teacherDTO.getId()))
                 .add("course id =")
-                .add(Integer.toString(course.getId()))
+                .add(Integer.toString(courseDTO.getId()))
                 .add("classroom id =")
-                .add(Integer.toString(classroom.getId()))
+                .add(Integer.toString(classroomDTO.getId()))
                 .add("start time =")
                 .add(lessonStartTime.toString())
                 .add("end time =")

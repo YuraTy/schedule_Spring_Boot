@@ -1,6 +1,7 @@
 package com.foxminded.controllers;
 
 import com.foxminded.dto.ScheduleDTO;
+import com.foxminded.dto.TeacherDTO;
 import com.foxminded.model.*;
 import com.foxminded.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class ScheduleController {
     @Autowired
     private TeacherService teacherService;
 
-    private static final String NAME_ATTRIBUTE_SCHEDULE = "schedule";
-    private static final String NAME_ATTRIBUTE_TEACHER = "teacher";
+    private static final String NAME_ATTRIBUTE_SCHEDULE = "scheduleDTO";
+    private static final String NAME_ATTRIBUTE_TEACHER = "teacherDTO";
     private static final String NAME_ATTRIBUTE_ALL = "allSchedule";
     private static final String PAGE_UPDATE = "page-schedule-update";
     private static final String PAGE_CREATE = "page-schedule-create";
@@ -43,34 +44,34 @@ public class ScheduleController {
     private boolean triggerCreate = false;
 
     @PostMapping("/create-schedule")
-    public String create(@ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) Schedule schedule, Model model, BindingResult bindingResult) {
-        if (!existenceCheckClassroom(schedule)) {
+    public String create(@ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) ScheduleDTO scheduleDTO, BindingResult bindingResult, Model model) {
+        if (existenceCheckClassroom(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
-            model.addAttribute(MESSAGE_INFO, "There is no class with ID " + schedule.getClassroom().getId());
+            model.addAttribute(MESSAGE_INFO, "There is no class with ID " + scheduleDTO.getClassroomDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_CREATE;
-        } else if (!existenceCheckCourse(schedule)) {
+        } else if (existenceCheckCourse(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
-            model.addAttribute(MESSAGE_INFO, "There is no course with ID " + schedule.getCourse().getId());
+            model.addAttribute(MESSAGE_INFO, "There is no course with ID " + scheduleDTO.getCourseDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_CREATE;
-        } else if (!existenceCheckGroup(schedule)) {
+        } else if (existenceCheckGroup(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
-            model.addAttribute(MESSAGE_INFO, "There is no group with ID " + schedule.getGroup().getId());
+            model.addAttribute(MESSAGE_INFO, "There is no group with ID " + scheduleDTO.getGroupDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_CREATE;
-        } else if (!existenceCheckTeacher(schedule)) {
+        } else if (existenceCheckTeacher(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
-            model.addAttribute(MESSAGE_INFO, "There is no teacher with ID " + schedule.getTeacher().getId());
+            model.addAttribute(MESSAGE_INFO, "There is no teacher with ID " + scheduleDTO.getTeacherDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_CREATE;
-        } else if (bindingResult.hasErrors() || existenceCheckSchedule(schedule)) {
+        } else if (bindingResult.hasErrors() || existenceCheckSchedule(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(MESSAGE_INFO, "Such a schedule already exists");
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_CREATE;
         }
-        scheduleService.create(schedule);
+        scheduleService.create(scheduleDTO);
         triggerCreate = true;
         model.addAttribute(SAVE_ALL, true);
         model.addAttribute(MESSAGE_INFO, "Added new schedule");
@@ -84,8 +85,8 @@ public class ScheduleController {
             model.addAttribute(SAVE_ALL, true);
             model.addAttribute(MESSAGE_INFO, "Added new schedule");
         }
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
+        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
         triggerCreate = false;
         return PAGE_CREATE;
@@ -93,64 +94,64 @@ public class ScheduleController {
 
     @GetMapping("/all-schedule")
     public String findAll(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
+        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
         return PAGE_CREATE;
     }
 
     @PostMapping("/take-schedule-to-teacher")
-    public String takeScheduleToTeacher(@ModelAttribute(NAME_ATTRIBUTE_TEACHER) Teacher teacher, Model model, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
-        boolean existenceCheckTeacher = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getTeacher().getId() == teacher.getId());
+    public String takeScheduleToTeacher(@ModelAttribute(NAME_ATTRIBUTE_TEACHER) TeacherDTO teacherDTO, BindingResult bindingResult, Model model) {
+        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
+        boolean existenceCheckTeacher = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getTeacherDTO().getId() == teacherDTO.getId());
         if (!existenceCheckTeacher) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(MESSAGE_INFO, "No schedule found for this teacher");
             return PAGE_SCHEDULE_TEACHER;
         }
         model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
-        List<ScheduleDTO> scheduleList = scheduleService.takeScheduleToTeacher(teacher);
-        model.addAttribute("titleNameTeacher", scheduleList.get(0).getTeacher());
+        List<ScheduleDTO> scheduleList = scheduleService.takeScheduleToTeacher(teacherDTO);
+        model.addAttribute("titleNameTeacher", scheduleList.get(0).getTeacherDTO());
         model.addAttribute("takeScheduleToTeacher", scheduleList);
         return PAGE_SCHEDULE_TEACHER;
     }
 
     @GetMapping("/take-schedule-to-teacher")
     public String getTakeScheduleToTeacher(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
+        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
         return PAGE_SCHEDULE_TEACHER;
     }
 
     @PostMapping("/update-schedule")
     public String update(@RequestParam("idOldSchedule") int idOldSchedule,
-                         @ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) Schedule schedule,
-                         Model model, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
-        boolean existenceCheckIdSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getScheduleId() == idOldSchedule);
-        if (!existenceCheckClassroom(schedule)) {
+                         @ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) ScheduleDTO scheduleDTO, BindingResult bindingResult,
+                         Model model) {
+        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
+        boolean existenceCheckIdSchedule = scheduleService.findAll().stream().anyMatch(findScheduleDTO -> findScheduleDTO.getScheduleId() == idOldSchedule);
+        if (existenceCheckClassroom(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
-            model.addAttribute(MESSAGE_INFO, "There is no class with ID " + schedule.getClassroom().getId());
+            model.addAttribute(MESSAGE_INFO, "There is no class with ID " + scheduleDTO.getClassroomDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_UPDATE;
-        } else if (!existenceCheckCourse(schedule)) {
+        } else if (existenceCheckCourse(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
-            model.addAttribute(MESSAGE_INFO, "There is no course with ID " + schedule.getCourse().getId());
+            model.addAttribute(MESSAGE_INFO, "There is no course with ID " + scheduleDTO.getCourseDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_UPDATE;
-        } else if (!existenceCheckGroup(schedule)) {
+        } else if (existenceCheckGroup(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
-            model.addAttribute(MESSAGE_INFO, "There is no group with ID " + schedule.getGroup().getId());
+            model.addAttribute(MESSAGE_INFO, "There is no group with ID " + scheduleDTO.getGroupDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_UPDATE;
-        } else if (!existenceCheckTeacher(schedule)) {
+        } else if (existenceCheckTeacher(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
-            model.addAttribute(MESSAGE_INFO, "There is no teacher with ID " + schedule.getTeacher().getId());
+            model.addAttribute(MESSAGE_INFO, "There is no teacher with ID " + scheduleDTO.getTeacherDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_UPDATE;
-        } else if (existenceCheckSchedule(schedule)) {
+        } else if (existenceCheckSchedule(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(MESSAGE_INFO, "Such a schedule already exists");
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
@@ -161,7 +162,7 @@ public class ScheduleController {
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_UPDATE;
         }
-        scheduleService.update(schedule, new Schedule(idOldSchedule));
+        scheduleService.update(scheduleDTO, new ScheduleDTO(idOldSchedule));
         model.addAttribute(SAVE_ALL, true);
         model.addAttribute(MESSAGE_INFO, "Schedule changed successfully");
         model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
@@ -170,59 +171,59 @@ public class ScheduleController {
 
     @GetMapping("/update-schedule")
     public String getUpdate(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
+        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
         return PAGE_UPDATE;
     }
 
     @PostMapping("/delete-schedule")
-    public String delete(@ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) Schedule schedule, Model model, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
-        boolean existenceCheckIdSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getScheduleId() == schedule.getScheduleId());
+    public String delete(@ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) ScheduleDTO scheduleDTO, BindingResult bindingResult, Model model) {
+        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
+        boolean existenceCheckIdSchedule = scheduleService.findAll().stream().anyMatch(findScheduleDTO -> findScheduleDTO.getScheduleId() == scheduleDTO.getScheduleId());
         if (!existenceCheckIdSchedule || bindingResult.hasErrors()) {
             model.addAttribute(HAS_ERRORS, true);
-            model.addAttribute(MESSAGE_INFO, "No schedule with this ID " + schedule.getScheduleId() + " was found");
+            model.addAttribute(MESSAGE_INFO, "No schedule with this ID " + scheduleDTO.getScheduleId() + " was found");
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_DELETE;
         }
-        scheduleService.delete(schedule);
+        scheduleService.delete(scheduleDTO);
         model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
-        model.addAttribute(MESSAGE_INFO, "Schedule with ID " + schedule.getScheduleId() + " successfully deleted");
+        model.addAttribute(MESSAGE_INFO, "Schedule with ID " + scheduleDTO.getScheduleId() + " successfully deleted");
         return PAGE_DELETE;
     }
 
     @GetMapping("/delete-schedule")
     public String getDelete(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new Schedule());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new Teacher());
+        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
+        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
         return PAGE_DELETE;
     }
 
-    private boolean existenceCheckClassroom(Schedule schedule) {
-        return classroomService.findAll().stream().anyMatch(classroomDTO -> classroomDTO.getId() == schedule.getClassroom().getId());
+    private boolean existenceCheckClassroom(ScheduleDTO schedule) {
+        return classroomService.findAll().stream().noneMatch(classroomDTO -> classroomDTO.getId() == schedule.getClassroomDTO().getId());
     }
 
-    private boolean existenceCheckCourse(Schedule schedule) {
-        return courseService.findAll().stream().anyMatch(courseDTO -> courseDTO.getId() == (schedule.getCourse().getId()));
+    private boolean existenceCheckCourse(ScheduleDTO schedule) {
+        return courseService.findAll().stream().noneMatch(courseDTO -> courseDTO.getId() == (schedule.getCourseDTO().getId()));
     }
 
-    private boolean existenceCheckGroup(Schedule schedule) {
-        return groupService.findAll().stream().anyMatch(groupDTO -> groupDTO.getId() == (schedule.getGroup().getId()));
+    private boolean existenceCheckGroup(ScheduleDTO schedule) {
+        return groupService.findAll().stream().noneMatch(groupDTO -> groupDTO.getId() == (schedule.getGroupDTO().getId()));
     }
 
-    private boolean existenceCheckTeacher(Schedule schedule) {
-        return teacherService.findAll().stream().anyMatch(teacherDTO -> teacherDTO.getId() == schedule.getTeacher().getId());
+    private boolean existenceCheckTeacher(ScheduleDTO schedule) {
+        return teacherService.findAll().stream().noneMatch(teacherDTO -> teacherDTO.getId() == schedule.getTeacherDTO().getId());
     }
 
-    private boolean existenceCheckSchedule(Schedule schedule) {
-        return scheduleService.findAll().stream().anyMatch(scheduleDTO -> (scheduleDTO.getClassroom().getId() == schedule.getClassroom().getId()) &&
-                (scheduleDTO.getCourse().getId() == schedule.getCourse().getId()) &&
-                (scheduleDTO.getGroup().getId() == schedule.getGroup().getId()) &&
-                (scheduleDTO.getTeacher().getId() == schedule.getTeacher().getId()) &&
+    private boolean existenceCheckSchedule(ScheduleDTO schedule) {
+        return scheduleService.findAll().stream().anyMatch(scheduleDTO -> (scheduleDTO.getClassroomDTO().getId() == schedule.getClassroomDTO().getId()) &&
+                (scheduleDTO.getCourseDTO().getId() == schedule.getCourseDTO().getId()) &&
+                (scheduleDTO.getGroupDTO().getId() == schedule.getGroupDTO().getId()) &&
+                (scheduleDTO.getTeacherDTO().getId() == schedule.getTeacherDTO().getId()) &&
                 (scheduleDTO.getLessonStartTime().equals(schedule.getLessonStartTime())) &&
                 (scheduleDTO.getLessonEndTime().equals(schedule.getLessonEndTime())));
     }

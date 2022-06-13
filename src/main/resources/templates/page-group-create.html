@@ -38,7 +38,7 @@
         <a th:href="@{update-group}" class="btn btn-secondary">update</a>
     </div>
 
-    <form th:href="@{/create-group}" method="post" th:object="${group}">
+    <form th:href="@{/create-group}" method="post" th:object="${groupDTO}">
         <div class="input-group mb-3">
             <input th:field="*{nameGroup}" type="text" class="form-control"
                    placeholder="Name group"

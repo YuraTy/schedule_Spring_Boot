@@ -2,17 +2,21 @@ package com.foxminded.dto;
 
 public class ClassroomDTO {
 
-    private int numberClassroom;
+    private Integer numberClassroom;
     private int id;
 
-    public ClassroomDTO(int numberClassroom, int id) {
+    public ClassroomDTO(Integer numberClassroom, int id) {
         this.numberClassroom = numberClassroom;
         this.id = id;
     }
 
     public ClassroomDTO(){}
 
-    public int getNumberClassroom() {
+    public ClassroomDTO(Integer numberClassroom) {
+        this.numberClassroom = numberClassroom;
+    }
+
+    public Integer getNumberClassroom() {
         return numberClassroom;
     }
 

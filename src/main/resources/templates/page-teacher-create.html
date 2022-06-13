@@ -40,7 +40,7 @@
         <a th:href="@{update-teacher}" class="btn btn-secondary">update</a>
     </div>
 
-    <form th:href="@{/create-teacher}" method="post" th:object="${teacher}">
+    <form th:href="@{/create-teacher}" method="post" th:object="${teacherDTO}">
         <div class="input-group mb-3">
             <input th:field="*{firstName}" type="text" class="form-control"
                    placeholder="First name teacher"

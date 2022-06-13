@@ -29,17 +29,17 @@ public class GroupService {
 
     private static final String ERROR_MESSAGE = "Error while getting data from database in table groups";
 
-    public GroupDTO create(Group group) {
-        GroupDTO groupDTO = mapping(groupDao.save(group));
+    public GroupDTO create(GroupDTO groupDTO) {
+        groupDao.save(mappingDTOInModel(groupDTO));
         logger.info("Data entered into the database using the ( create ) method");
-        logger.trace("Added data group name = {} to the database, Returned DTO object with data group name = {}", group.getNameGroup(), groupDTO.getNameGroup());
+        logger.trace("Added data group name = {} to the database, Returned DTO object with data group name = {}", groupDTO.getNameGroup(), groupDTO.getNameGroup());
         return groupDTO;
     }
 
     public List<GroupDTO> findAll() {
         try {
             List<GroupDTO> groupDTOList = groupDao.findAll().stream()
-                    .map(p -> mapping(p))
+                    .map(p -> mappingModelInDTO(p))
                     .peek(p -> logger.trace("Found data group id = {}, group name = {} to the database, Returned DTO object with data group id = {}, group name = {}", p.getId(),p.getNameGroup(), p.getId(),p.getNameGroup()))
                     .collect(Collectors.toList());
             if (groupDTOList.isEmpty()) {
@@ -53,12 +53,12 @@ public class GroupService {
         return new ArrayList<>();
     }
 
-    public GroupDTO update(Group groupNew, Group groupOld) {
+    public GroupDTO update(GroupDTO groupNew, GroupDTO groupOld) {
         try {
             Group groupBook = groupDao.findByNameGroup(groupOld.getNameGroup());
             groupBook.setNameGroup(groupNew.getNameGroup());
             GroupDTO groupDTO;
-            if ((groupDTO = mapping(groupDao.save(groupBook))) == null) {
+            if ((groupDTO = mappingModelInDTO(groupDao.save(groupBook))) == null) {
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
@@ -68,25 +68,30 @@ public class GroupService {
             logger.warn("Could not find data in database to replace group name = {}", groupOld.getNameGroup());
             logger.error("Error when accessing the database : {} , {}", e.getMessage(), e.getStackTrace());
         }
-        return mapping(groupNew);
+        return groupNew;
     }
 
-    public void delete(Group group) {
+    public void delete(GroupDTO groupDTO) {
         try {
             try {
-                Group groupBook = groupDao.findByNameGroup(group.getNameGroup());
+                Group groupBook = groupDao.findByNameGroup(groupDTO.getNameGroup());
                 groupDao.delete(groupBook);
-                logger.info("Data deleted successfully group name = {}", group.getNameGroup());
+                logger.info("Data deleted successfully group name = {}", groupDTO.getNameGroup());
             }catch (Exception e){
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
         }catch (CommonServiceException e){
-            logger.warn("Data in database group name = {} not found for deletion", group.getNameGroup());
+            logger.warn("Data in database group name = {} not found for deletion", groupDTO.getNameGroup());
             logger.error("Error while deleting data from database: {} , {}", e.getStackTrace(), e.getMessage());
         }
     }
 
-    private GroupDTO mapping(Group group) {
+    private GroupDTO mappingModelInDTO(Group group) {
         return modelMapper.map(group, GroupDTO.class);
     }
+
+    private Group mappingDTOInModel(GroupDTO groupDTO) {
+        return modelMapper.map(groupDTO, Group.class);
+    }
+
 }

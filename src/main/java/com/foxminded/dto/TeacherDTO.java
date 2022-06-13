@@ -13,6 +13,11 @@ public class TeacherDTO {
 
     public TeacherDTO() {}
 
+    public TeacherDTO(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -35,5 +40,10 @@ public class TeacherDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
     }
 }

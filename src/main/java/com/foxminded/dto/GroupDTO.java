@@ -14,6 +14,10 @@ public class GroupDTO {
     public GroupDTO() {
     }
 
+    public GroupDTO(String nameGroup) {
+        this.nameGroup = nameGroup;
+    }
+
     public String getNameGroup() {
         return nameGroup;
     }

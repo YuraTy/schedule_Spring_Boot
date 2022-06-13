@@ -29,17 +29,17 @@ public class CourseService {
 
     private static final String ERROR_MESSAGE = "Error while getting data from database in table courses";
 
-    public CourseDTO create(Course course) {
-        CourseDTO courseDTO = mapping(courseDao.save(course));
+    public CourseDTO create(CourseDTO courseDTO) {
+        courseDao.save(mappingDTOInModel(courseDTO));
         logger.info("Data entered into the database using the ( create ) method");
-        logger.trace("Added data course name = {} to the database, Returned DTO object with data course name = {}",course.getNameCourse(),courseDTO.getNameCourse());
+        logger.trace("Added data course name = {} to the database, Returned DTO object with data course name = {}",courseDTO.getNameCourse(),courseDTO.getNameCourse());
         return courseDTO;
     }
 
     public List<CourseDTO> findAll() {
         try {
             List<CourseDTO> courseDTOList = courseDao.findAll().stream()
-                    .map(p -> mapping(p))
+                    .map(p -> mappingModelInDTO(p))
                     .peek(p -> logger.trace("Found data in the database id = {} course name = {}. And the DTO object was created with id = {} , course name = {}",p.getId(),p.getNameCourse(),p.getId(),p.getNameCourse()))
                     .collect(Collectors.toList());
             if (courseDTOList.isEmpty()){
@@ -53,12 +53,12 @@ public class CourseService {
         return new ArrayList<>();
     }
 
-    public CourseDTO update(Course courseNew, Course courseOld) {
+    public CourseDTO update(CourseDTO courseNew, CourseDTO courseOld) {
         try {
             Course courseBook = courseDao.findByNameCourse(courseOld.getNameCourse());
             courseBook.setNameCourse(courseNew.getNameCourse());
             CourseDTO courseDTO;
-            if ((courseDTO = mapping(courseDao.save(courseBook))) == null){
+            if ((courseDTO = mappingModelInDTO(courseDao.save(courseBook))) == null){
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
@@ -68,25 +68,29 @@ public class CourseService {
             logger.warn("Could not find data in database to replace course name = {}", courseOld.getNameCourse());
             logger.error("Error when accessing the database : {} , {}", e.getMessage(), e.getStackTrace());
         }
-        return mapping(courseNew);
+        return courseNew;
     }
 
-    public void delete(Course course) {
+    public void delete(CourseDTO courseDTO) {
         try {
             try {
-                Course courseBook = courseDao.findByNameCourse(course.getNameCourse());
+                Course courseBook = courseDao.findByNameCourse(courseDTO.getNameCourse());
                 courseDao.delete(courseBook);
-                logger.info("Data deleted successfully course name = {}", course.getNameCourse());
+                logger.info("Data deleted successfully course name = {}", courseDTO.getNameCourse());
             }catch (Exception e) {
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
         }catch (CommonServiceException e) {
-            logger.warn("Data in database course name = {} not found for deletion", course.getNameCourse());
+            logger.warn("Data in database course name = {} not found for deletion", courseDTO.getNameCourse());
             logger.error("Error while deleting data from database: {} , {}", e.getStackTrace(), e.getMessage());
         }
     }
 
-    private CourseDTO mapping(Course course) {
+    private CourseDTO mappingModelInDTO(Course course) {
         return modelMapper.map(course, CourseDTO.class);
+    }
+
+    private Course mappingDTOInModel(CourseDTO courseDTO) {
+        return modelMapper.map(courseDTO, Course.class);
     }
 }

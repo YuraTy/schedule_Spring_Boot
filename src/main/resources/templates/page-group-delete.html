@@ -39,7 +39,7 @@
         <a th:href="@{update-group}" class="btn btn-secondary">update</a>
     </div>
 
-    <form th:href="@{/delete-group}" method="post" th:object="${group}">
+    <form th:href="@{/delete-group}" method="post" th:object="${groupDTO}">
         <div class="input-group mb-3">
             <input th:field="*{nameGroup}" type="text" class="form-control" placeholder="Name group"
                    aria-label="Name group" aria-describedby="basic-addon2" required>

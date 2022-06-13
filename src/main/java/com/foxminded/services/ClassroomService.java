@@ -29,17 +29,17 @@ public class ClassroomService {
 
     private static final String ERROR_MESSAGE = "Error while getting data from database in table classrooms";
 
-    public ClassroomDTO create(Classroom classroom) {
-        ClassroomDTO classroomDTO = mapping(classroomDao.save(classroom));
+    public ClassroomDTO create(ClassroomDTO classroomDTO) {
+        classroomDao.save(mappingDTOInModel(classroomDTO));
         logger.info("The data is added to the database using the ( create ) method");
-        logger.trace("Added data class number = {} to the database, Returned DTO object with data class number = {}", classroom.getNumberClassroom(), classroomDTO.getNumberClassroom());
+        logger.trace("Added data class number = {} to the database, Returned DTO object with data class number = {}", classroomDTO.getNumberClassroom(), classroomDTO.getNumberClassroom());
         return classroomDTO;
     }
 
     public List<ClassroomDTO> findAll() {
         try {
             List<ClassroomDTO> classroomDTOLIst = classroomDao.findAll().stream()
-                    .map(p -> mapping(p))
+                    .map(p -> mappingModelInDTO(p))
                     .peek(p -> logger.trace("Found data in the database id = {} class number = {}. And the DTO object was created with id = {} , class number = {}", p.getId(), p.getNumberClassroom(), p.getId(), p.getNumberClassroom()))
                     .collect(Collectors.toList());
             if (classroomDTOLIst.isEmpty()) {
@@ -53,12 +53,12 @@ public class ClassroomService {
         return new ArrayList<>();
     }
 
-    public ClassroomDTO update(Classroom classroomNew, Classroom classroomOld) {
+    public ClassroomDTO update(ClassroomDTO classroomNew, ClassroomDTO classroomOld) {
         try {
             Classroom classroomBook = classroomDao.findByNumberClassroom(classroomOld.getNumberClassroom());
             classroomBook.setNumberClassroom(classroomNew.getNumberClassroom());
             ClassroomDTO classroomDTO;
-            if ((classroomDTO = mapping(classroomDao.save(classroomBook))) == null) {
+            if ((classroomDTO = mappingModelInDTO(classroomDao.save(classroomBook))) == null) {
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
@@ -68,25 +68,28 @@ public class ClassroomService {
             logger.warn("Could not find data in database to replace class number = {}", classroomOld.getNumberClassroom());
             logger.error("Error when accessing the database : {} , {}", e.getMessage(), e.getStackTrace());
         }
-        return mapping(classroomNew);
+        return classroomNew;
     }
 
-    public void delete(Classroom classroom) {
+    public void delete(ClassroomDTO classroomDTO) {
         try {
             try {
-                Classroom classroomBook = classroomDao.findByNumberClassroom(classroom.getNumberClassroom());
+                Classroom classroomBook = classroomDao.findByNumberClassroom(classroomDTO.getNumberClassroom());
                 classroomDao.delete(classroomBook);
-                logger.info("Data deleted successfully class number = {}", classroom.getNumberClassroom());
+                logger.info("Data deleted successfully class number = {}", classroomDTO.getNumberClassroom());
             } catch (Exception e) {
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
         } catch (CommonServiceException e) {
-            logger.warn("Data in database class number = {} not found for deletion", classroom.getNumberClassroom());
+            logger.warn("Data in database class number = {} not found for deletion", classroomDTO.getNumberClassroom());
             logger.error("Error while deleting data from database: {} , {}", e.getStackTrace(), e.getMessage());
         }
     }
 
-    private ClassroomDTO mapping(Classroom classroom) {
+    private ClassroomDTO mappingModelInDTO(Classroom classroom) {
         return modelMapper.map(classroom, ClassroomDTO.class);
+    }
+    private Classroom mappingDTOInModel(ClassroomDTO classroomDTO) {
+        return modelMapper.map(classroomDTO, Classroom.class);
     }
 }

@@ -35,8 +35,8 @@ class TeacherServiceTest {
 
     @Test
     void create() {
-        Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new TeacherDTO("Vova", "Turenko", 1));
-        teacherService.create(new Teacher("Vova", "Turenko"));
+        Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new Teacher("Vova", "Turenko"));
+        teacherService.create(new TeacherDTO("Vova", "Turenko"));
         Mockito.verify(teacherDao).save(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
@@ -56,14 +56,14 @@ class TeacherServiceTest {
     void update() {
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new TeacherDTO("Vova", "Turenko", 1));
         Mockito.when(teacherDao.findByFirstNameAndLastName(Mockito.any(),Mockito.any())).thenReturn(new Teacher("Vova", "Turenko", 1));
-        teacherService.update(new Teacher("Vova", "Turenko"), new Teacher("Ivan", "Turenko"));
+        teacherService.update(new TeacherDTO("Vova", "Turenko"), new TeacherDTO("Ivan", "Turenko"));
         Mockito.verify(teacherDao).save(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 
     @Test
     void delete() {
-        teacherService.delete(new Teacher("Vova", "Turenko"));
+        teacherService.delete(new TeacherDTO("Vova", "Turenko"));
         Mockito.verify(teacherDao).delete(Mockito.any());
     }
 }

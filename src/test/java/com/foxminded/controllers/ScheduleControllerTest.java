@@ -1,16 +1,13 @@
 package com.foxminded.controllers;
 
 import com.foxminded.dto.*;
-import com.foxminded.model.*;
 import com.foxminded.services.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,8 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -31,9 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ContextConfiguration(classes = ScheduleController.class)
@@ -82,12 +75,12 @@ class ScheduleControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/schedule/create-schedule")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("classroom.id","1")
-                        .param("course.id","1")
-                        .param("group.id","1")
+                        .param("classroomDTO.id","1")
+                        .param("courseDTO.id","1")
+                        .param("groupDTO.id","1")
                         .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
                         .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
-                        .param("teacher.id","1"))
+                        .param("teacherDTO.id","1"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-schedule-create"));
     }
@@ -144,10 +137,10 @@ class ScheduleControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("classroom.id","2")
-                        .param("course.id","1")
-                        .param("group.id","1")
-                        .param("teacher.id","1")
+                        .param("classroomDTO.id","2")
+                        .param("courseDTO.id","1")
+                        .param("groupDTO.id","1")
+                        .param("teacherDTO.id","1")
                         .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
                         .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
                         .param("idOldSchedule","2"))
@@ -158,10 +151,10 @@ class ScheduleControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("classroom.id","1")
-                        .param("course.id","2")
-                        .param("group.id","1")
-                        .param("teacher.id","1")
+                        .param("classroomDTO.id","1")
+                        .param("courseDTO.id","2")
+                        .param("groupDTO.id","1")
+                        .param("teacherDTO.id","1")
                         .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
                         .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
                         .param("idOldSchedule","2"))
@@ -172,10 +165,10 @@ class ScheduleControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("classroom.id","1")
-                        .param("course.id","1")
-                        .param("group.id","2")
-                        .param("teacher.id","1")
+                        .param("classroomDTO.id","1")
+                        .param("courseDTO.id","1")
+                        .param("groupDTO.id","2")
+                        .param("teacherDTO.id","1")
                         .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
                         .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
                         .param("idOldSchedule","2"))
@@ -186,10 +179,10 @@ class ScheduleControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("classroom.id","1")
-                        .param("course.id","1")
-                        .param("group.id","1")
-                        .param("teacher.id","2")
+                        .param("classroomDTO.id","1")
+                        .param("courseDTO.id","1")
+                        .param("groupDTO.id","1")
+                        .param("teacherDTO.id","2")
                         .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
                         .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
                         .param("idOldSchedule","2"))
@@ -200,10 +193,10 @@ class ScheduleControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("classroom.id","1")
-                        .param("course.id","1")
-                        .param("group.id","1")
-                        .param("teacher.id","1")
+                        .param("classroomDTO.id","1")
+                        .param("courseDTO.id","1")
+                        .param("groupDTO.id","1")
+                        .param("teacherDTO.id","1")
                         .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
                         .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:10")))
                         .param("idOldSchedule","2"))
@@ -214,10 +207,10 @@ class ScheduleControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/schedule/update-schedule")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("classroom.id","1")
-                        .param("course.id","1")
-                        .param("group.id","1")
-                        .param("teacher.id","1")
+                        .param("classroomDTO.id","1")
+                        .param("courseDTO.id","1")
+                        .param("groupDTO.id","1")
+                        .param("teacherDTO.id","1")
                         .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
                         .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:20")))
                         .param("idOldSchedule","1"))
@@ -243,10 +236,10 @@ class ScheduleControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/schedule/delete-schedule")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("classroom.id","1")
-                        .param("course.id","1")
-                        .param("group.id","1")
-                        .param("teacher.id","1")
+                        .param("classroomDTO.id","1")
+                        .param("courseDTO.id","1")
+                        .param("groupDTO.id","1")
+                        .param("teacherDTO.id","1")
                         .param("lessonStartTime", String.valueOf(LocalDateTime.parse("2016-06-22T18:10")))
                         .param("lessonEndTime", String.valueOf(LocalDateTime.parse("2016-06-22T19:20")))
                         .param("scheduleId","2"))
@@ -289,10 +282,10 @@ class ScheduleControllerTest {
 
     private ScheduleDTO testSchedule() {
         return ScheduleDTO.builder()
-                .classroom(new Classroom(2,1))
-                .course(new Course("Fizika",1))
-                .group(new Group("WW-11",1))
-                .teacher(new Teacher("Yura","Odnorog",1))
+                .classroomDTO(new ClassroomDTO(2,1))
+                .courseDTO(new CourseDTO("Fizika",1))
+                .groupDTO(new GroupDTO("WW-11",1))
+                .teacherDTO(new TeacherDTO("Yura","Odnorog",1))
                 .scheduleId(2)
                 .lessonStartTime(LocalDateTime.parse("2016-06-22T18:10"))
                 .lessonEndTime(LocalDateTime.parse("2016-06-22T19:10"))

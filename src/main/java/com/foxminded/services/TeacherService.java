@@ -29,17 +29,17 @@ public class TeacherService {
 
     private static final String ERROR_MESSAGE = "Error while getting data from database in table teachers";
 
-    public TeacherDTO create(Teacher teacher) {
-        TeacherDTO teacherDTO = mapping(teacherDao.save(teacher));
+    public TeacherDTO create(TeacherDTO teacherDTO) {
+        teacherDao.save(mappingDTOInModel(teacherDTO));
         logger.info("Data entered into the database using the ( create ) method");
-        logger.trace("Added data teacher first name = {}, teacher last name = {} to the database, Returned DTO object with data teacher first name = {}, teacher last name = {}", teacher.getFirstName(),teacher.getLastName(),teacherDTO.getFirstName(),teacherDTO.getLastName());
+        logger.trace("Added data teacher first name = {}, teacher last name = {} to the database, Returned DTO object with data teacher first name = {}, teacher last name = {}", teacherDTO.getFirstName(),teacherDTO.getLastName(),teacherDTO.getFirstName(),teacherDTO.getLastName());
         return teacherDTO;
     }
 
     public List<TeacherDTO> findAll() {
         try {
             List<TeacherDTO> teacherDTOList = teacherDao.findAll().stream()
-                    .map(p -> mapping(p))
+                    .map(p -> mappingModelInDTO(p))
                     .peek(p -> logger.trace("Found data teacher id = {},teacher first name = {}, teacher last name = {} to the database, Returned DTO object with data teacher id = {}, teacher first name = {}, teacher last name = {}", p.getId(),p.getFirstName(),p.getLastName(),p.getId(),p.getFirstName(),p.getLastName()))
                     .collect(Collectors.toList());
             if (teacherDTOList.isEmpty()){
@@ -53,13 +53,13 @@ public class TeacherService {
         return new ArrayList<>();
     }
 
-    public TeacherDTO update(Teacher teacherNew, Teacher teacherOld) {
+    public TeacherDTO update(TeacherDTO teacherNew, TeacherDTO teacherOld) {
         try {
             Teacher teacherBook = teacherDao.findByFirstNameAndLastName(teacherOld.getFirstName(), teacherOld.getLastName());
             teacherBook.setFirstName(teacherNew.getFirstName());
             teacherBook.setLastName(teacherNew.getLastName());
             TeacherDTO teacherDTO;
-            if ((teacherDTO = mapping(teacherDao.save(teacherBook))) == null){
+            if ((teacherDTO = mappingModelInDTO(teacherDao.save(teacherBook))) == null){
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
             logger.info("Data updated using the (update) method");
@@ -69,25 +69,29 @@ public class TeacherService {
             logger.warn("Could not find data in database to replace teacher first name = {}, teacher last name = {}", teacherOld.getFirstName(),teacherOld.getLastName());
             logger.error("Error when accessing the database : {} , {}", e.getMessage(), e.getStackTrace());
         }
-        return mapping(teacherNew);
+        return teacherNew;
     }
 
-    public void delete(Teacher teacher) {
+    public void delete(TeacherDTO teacherDTO) {
         try {
             try {
-                Teacher teacherBook = teacherDao.findByFirstNameAndLastName(teacher.getFirstName(), teacher.getLastName());
+                Teacher teacherBook = teacherDao.findByFirstNameAndLastName(teacherDTO.getFirstName(), teacherDTO.getLastName());
                 teacherDao.delete(teacherBook);
-                logger.info("Data deleted successfully teacher first name = {}, teacher last name = {}", teacher.getFirstName(),teacher.getLastName());
+                logger.info("Data deleted successfully teacher first name = {}, teacher last name = {}", teacherDTO.getFirstName(),teacherDTO.getLastName());
             }catch (Exception e){
                 throw new CommonServiceException(ERROR_MESSAGE);
             }
         }catch (CommonServiceException e){
-            logger.warn("Could not find data in database to replace teacher first name = {}, teacher last name = {}", teacher.getFirstName(),teacher.getLastName());
+            logger.warn("Could not find data in database to replace teacher first name = {}, teacher last name = {}", teacherDTO.getFirstName(),teacherDTO.getLastName());
             logger.error("Error when accessing the database : {} , {}", e.getMessage(), e.getStackTrace());
         }
     }
 
-    private TeacherDTO mapping(Teacher teacher) {
+    private TeacherDTO mappingModelInDTO(Teacher teacher) {
         return modelMapper.map(teacher, TeacherDTO.class);
+    }
+
+    private Teacher mappingDTOInModel(TeacherDTO teacherDTO) {
+        return modelMapper.map(teacherDTO, Teacher.class);
     }
 }

@@ -1,14 +1,17 @@
 package com.foxminded.controllers;
 
 
-import com.foxminded.model.Course;
+import com.foxminded.dto.CourseDTO;
 import com.foxminded.services.CourseService;
 import com.foxminded.services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "course")
@@ -20,7 +23,7 @@ public class CourseController {
     @Autowired
     private ScheduleService scheduleService;
 
-    private static final String NAME_ATTRIBUTE_COURSE = "course";
+    private static final String NAME_ATTRIBUTE_COURSE = "courseDTO";
     private static final String NAME_ATTRIBUTE_ALL = "allCourses";
     private static final String PAGE_UPDATE = "page-course-update";
     private static final String PAGE_CREATE = "page-course-create";
@@ -29,33 +32,38 @@ public class CourseController {
     private static final String HAS_ERRORS = "hasErrors";
     private static final String SAVE_ALL = "savedSuccessful";
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @PostMapping(value = "/create-course")
-    public String create(Model model, @ModelAttribute(NAME_ATTRIBUTE_COURSE) Course course, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_COURSE, new Course());
-        boolean existenceCheck = courseService.findAll().stream().anyMatch(courseDTO -> courseDTO.getNameCourse().equals(course.getNameCourse()));
-        if (bindingResult.hasErrors() || existenceCheck) {
+    public String create(@ModelAttribute(NAME_ATTRIBUTE_COURSE) @Valid CourseDTO courseDTO, BindingResult bindingResult, Model model) {
+        model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
+        boolean existenceCheck = courseService.findAll().stream().anyMatch(findCourseDTO -> findCourseDTO.getNameCourse().equals(courseDTO.getNameCourse()));
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
+            return PAGE_CREATE;
+        }
+        if (existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
             model.addAttribute(MESSAGE_INFO, "Such a course already exists");
             return PAGE_CREATE;
         }
-        courseService.create(course);
+        courseService.create(courseDTO);
         model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
-        model.addAttribute(MESSAGE_INFO, "Added course " + course.getNameCourse());
+        model.addAttribute(MESSAGE_INFO, "Added course " + courseDTO.getNameCourse());
         return PAGE_CREATE;
     }
 
     @GetMapping(value = "/create-course")
     public String getCreate(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_COURSE, new Course());
+        model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
         return PAGE_CREATE;
     }
 
     @GetMapping(value = "/all-course")
     public String findAll(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_COURSE, new Course());
+        model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
         return PAGE_CREATE;
     }
@@ -64,7 +72,7 @@ public class CourseController {
     public String update(@RequestParam(required = false, name = "courseNew") String courseNew,
                          @RequestParam(required = false, name = "courseOld") String courseOld,
                          Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_COURSE, new Course());
+        model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
         boolean existenceCheckOld = courseService.findAll().stream().anyMatch(courseDTO -> courseDTO.getNameCourse().equals(courseOld));
         boolean existenceCheckNew = courseService.findAll().stream().anyMatch(courseDTO -> courseDTO.getNameCourse().equals(courseNew));
         if (!existenceCheckOld) {
@@ -78,7 +86,7 @@ public class CourseController {
             model.addAttribute(MESSAGE_INFO, "Course already " + courseNew + " exists");
             return PAGE_UPDATE;
         }
-        courseService.update(new Course(courseNew), new Course(courseOld));
+        courseService.update(new CourseDTO(courseNew), new CourseDTO(courseOld));
         model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
         model.addAttribute(MESSAGE_INFO, "Course changed from " + courseOld + " to " + courseNew);
@@ -87,25 +95,25 @@ public class CourseController {
 
     @GetMapping("/update-course")
     public String getUpdate(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_COURSE, new Course());
+        model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
         return PAGE_UPDATE;
     }
 
     @PostMapping("/delete-course")
-    public String delete(Model model, @ModelAttribute(NAME_ATTRIBUTE_COURSE) Course course, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_COURSE, new Course());
-        boolean existenceCheck = courseService.findAll().stream().anyMatch(courseDTO -> courseDTO.getNameCourse().equals(course.getNameCourse()));
+    public String delete(Model model, @ModelAttribute(NAME_ATTRIBUTE_COURSE) CourseDTO courseDTO, BindingResult bindingResult) {
+        model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
+        boolean existenceCheck = courseService.findAll().stream().anyMatch(findCourseDTO -> findCourseDTO.getNameCourse().equals(courseDTO.getNameCourse()));
 
         if (bindingResult.hasErrors() || !existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
-            model.addAttribute(MESSAGE_INFO, "No such course found for deletion " + course.getNameCourse());
+            model.addAttribute(MESSAGE_INFO, "No such course found for deletion " + courseDTO.getNameCourse());
             return PAGE_DELETE;
         }
 
-        int idCourse = courseService.findAll().stream().filter(p -> p.getNameCourse().equals(course.getNameCourse())).findFirst().get().getId();
-        boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getCourse().getId() == idCourse);
+        int idCourse = courseService.findAll().stream().filter(p -> p.getNameCourse().equals(courseDTO.getNameCourse())).findFirst().get().getId();
+        boolean includedInTheSchedule = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getCourseDTO().getId() == idCourse);
 
         if (includedInTheSchedule) {
             model.addAttribute(HAS_ERRORS, true);
@@ -113,16 +121,16 @@ public class CourseController {
             model.addAttribute(MESSAGE_INFO, "Cannot delete while course is on schedule");
             return PAGE_DELETE;
         }
-        courseService.delete(course);
+        courseService.delete(courseDTO);
         model.addAttribute(SAVE_ALL, true);
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
-        model.addAttribute(MESSAGE_INFO, "Deleted course " + course.getNameCourse());
+        model.addAttribute(MESSAGE_INFO, "Deleted course " + courseDTO.getNameCourse());
         return PAGE_DELETE;
     }
 
     @GetMapping("/delete-course")
     public String getDelete(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_COURSE, new Course());
+        model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
         return PAGE_DELETE;
     }

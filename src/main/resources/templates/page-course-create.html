@@ -37,21 +37,28 @@
         <a th:href="@{update-course}" class="btn btn-secondary">update</a>
     </div>
 
-    <form th:href="@{/create-course}" method="post" th:object="${course}">
+    <form th:href="@{/create-course}" method="post" th:object="${courseDTO}">
         <div class="input-group mb-3">
             <input th:field="*{nameCourse}" type="text" class="form-control"
                    placeholder="Name course"
-                   aria-label="Name course" aria-describedby="basic-addon2" required>
+                   aria-label="Name course" aria-describedby="basic-addon2" >
+            <td th:if="${#fields.hasErrors('nameCourse')}" th:errors="*{nameCourse}"> Error message</td>
             <div class="input-group-append">
                 <input type="submit" value="Create course" class="btn btn-outline-secondary">
             </div>
         </div>
     </form>
 
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${#fields.hasErrors('courseDTO.nameCourse')}">
+        <span th:errors="${courseDTO.nameCourse}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${hasErrors}">
         <span th:text="${message}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
     <div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${savedSuccessful}">
         <span th:text="${message}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

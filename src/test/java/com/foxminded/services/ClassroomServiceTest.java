@@ -34,8 +34,8 @@ class ClassroomServiceTest {
 
     @Test
     void create() {
-        Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new ClassroomDTO(333, 1));
-        classroomService.create(new Classroom(555, 1));
+        Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new Classroom(555, 1));
+        classroomService.create(new ClassroomDTO(555, 1));
         List<ClassroomDTO> list = classroomService.findAll();
         Mockito.verify(classroomDao).save(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
@@ -56,14 +56,14 @@ class ClassroomServiceTest {
     void update() {
         Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(new ClassroomDTO(555, 1));
         Mockito.when(classroomDao.findByNumberClassroom(Mockito.any())).thenReturn( new Classroom(545, 1));
-        classroomService.update(new Classroom(555, 1), new Classroom(545, 1));
+        classroomService.update(new ClassroomDTO(555, 1), new ClassroomDTO(545, 1));
         Mockito.verify(classroomDao).save(Mockito.any());
         Mockito.verify(modelMapper).map(Mockito.any(), Mockito.any());
     }
 
     @Test
     void delete() {
-        classroomService.delete(new Classroom(555, 1));
+        classroomService.delete(new ClassroomDTO(555, 1));
         Mockito.verify(classroomDao).delete(Mockito.any());
     }
 }

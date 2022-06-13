@@ -41,7 +41,7 @@
         <a th:href="@{update-schedule}" class="btn btn-secondary">update</a>
     </div>
 
-    <form th:href="@{/take-schedule-to-teacher}" method="post" th:object="${teacher}">
+    <form th:href="@{/take-schedule-to-teacher}" method="post" th:object="${teacherDTO}">
         <div class="input-group mb-3">
             <input th:field="*{id}" type="number" min="0" class="form-control" placeholder="Id teacher"
                    aria-label="Id teacher" aria-describedby="basic-addon2" required>
@@ -78,10 +78,10 @@
         <tbody>
         <tr th:each="schedule : ${takeScheduleToTeacher}">
             <td th:text="${schedule.scheduleId}">id</td>
-            <td th:text="${schedule.classroom.numberClassroom}">classroom</td>
-            <td th:text="${schedule.group.nameGroup}">group</td>
-            <td th:text="${schedule.course.nameCourse}">course</td>
-            <td th:text="${schedule.teacher}">teacher</td>
+            <td th:text="${schedule.classroomDTO.numberClassroom}">classroom</td>
+            <td th:text="${schedule.groupDTO.nameGroup}">group</td>
+            <td th:text="${schedule.courseDTO.nameCourse}">course</td>
+            <td th:text="${schedule.teacherDTO}">teacher</td>
             <td th:text="${#temporals.format(schedule.lessonStartTime, 'dd-MM-yyyy HH:mm')}">start time</td>
             <td th:text="${#temporals.format(schedule.lessonEndTime, 'dd-MM-yyyy HH:mm')}">end time</td>
         </tr>

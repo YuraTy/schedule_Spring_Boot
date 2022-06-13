@@ -42,15 +42,15 @@
             <a th:href="@{update-schedule}" class="btn btn-secondary">update</a>
         </div>
 
-    <form th:href="@{/update-schedule}" method="post" th:object="${schedule}">
+    <form th:href="@{/update-schedule}" method="post" th:object="${scheduleDTO}">
         <div class="input-group mb-3">
-            <input th:field="*{group.id}" type="number" class="form-control" placeholder="Id group"
+            <input th:field="*{groupDTO.id}" type="number" class="form-control" placeholder="Id group"
                    aria-label="Id group" aria-describedby="basic-addon2" min="0" required>
-            <input th:field="*{teacher.id}" type="number" class="form-control" placeholder="Id teacher"
+            <input th:field="*{teacherDTO.id}" type="number" class="form-control" placeholder="Id teacher"
                    aria-label="Id teacher" aria-describedby="basic-addon2" min="0" required>
-            <input th:field="*{course.id}" type="number" class="form-control" placeholder="Id course"
+            <input th:field="*{courseDTO.id}" type="number" class="form-control" placeholder="Id course"
                    aria-label="Id course" aria-describedby="basic-addon2" min="0" required>
-            <input th:field="*{classroom.id}" type="number" class="form-control"
+            <input th:field="*{classroomDTO.id}" type="number" class="form-control"
                    placeholder="Id classroom"
                    aria-label="Id classroom" aria-describedby="basic-addon2" min="0" required>
             <input th:field="*{lessonStartTime}" type="datetime-local" class="form-control" placeholder="StartTime"
@@ -91,10 +91,10 @@
         <tbody>
         <tr th:each="schedule : ${allSchedule}">
             <td th:text="${schedule.scheduleId}">Id schedule</td>
-            <td th:text="${schedule.classroom.numberClassroom}">Number classroom</td>
-            <td th:text="${schedule.group.nameGroup}">Name group</td>
-            <td th:text="${schedule.course.nameCourse}">Name course</td>
-            <td th:text="${schedule.teacher}"> Teacher</td>
+            <td th:text="${schedule.classroomDTO.numberClassroom}">Number classroom</td>
+            <td th:text="${schedule.groupDTO.nameGroup}">Name group</td>
+            <td th:text="${schedule.courseDTO.nameCourse}">Name course</td>
+            <td th:text="${schedule.teacherDTO}"> Teacher</td>
             <td th:text="${#temporals.format(schedule.lessonStartTime, 'dd-MM-yyyy HH:mm')}">Lesson start time</td>
             <td th:text="${#temporals.format(schedule.lessonEndTime, 'dd-MM-yyyy HH:mm')}">Lesson end time</td>
         </tr>

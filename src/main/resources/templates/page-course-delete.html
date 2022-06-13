@@ -38,7 +38,7 @@
         <a th:href="@{update-course}" class="btn btn-secondary">update</a>
     </div>
 
-    <form th:href="@{/delete-course}" method="post" th:object="${course}">
+    <form th:href="@{/delete-course}" method="post" th:object="${courseDTO}">
         <div class="input-group mb-3">
             <input th:field="*{nameCourse}" type="text" class="form-control" placeholder="Name course"
                    aria-label="Name course" aria-describedby="basic-addon2" required>
