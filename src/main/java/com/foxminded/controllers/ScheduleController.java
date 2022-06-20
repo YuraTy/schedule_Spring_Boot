@@ -2,18 +2,25 @@ package com.foxminded.controllers;
 
 import com.foxminded.dto.ScheduleDTO;
 import com.foxminded.dto.TeacherDTO;
-import com.foxminded.model.*;
 import com.foxminded.services.*;
+import com.foxminded.violation.ValidationErrorResponse;
+import com.foxminded.violation.Violation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 @RequestMapping("schedule")
+@Validated
 public class ScheduleController {
 
     @Autowired
@@ -44,8 +51,11 @@ public class ScheduleController {
     private boolean triggerCreate = false;
 
     @PostMapping("/create-schedule")
-    public String create(@ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) ScheduleDTO scheduleDTO, BindingResult bindingResult, Model model) {
-        if (existenceCheckClassroom(scheduleDTO)) {
+    public String create(@ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) @Valid ScheduleDTO scheduleDTO, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_CREATE;
+        } else if (existenceCheckClassroom(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(MESSAGE_INFO, "There is no class with ID " + scheduleDTO.getClassroomDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
@@ -65,7 +75,7 @@ public class ScheduleController {
             model.addAttribute(MESSAGE_INFO, "There is no teacher with ID " + scheduleDTO.getTeacherDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
             return PAGE_CREATE;
-        } else if (bindingResult.hasErrors() || existenceCheckSchedule(scheduleDTO)) {
+        } else if (existenceCheckSchedule(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(MESSAGE_INFO, "Such a schedule already exists");
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
@@ -101,11 +111,11 @@ public class ScheduleController {
     }
 
     @PostMapping("/take-schedule-to-teacher")
-    public String takeScheduleToTeacher(@ModelAttribute(NAME_ATTRIBUTE_TEACHER) TeacherDTO teacherDTO, BindingResult bindingResult, Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
+    public String takeScheduleToTeacher(@ModelAttribute(NAME_ATTRIBUTE_TEACHER) @Valid TeacherDTO teacherDTO, BindingResult bindingResult, Model model) {
         boolean existenceCheckTeacher = scheduleService.findAll().stream().anyMatch(scheduleDTO -> scheduleDTO.getTeacherDTO().getId() == teacherDTO.getId());
-        if (!existenceCheckTeacher) {
+        if (bindingResult.hasErrors()) {
+            return PAGE_SCHEDULE_TEACHER;
+        } else if (!existenceCheckTeacher) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(MESSAGE_INFO, "No schedule found for this teacher");
             return PAGE_SCHEDULE_TEACHER;
@@ -126,12 +136,13 @@ public class ScheduleController {
 
     @PostMapping("/update-schedule")
     public String update(@RequestParam("idOldSchedule") int idOldSchedule,
-                         @ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) ScheduleDTO scheduleDTO, BindingResult bindingResult,
+                         @ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) @Valid ScheduleDTO scheduleDTO, BindingResult bindingResult,
                          Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
         boolean existenceCheckIdSchedule = scheduleService.findAll().stream().anyMatch(findScheduleDTO -> findScheduleDTO.getScheduleId() == idOldSchedule);
-        if (existenceCheckClassroom(scheduleDTO)) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_UPDATE;
+        } else if (existenceCheckClassroom(scheduleDTO)) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(MESSAGE_INFO, "There is no class with ID " + scheduleDTO.getClassroomDTO().getId());
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
@@ -178,11 +189,12 @@ public class ScheduleController {
     }
 
     @PostMapping("/delete-schedule")
-    public String delete(@ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) ScheduleDTO scheduleDTO, BindingResult bindingResult, Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
-        model.addAttribute(NAME_ATTRIBUTE_TEACHER, new TeacherDTO());
+    public String delete(@ModelAttribute(NAME_ATTRIBUTE_SCHEDULE) @Valid ScheduleDTO scheduleDTO, BindingResult bindingResult, Model model) {
         boolean existenceCheckIdSchedule = scheduleService.findAll().stream().anyMatch(findScheduleDTO -> findScheduleDTO.getScheduleId() == scheduleDTO.getScheduleId());
-        if (!existenceCheckIdSchedule || bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+            return PAGE_DELETE;
+        } else if (!existenceCheckIdSchedule) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(MESSAGE_INFO, "No schedule with this ID " + scheduleDTO.getScheduleId() + " was found");
             model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
@@ -226,5 +238,29 @@ public class ScheduleController {
                 (scheduleDTO.getTeacherDTO().getId() == schedule.getTeacherDTO().getId()) &&
                 (scheduleDTO.getLessonStartTime().equals(schedule.getLessonStartTime())) &&
                 (scheduleDTO.getLessonEndTime().equals(schedule.getLessonEndTime())));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String errorResponse(ConstraintViolationException e, Model model) {
+        ValidationErrorResponse error = new ValidationErrorResponse();
+        for (ConstraintViolation violation : e.getConstraintViolations()) {
+            error.getViolation().add(new Violation(violation.getPropertyPath().toString(), violation.getMessage()));
+        }
+        String nameMethod = error.getViolation().get(0).getFieldName().split("\\.")[0];
+        String errorMessage = error.getViolation().get(0).getMessage();
+        model.addAttribute(NAME_ATTRIBUTE_SCHEDULE, new ScheduleDTO());
+        model.addAttribute(HAS_ERRORS, true);
+        model.addAttribute(MESSAGE_INFO, errorMessage);
+        if (nameMethod.equals("takeScheduleToTeacher")) {
+            return PAGE_SCHEDULE_TEACHER;
+        }
+        model.addAttribute(NAME_ATTRIBUTE_ALL, scheduleService.findAll());
+        if (nameMethod.equals("create")) {
+            return PAGE_CREATE;
+        } else if (nameMethod.equals("delete")) {
+            return PAGE_DELETE;
+        }
+        return PAGE_UPDATE;
     }
 }

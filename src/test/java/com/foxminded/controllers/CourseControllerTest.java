@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -52,7 +53,9 @@ class CourseControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(courseService.create(Mockito.any())).thenReturn(new CourseDTO("matem",1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/course/create-course",new Course("matem",1)))
+                .perform(MockMvcRequestBuilders.post("/course/create-course")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("nameCourse","History"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-course-create"));
     }
@@ -99,7 +102,9 @@ class CourseControllerTest {
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/course/delete-course",new CourseDTO("matem",1)))
+                .perform(MockMvcRequestBuilders.post("/course/delete-course")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("nameCourse","History"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-course-delete"));
 

@@ -1,18 +1,28 @@
 package com.foxminded.controllers;
 
 import com.foxminded.dto.ClassroomDTO;
-import com.foxminded.model.Classroom;
 import com.foxminded.services.ClassroomService;
 import com.foxminded.services.ScheduleService;
+import com.foxminded.violation.ValidationErrorResponse;
+import com.foxminded.violation.Violation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 
 @Controller
 @RequestMapping(value = "classroom")
+@Validated
 public class ClassroomController {
 
     @Autowired
@@ -31,10 +41,12 @@ public class ClassroomController {
     private static final String SAVE_ALL = "savedSuccessful";
 
     @PostMapping(value = "/create-classroom")
-    public String create(Model model, @ModelAttribute(NAME_ATTRIBUTE_CLASSROOM) ClassroomDTO classroomDTO, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_CLASSROOM, new ClassroomDTO());
+    public String create(@ModelAttribute(NAME_ATTRIBUTE_CLASSROOM) @Valid ClassroomDTO classroomDTO, BindingResult bindingResult, Model model) {
         boolean existenceCheck = classroomService.findAll().stream().anyMatch(findClassroomDTO -> findClassroomDTO.getNumberClassroom() == classroomDTO.getNumberClassroom());
-        if (bindingResult.hasErrors() || existenceCheck) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
+            return PAGE_CREATE;
+        } else if (existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
             model.addAttribute(MESSAGE_INFO, "Such a class already exists");
@@ -49,7 +61,7 @@ public class ClassroomController {
 
     @GetMapping(value = "/create-classroom")
     public String getCreate(Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_CLASSROOM, new Classroom(0));
+        model.addAttribute(NAME_ATTRIBUTE_CLASSROOM, new ClassroomDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
         return PAGE_CREATE;
     }
@@ -62,7 +74,8 @@ public class ClassroomController {
     }
 
     @PostMapping("/update-classroom")
-    public String update(@RequestParam(required = false, name = "numberNew") Integer numberNew,
+    public String update(@RequestParam(required = false, name = "numberNew") @Min(value = 0, message = "Value cannot be less than 0")
+                         @Max(value = 5000, message = "Value cannot be greater than 5000") Integer numberNew,
                          @RequestParam(required = false, name = "numberOld") Integer numberOld,
                          Model model) {
         model.addAttribute(NAME_ATTRIBUTE_CLASSROOM, new ClassroomDTO());
@@ -84,6 +97,7 @@ public class ClassroomController {
         model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
         model.addAttribute(MESSAGE_INFO, "Number changed from " + numberOld + " to " + numberNew);
         return PAGE_UPDATE;
+
     }
 
     @GetMapping("/update-classroom")
@@ -94,10 +108,9 @@ public class ClassroomController {
     }
 
     @PostMapping(value = "/delete-classroom")
-    public String delete(Model model, @ModelAttribute(NAME_ATTRIBUTE_CLASSROOM) ClassroomDTO classroomDTO, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_CLASSROOM, new ClassroomDTO());
+    public String delete(@ModelAttribute(NAME_ATTRIBUTE_CLASSROOM) @Valid ClassroomDTO classroomDTO, BindingResult bindingResult, Model model) {
         boolean existenceCheck = classroomService.findAll().stream().anyMatch(findClassroomDTO -> findClassroomDTO.getNumberClassroom() == classroomDTO.getNumberClassroom());
-        if (bindingResult.hasErrors() || !existenceCheck) {
+        if (!existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
             model.addAttribute(MESSAGE_INFO, "No such class found for deletion " + classroomDTO.getNumberClassroom());
@@ -125,5 +138,27 @@ public class ClassroomController {
         model.addAttribute(NAME_ATTRIBUTE_CLASSROOM, new ClassroomDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
         return PAGE_DELETE;
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String errorResponse(ConstraintViolationException e, Model model) {
+        ValidationErrorResponse error = new ValidationErrorResponse();
+        for (ConstraintViolation violation : e.getConstraintViolations()) {
+            error.getViolation().add(
+                    new Violation(violation.getPropertyPath().toString(), violation.getMessage()));
+        }
+        model.addAttribute(NAME_ATTRIBUTE_CLASSROOM, new ClassroomDTO());
+        String nameMethod = error.getViolation().get(0).getFieldName().split("\\.")[0];
+        String errorMessage = error.getViolation().get(0).getMessage();
+        model.addAttribute(HAS_ERRORS, true);
+        model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
+        model.addAttribute(MESSAGE_INFO, errorMessage);
+        if (nameMethod.equals("create")) {
+            return PAGE_CREATE;
+        } else if (nameMethod.equals("delete")) {
+            return PAGE_DELETE;
+        }
+        return PAGE_UPDATE;
     }
 }

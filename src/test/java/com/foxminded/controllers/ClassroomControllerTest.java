@@ -104,7 +104,9 @@ class ClassroomControllerTest {
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/classroom/delete-classroom",new Classroom(22,2)))
+                .perform(MockMvcRequestBuilders.post("/classroom/delete-classroom")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("numberClassroom","1"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-classroom-delete"));
     }

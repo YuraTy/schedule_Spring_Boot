@@ -1,17 +1,26 @@
 package com.foxminded.controllers;
 
 import com.foxminded.dto.GroupDTO;
-import com.foxminded.model.Group;
 import com.foxminded.services.GroupService;
 import com.foxminded.services.ScheduleService;
+import com.foxminded.violation.ValidationErrorResponse;
+import com.foxminded.violation.Violation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 @Controller
 @RequestMapping("group")
+@Validated
 public class GroupController {
 
     @Autowired
@@ -30,10 +39,9 @@ public class GroupController {
     private static final String SAVE_ALL = "savedSuccessful";
 
     @PostMapping("/create-group")
-    public String create(Model model, @ModelAttribute(NAME_ATTRIBUTE_GROUP) GroupDTO groupDTO, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_GROUP, new GroupDTO());
+    public String create(@ModelAttribute(NAME_ATTRIBUTE_GROUP) @Valid GroupDTO groupDTO, BindingResult bindingResult, Model model) {
         boolean existenceCheck = groupService.findAll().stream().anyMatch(findGroupDTO -> findGroupDTO.getNameGroup().equals(groupDTO.getNameGroup()));
-        if (bindingResult.hasErrors() || existenceCheck) {
+        if (existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, groupService.findAll());
             model.addAttribute(MESSAGE_INFO, "Such a group already exists");
@@ -61,10 +69,9 @@ public class GroupController {
     }
 
     @PostMapping("/update-group")
-    public String update(@RequestParam(required = false, name = "groupNew") String groupNew,
+    public String update(@RequestParam(required = false, name = "groupNew") @Size(min = 5, max = 10, message = "The name must contain from 5 to 10 characters, for example AA-00") String groupNew,
                          @RequestParam(required = false, name = "groupOld") String groupOld,
                          Model model) {
-        model.addAttribute(NAME_ATTRIBUTE_GROUP, new GroupDTO());
         boolean existenceCheckOld = groupService.findAll().stream().anyMatch(groupDTO -> groupDTO.getNameGroup().equals(groupOld));
         boolean existenceCheckNew = groupService.findAll().stream().anyMatch(groupDTO -> groupDTO.getNameGroup().equals(groupNew));
         try {
@@ -94,10 +101,9 @@ public class GroupController {
     }
 
     @PostMapping("/delete-group")
-    public String delete(Model model, @ModelAttribute(NAME_ATTRIBUTE_GROUP) GroupDTO groupDTO, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_GROUP, new GroupDTO());
+    public String delete(@ModelAttribute(NAME_ATTRIBUTE_GROUP) @Valid GroupDTO groupDTO, BindingResult bindingResult, Model model) {
         boolean existenceCheck = groupService.findAll().stream().anyMatch(findGroupDTO -> findGroupDTO.getNameGroup().equals(groupDTO.getNameGroup()));
-        if (bindingResult.hasErrors() || !existenceCheck) {
+        if (!existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, groupService.findAll());
             model.addAttribute(MESSAGE_INFO, "No such group found for deletion " + groupDTO.getNameGroup());
@@ -125,5 +131,27 @@ public class GroupController {
         model.addAttribute(NAME_ATTRIBUTE_GROUP, new GroupDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, groupService.findAll());
         return PAGE_DELETE;
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String errorResponse(ConstraintViolationException e, Model model) {
+        ValidationErrorResponse error = new ValidationErrorResponse();
+        for (ConstraintViolation violation : e.getConstraintViolations()) {
+            error.getViolation().add(
+                    new Violation(violation.getPropertyPath().toString(), violation.getMessage()));
+        }
+        String nameMethod = error.getViolation().get(0).getFieldName().split("\\.")[0];
+        String errorMessage = error.getViolation().get(0).getMessage();
+        model.addAttribute(NAME_ATTRIBUTE_GROUP, new GroupDTO());
+        model.addAttribute(HAS_ERRORS, true);
+        model.addAttribute(NAME_ATTRIBUTE_ALL, groupService.findAll());
+        model.addAttribute(MESSAGE_INFO, errorMessage);
+        if (nameMethod.equals("create")) {
+            return PAGE_CREATE;
+        } else if (nameMethod.equals("delete")) {
+            return PAGE_DELETE;
+        }
+        return PAGE_UPDATE;
     }
 }

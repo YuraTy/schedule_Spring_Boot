@@ -41,7 +41,8 @@
 
     <form th:href="@{/delete-classroom}" method="post" th:object="${classroomDTO}"  >
         <div class="input-group mb-3">
-            <input th:field="*{numberClassroom}" type="number" class="form-control" min="0" required>
+            <input th:field="*{numberClassroom}" type="number" class="form-control" placeholder="Number classroom"
+                   aria-label="Number classroom" aria-describedby="basic-addon2"  min="0" required>
             <div class="input-group-append">
                 <input type="submit" value="Delete classroom" class="btn btn-outline-secondary">
             </div>
@@ -52,6 +53,7 @@
         <span th:text="${message}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
     <div class="alert alert-primary alert-dismissible fade show" role="alert" th:if="${savedSuccessful}">
         <span th:text="${message}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

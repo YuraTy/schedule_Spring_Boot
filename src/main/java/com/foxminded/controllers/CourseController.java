@@ -4,17 +4,23 @@ package com.foxminded.controllers;
 import com.foxminded.dto.CourseDTO;
 import com.foxminded.services.CourseService;
 import com.foxminded.services.ScheduleService;
+import com.foxminded.violation.ValidationErrorResponse;
+import com.foxminded.violation.Violation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import javax.validation.*;
+import javax.validation.constraints.Size;
+
 
 @Controller
 @RequestMapping(value = "course")
+@Validated
 public class CourseController {
 
     @Autowired
@@ -32,15 +38,10 @@ public class CourseController {
     private static final String HAS_ERRORS = "hasErrors";
     private static final String SAVE_ALL = "savedSuccessful";
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
     @PostMapping(value = "/create-course")
     public String create(@ModelAttribute(NAME_ATTRIBUTE_COURSE) @Valid CourseDTO courseDTO, BindingResult bindingResult, Model model) {
         model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
         boolean existenceCheck = courseService.findAll().stream().anyMatch(findCourseDTO -> findCourseDTO.getNameCourse().equals(courseDTO.getNameCourse()));
-        if (bindingResult.hasErrors()) {
-            model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
-            return PAGE_CREATE;
-        }
         if (existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
@@ -69,7 +70,7 @@ public class CourseController {
     }
 
     @PostMapping("/update-course")
-    public String update(@RequestParam(required = false, name = "courseNew") String courseNew,
+    public String update(@RequestParam(required = false, name = "courseNew") @Size(min = 3, max = 20, message = "Title must be between 3 and 20 characters") String courseNew,
                          @RequestParam(required = false, name = "courseOld") String courseOld,
                          Model model) {
         model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
@@ -101,11 +102,9 @@ public class CourseController {
     }
 
     @PostMapping("/delete-course")
-    public String delete(Model model, @ModelAttribute(NAME_ATTRIBUTE_COURSE) CourseDTO courseDTO, BindingResult bindingResult) {
-        model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
+    public String delete(@ModelAttribute(NAME_ATTRIBUTE_COURSE) @Valid CourseDTO courseDTO, BindingResult bindingResult, Model model) {
         boolean existenceCheck = courseService.findAll().stream().anyMatch(findCourseDTO -> findCourseDTO.getNameCourse().equals(courseDTO.getNameCourse()));
-
-        if (bindingResult.hasErrors() || !existenceCheck) {
+        if (!existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
             model.addAttribute(MESSAGE_INFO, "No such course found for deletion " + courseDTO.getNameCourse());
@@ -133,5 +132,26 @@ public class CourseController {
         model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
         model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
         return PAGE_DELETE;
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String errorResponse(ConstraintViolationException e, Model model) {
+        ValidationErrorResponse error = new ValidationErrorResponse();
+        for (ConstraintViolation violation : e.getConstraintViolations()) {
+            error.getViolation().add(new Violation(violation.getPropertyPath().toString(), violation.getMessage()));
+        }
+        String nameMethod = error.getViolation().get(0).getFieldName().split("\\.")[0];
+        String errorMessage = error.getViolation().get(0).getMessage();
+        model.addAttribute(NAME_ATTRIBUTE_COURSE, new CourseDTO());
+        model.addAttribute(HAS_ERRORS, true);
+        model.addAttribute(NAME_ATTRIBUTE_ALL, courseService.findAll());
+        model.addAttribute(MESSAGE_INFO, errorMessage);
+        if (nameMethod.equals("create")) {
+            return PAGE_CREATE;
+        } else if (nameMethod.equals("delete")) {
+            return PAGE_DELETE;
+        }
+        return PAGE_UPDATE;
     }
 }

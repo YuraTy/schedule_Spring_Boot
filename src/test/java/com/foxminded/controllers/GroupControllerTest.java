@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -51,7 +52,9 @@ class GroupControllerTest {
         Assertions.assertNotNull(mockMvc);
         Mockito.when(groupService.create(Mockito.any())).thenReturn(new GroupDTO("22-DE",1));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/group/create-group",new GroupDTO("22-DE",1)))
+                .perform(MockMvcRequestBuilders.post("/group/create-group")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("nameGroup","WW-11"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-group-create"));
     }
@@ -98,7 +101,9 @@ class GroupControllerTest {
     void delete() throws Exception {
         Assertions.assertNotNull(mockMvc);
         this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/group/delete-group",new GroupDTO("22-DE",1)))
+                .perform(MockMvcRequestBuilders.post("/group/delete-group")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("nameGroup","WW-11"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("page-group-delete"));
     }

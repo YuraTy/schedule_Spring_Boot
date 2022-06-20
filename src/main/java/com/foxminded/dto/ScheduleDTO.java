@@ -3,20 +3,34 @@ package com.foxminded.dto;
 import lombok.Builder;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.StringJoiner;
 
 @Builder
 public class ScheduleDTO {
+
+    @NotNull(message = "Group cannot be empty")
     private GroupDTO groupDTO;
+
+    @NotNull(message = "Teacher cannot be empty")
     private TeacherDTO teacherDTO;
+
+    @NotNull(message = "Course cannot be empty")
     private CourseDTO courseDTO;
+
+    @NotNull(message = "Classroom cannot be empty")
     private ClassroomDTO classroomDTO;
+
+    @NotNull(message = "Start date cannot be empty")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime lessonStartTime;
+
+    @NotNull(message = "End date cannot be empty")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime lessonEndTime;
+
     private int scheduleId;
 
     private static final String DATA_PATTERN = "yyyy-MM-dd HH:mm:ss";
@@ -33,13 +47,12 @@ public class ScheduleDTO {
     }
 
     public ScheduleDTO(GroupDTO groupDTO, TeacherDTO teacherDTO, CourseDTO courseDTO, ClassroomDTO classroomDTO, String lessonStartTime, String lessonEndTime, int scheduleId) {
-        String dataPattern = "yyyy-MM-dd HH:mm:ss";
         this.groupDTO = groupDTO;
         this.teacherDTO = teacherDTO;
         this.courseDTO = courseDTO;
         this.classroomDTO = classroomDTO;
-        this.lessonStartTime = LocalDateTime.parse(lessonStartTime, DateTimeFormatter.ofPattern(dataPattern));
-        this.lessonEndTime = LocalDateTime.parse(lessonEndTime, DateTimeFormatter.ofPattern(dataPattern));
+        this.lessonStartTime = LocalDateTime.parse(lessonStartTime, DateTimeFormatter.ofPattern(DATA_PATTERN));
+        this.lessonEndTime = LocalDateTime.parse(lessonEndTime, DateTimeFormatter.ofPattern(DATA_PATTERN));
         this.scheduleId = scheduleId;
     }
 

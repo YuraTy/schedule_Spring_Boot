@@ -5,8 +5,8 @@ import javax.validation.constraints.Size;
 
 public class CourseDTO {
 
-    @NotBlank(message = "Enter the course name in detail")
-    @Size(min = 3 ,max = 20, message = "Size need to be min 3 max 20")
+    @NotBlank(message = "The field cannot be empty")
+    @Size(min = 3 ,max = 20, message = "Title must be between 3 and 20 characters")
     private String nameCourse;
 
     private int id;

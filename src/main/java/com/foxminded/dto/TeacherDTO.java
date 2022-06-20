@@ -1,8 +1,15 @@
 package com.foxminded.dto;
 
+import javax.validation.constraints.Size;
+
 public class TeacherDTO {
+
+    @Size(min = 3,max = 20,message = "Name must be between 3 and 20 characters")
     private String firstName;
+
+    @Size(min = 3,max = 20,message = "Last name must be between 3 and 20 characters")
     private String lastName;
+
     private int id;
 
     public TeacherDTO(String firstName, String lastName, int id) {

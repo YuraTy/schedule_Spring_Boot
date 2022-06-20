@@ -2,12 +2,11 @@ package com.foxminded.services;
 
 import com.foxminded.commonserviceexception.CommonServiceException;
 import com.foxminded.dao.ScheduleDao;
-import com.foxminded.dao.TeacherDao;
 import com.foxminded.dto.ScheduleDTO;
 import com.foxminded.dto.TeacherDTO;
 import com.foxminded.model.Schedule;
-import com.foxminded.model.Teacher;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +102,14 @@ public class ScheduleService {
     }
 
     private ScheduleDTO mappingModelInDTO(Schedule schedule) {
-        return modelMapper.map(schedule,ScheduleDTO.class);
+        if (modelMapper.getTypeMap(Schedule.class,ScheduleDTO.class) == null) {
+            TypeMap<Schedule,ScheduleDTO> propertyMapper = modelMapper.createTypeMap(Schedule.class,ScheduleDTO.class);
+            propertyMapper.addMapping(Schedule::getClassroom, ScheduleDTO::setClassroomDTO);
+            propertyMapper.addMapping(Schedule::getCourse, ScheduleDTO::setCourseDTO);
+            propertyMapper.addMapping(Schedule::getGroup, ScheduleDTO::setGroupDTO);
+            propertyMapper.addMapping(Schedule::getTeacher, ScheduleDTO::setTeacherDTO);
+        }
+        return this.modelMapper.map(schedule,ScheduleDTO.class);
     }
 
     private Schedule mappingDTOInModel(ScheduleDTO scheduleDTO) {
