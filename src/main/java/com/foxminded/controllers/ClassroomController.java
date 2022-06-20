@@ -43,10 +43,7 @@ public class ClassroomController {
     @PostMapping(value = "/create-classroom")
     public String create(@ModelAttribute(NAME_ATTRIBUTE_CLASSROOM) @Valid ClassroomDTO classroomDTO, BindingResult bindingResult, Model model) {
         boolean existenceCheck = classroomService.findAll().stream().anyMatch(findClassroomDTO -> findClassroomDTO.getNumberClassroom() == classroomDTO.getNumberClassroom());
-        if (bindingResult.hasErrors()) {
-            model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
-            return PAGE_CREATE;
-        } else if (existenceCheck) {
+         if (existenceCheck) {
             model.addAttribute(HAS_ERRORS, true);
             model.addAttribute(NAME_ATTRIBUTE_ALL, classroomService.findAll());
             model.addAttribute(MESSAGE_INFO, "Such a class already exists");

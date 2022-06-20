@@ -6,9 +6,9 @@ import javax.validation.constraints.NotNull;
 
 public class ClassroomDTO {
 
-    @NotNull(message = "The field cannot be empty")
     @Min(value = 0,message = "Value cannot be less than 0")
     @Max(value = 5000,message = "Value cannot be greater than 5000")
+    @NotNull(message = "The field must not be empty and the value must be less than 2 147 483 647")
     private Integer numberClassroom;
 
     private int id;
