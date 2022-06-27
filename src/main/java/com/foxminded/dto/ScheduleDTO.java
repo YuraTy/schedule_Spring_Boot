@@ -1,6 +1,5 @@
 package com.foxminded.dto;
 
-import com.foxminded.model.Schedule;
 import lombok.Builder;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -162,6 +161,8 @@ public class ScheduleDTO {
                 && this.courseDTO.getNameCourse().equals(scheduleDTO.courseDTO.getNameCourse())
                 && this.teacherDTO.getLastName().equals(scheduleDTO.teacherDTO.getLastName())
                 && this.teacherDTO.getFirstName().equals(scheduleDTO.teacherDTO.getFirstName())
-                && this.groupDTO.getNameGroup().equals(scheduleDTO.groupDTO.getNameGroup());
+                && this.groupDTO.getNameGroup().equals(scheduleDTO.groupDTO.getNameGroup())
+                && this.lessonStartTime.equals(scheduleDTO.getLessonStartTime())
+                && this.lessonEndTime.equals(scheduleDTO.getLessonEndTime());
     }
 }
