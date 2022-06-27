@@ -10,37 +10,37 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "apiSchedule")
+@RequestMapping(value = "/api")
 public class ScheduleRestController {
 
     @Autowired
     private ScheduleService scheduleService;
 
-    @PutMapping(value = "/apiCreate")
+    @PutMapping(value = "/schedule")
     @ResponseBody
     public ScheduleDTO create(@RequestBody @Valid ScheduleDTO scheduleDTO) {
         return scheduleService.create(scheduleDTO);
     }
 
-    @GetMapping(value = "/apiFindAll")
+    @GetMapping(value = "/schedule")
     @ResponseBody
     public List<ScheduleDTO> findAll() {
         return scheduleService.findAll();
     }
 
-    @GetMapping(value = "/apiFindScheduleToTeacher/{idTeacher}")
+    @GetMapping(value = "/schedule-teacher/{idTeacher}")
     @ResponseBody
     public List<ScheduleDTO> findScheduleToTeacher(@PathVariable int idTeacher) {
         return scheduleService.takeScheduleToTeacher(new TeacherDTO(idTeacher));
     }
 
-    @PostMapping(value = "/apiUpdate/{idOld}")
+    @PostMapping(value = "/schedule/{idOld}")
     @ResponseBody
     public ScheduleDTO update(@RequestBody @Valid ScheduleDTO scheduleNew, @PathVariable int idOld) {
         return scheduleService.update(scheduleNew,new ScheduleDTO(idOld));
     }
 
-    @DeleteMapping(value = "/apiDelete/{id}")
+    @DeleteMapping(value = "/schedule/{id}")
     @ResponseBody
     public void delete(@PathVariable int id) {
         scheduleService.delete(new ScheduleDTO(id));

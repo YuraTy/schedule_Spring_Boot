@@ -42,7 +42,7 @@ class CourseRestControllerTest {
         Mockito.when(courseService.create(Mockito.any())).thenReturn(testCourse());
         String inputJson = mapToJson(testCourse());
 
-        String uri = "/apiCourse/apiCreate";
+        String uri = "/api/course";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(inputJson))
@@ -62,7 +62,7 @@ class CourseRestControllerTest {
         List<CourseDTO> list = new ArrayList<>();
         list.add(testCourse());
         Mockito.when(courseService.findAll()).thenReturn(list);
-        String uri = "/apiCourse/apiFindAll";
+        String uri = "/api/course";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();
@@ -80,7 +80,7 @@ class CourseRestControllerTest {
         Mockito.when(courseService.update(Mockito.any(), Mockito.any())).thenReturn(testCourse());
         String inputJson = mapToJson(testCourse());
 
-        String uri = "/apiCourse/apiUpdate/1";
+        String uri = "/api/course/1";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(inputJson))
@@ -97,7 +97,7 @@ class CourseRestControllerTest {
 
     @Test
     void delete() throws Exception {
-        String uri = "/apiCourse/apiDelete/1";
+        String uri = "/api/course/1";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assertions.assertEquals(200, status);

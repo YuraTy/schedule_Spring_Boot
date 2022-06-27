@@ -9,31 +9,31 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "apiClassroom")
+@RequestMapping(value = "/api")
 public class ClassroomRestController {
 
     @Autowired
     private ClassroomService classroomService;
 
-    @PostMapping(value = "/apiCreate")
+    @PostMapping(value = "/classroom")
     @ResponseBody
     public ClassroomDTO create(@RequestBody @Valid ClassroomDTO classroomDTO) {
         return classroomService.create(classroomDTO);
     }
 
-    @GetMapping(value = "/apiFindAll")
+    @GetMapping(value = "/classroom")
     @ResponseBody
     public List<ClassroomDTO> findAll() {
         return classroomService.findAll();
     }
 
-    @PutMapping(value = "/apiUpdate/{idOld}")
+    @PutMapping(value = "/classroom/{idOld}")
     @ResponseBody
     public ClassroomDTO update(@RequestBody @Valid ClassroomDTO classroomNew , @PathVariable int idOld) {
         return classroomService.update(classroomNew,new ClassroomDTO(idOld));
     }
 
-    @DeleteMapping(value = "/apiDelete/{id}")
+    @DeleteMapping(value = "/classroom/{id}")
     @ResponseBody
     public void delete(@PathVariable int id) {
         classroomService.delete(new ClassroomDTO(id));

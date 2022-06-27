@@ -60,7 +60,7 @@ class ScheduleRestControllerTest {
         Mockito.when(scheduleService.create(Mockito.any())).thenReturn(scheduleTest());
         String inputJson = mapToJson(scheduleTest());
 
-        String uri = "/apiSchedule/apiCreate";
+        String uri = "/api/schedule";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(inputJson))
@@ -79,7 +79,7 @@ class ScheduleRestControllerTest {
         List<ScheduleDTO> list = new ArrayList<>();
         list.add(scheduleTest());
         Mockito.when(scheduleService.findAll()).thenReturn(list);
-        String uri = "/apiSchedule/apiFindAll";
+        String uri = "/api/schedule";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();
@@ -97,7 +97,7 @@ class ScheduleRestControllerTest {
         List<ScheduleDTO> list = new ArrayList<>();
         list.add(scheduleTest());
         Mockito.when(scheduleService.takeScheduleToTeacher(Mockito.any())).thenReturn(list);
-        String uri = "/apiSchedule/apiFindScheduleToTeacher/1";
+        String uri = "/api/schedule-teacher/1";
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -117,7 +117,7 @@ class ScheduleRestControllerTest {
         Mockito.when(scheduleService.update(Mockito.any(),Mockito.any())).thenReturn(scheduleTest());
         String inputJson = mapToJson(scheduleTest());
 
-        String uri = "/apiSchedule/apiUpdate/1";
+        String uri = "/api/schedule/1";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(uri)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson))
@@ -134,7 +134,7 @@ class ScheduleRestControllerTest {
 
     @Test
     void delete() throws Exception {
-        String uri = "/apiSchedule/apiDelete/1";
+        String uri = "/api/schedule/1";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assertions.assertEquals(200, status);

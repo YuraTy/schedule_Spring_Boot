@@ -14,6 +14,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class })
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
         String bodyOfResponse = "Request not correct";
-        return handleExceptionInternal(ex,bodyOfResponse,new HttpHeaders(), HttpStatus.CONFLICT,request);
+        return handleExceptionInternal(ex,bodyOfResponse,new HttpHeaders(), HttpStatus.BAD_REQUEST,request);
     }
 }

@@ -9,31 +9,31 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/apiGroup")
+@RequestMapping(value = "/api")
 public class GroupRestController {
 
     @Autowired
     private GroupService groupService;
 
-    @PutMapping(value = "/apiCreate")
+    @PutMapping(value = "/group")
     @ResponseBody
     public GroupDTO create(@RequestBody @Valid GroupDTO groupDTO) {
         return groupService.create(groupDTO);
     }
 
-    @GetMapping(value = "/apiFindAll")
+    @GetMapping(value = "/group")
     @ResponseBody
     public List<GroupDTO> findAll() {
         return groupService.findAll();
     }
 
-    @PostMapping(value = "/apiUpdate/{idOld}")
+    @PostMapping(value = "/group/{idOld}")
     @ResponseBody
     public GroupDTO update(@RequestBody @Valid GroupDTO groupNew, @PathVariable int idOld) {
         return groupService.update(groupNew,new GroupDTO(idOld));
     }
 
-    @DeleteMapping(value = "/apiDelete/{id}")
+    @DeleteMapping(value = "/group/{id}")
     @ResponseBody
     public void delete(@PathVariable int id) {
         groupService.delete(new GroupDTO(id));

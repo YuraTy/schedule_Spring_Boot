@@ -47,7 +47,7 @@ class GroupRestControllerTest {
         Mockito.when(groupService.create(Mockito.any())).thenReturn(groupTest());
         String inputJson = mapToJson(groupTest());
 
-        String uri = "/apiGroup/apiCreate";
+        String uri = "/api/group";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(inputJson))
@@ -68,7 +68,7 @@ class GroupRestControllerTest {
         List<GroupDTO> list = new ArrayList<>();
         list.add(groupTest());
         Mockito.when(groupService.findAll()).thenReturn(list);
-        String uri = "/apiGroup/apiFindAll";
+        String uri = "/api/group";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andReturn();
@@ -86,7 +86,7 @@ class GroupRestControllerTest {
         Mockito.when(groupService.update(Mockito.any(), Mockito.any())).thenReturn(groupTest());
         String inputJson = mapToJson(groupTest());
 
-        String uri = "/apiGroup/apiUpdate/1";
+        String uri = "/api/group/1";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(inputJson))
@@ -102,7 +102,7 @@ class GroupRestControllerTest {
 
     @Test
     void delete() throws Exception {
-        String uri = "/apiGroup/apiDelete/1";
+        String uri = "/api/group/1";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assertions.assertEquals(200, status);
