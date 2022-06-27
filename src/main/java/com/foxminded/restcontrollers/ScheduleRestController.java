@@ -6,6 +6,7 @@ import com.foxminded.services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class ScheduleRestController {
 
     @PutMapping(value = "/apiCreate")
     @ResponseBody
-    public ScheduleDTO create(@RequestBody ScheduleDTO scheduleDTO) {
+    public ScheduleDTO create(@RequestBody @Valid ScheduleDTO scheduleDTO) {
         return scheduleService.create(scheduleDTO);
     }
 
@@ -35,7 +36,7 @@ public class ScheduleRestController {
 
     @PostMapping(value = "/apiUpdate/{idOld}")
     @ResponseBody
-    public ScheduleDTO update(@RequestBody ScheduleDTO scheduleNew, @PathVariable int idOld) {
+    public ScheduleDTO update(@RequestBody @Valid ScheduleDTO scheduleNew, @PathVariable int idOld) {
         return scheduleService.update(scheduleNew,new ScheduleDTO(idOld));
     }
 

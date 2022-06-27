@@ -5,6 +5,7 @@ import com.foxminded.services.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -16,7 +17,7 @@ public class ClassroomRestController {
 
     @PostMapping(value = "/apiCreate")
     @ResponseBody
-    public ClassroomDTO create(@RequestBody ClassroomDTO classroomDTO) {
+    public ClassroomDTO create(@RequestBody @Valid ClassroomDTO classroomDTO) {
         return classroomService.create(classroomDTO);
     }
 
@@ -28,7 +29,7 @@ public class ClassroomRestController {
 
     @PutMapping(value = "/apiUpdate/{idOld}")
     @ResponseBody
-    public ClassroomDTO update(@RequestBody ClassroomDTO classroomNew , @PathVariable int idOld) {
+    public ClassroomDTO update(@RequestBody @Valid ClassroomDTO classroomNew , @PathVariable int idOld) {
         return classroomService.update(classroomNew,new ClassroomDTO(idOld));
     }
 

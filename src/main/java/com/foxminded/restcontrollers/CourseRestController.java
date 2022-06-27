@@ -17,7 +17,7 @@ public class CourseRestController {
 
     @PutMapping(value = "/apiCreate")
     @ResponseBody
-    public CourseDTO create(@RequestBody CourseDTO courseDTO) {
+    public CourseDTO create(@RequestBody @Valid CourseDTO courseDTO) {
         return courseService.create(courseDTO);
     }
 

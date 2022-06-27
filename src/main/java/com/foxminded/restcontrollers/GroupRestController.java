@@ -5,6 +5,7 @@ import com.foxminded.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -16,7 +17,7 @@ public class GroupRestController {
 
     @PutMapping(value = "/apiCreate")
     @ResponseBody
-    public GroupDTO create(@RequestBody GroupDTO groupDTO) {
+    public GroupDTO create(@RequestBody @Valid GroupDTO groupDTO) {
         return groupService.create(groupDTO);
     }
 
@@ -28,7 +29,7 @@ public class GroupRestController {
 
     @PostMapping(value = "/apiUpdate/{idOld}")
     @ResponseBody
-    public GroupDTO update(@RequestBody GroupDTO groupNew, @PathVariable int idOld) {
+    public GroupDTO update(@RequestBody @Valid GroupDTO groupNew, @PathVariable int idOld) {
         return groupService.update(groupNew,new GroupDTO(idOld));
     }
 
