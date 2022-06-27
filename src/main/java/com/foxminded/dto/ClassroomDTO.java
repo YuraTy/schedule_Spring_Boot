@@ -1,8 +1,11 @@
 package com.foxminded.dto;
 
+import com.foxminded.model.Classroom;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 public class ClassroomDTO {
 
@@ -15,6 +18,10 @@ public class ClassroomDTO {
 
     public ClassroomDTO(Integer numberClassroom, int id) {
         this.numberClassroom = numberClassroom;
+        this.id = id;
+    }
+
+    public ClassroomDTO(int id) {
         this.id = id;
     }
 
@@ -38,5 +45,17 @@ public class ClassroomDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Classroom))
+            return false;
+        ClassroomDTO classroomDTO = (ClassroomDTO) obj;
+        return Objects.equals(this.numberClassroom, classroomDTO.numberClassroom);
     }
 }

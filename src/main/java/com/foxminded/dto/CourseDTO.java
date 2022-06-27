@@ -1,5 +1,7 @@
 package com.foxminded.dto;
 
+import com.foxminded.model.Course;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -13,6 +15,10 @@ public class CourseDTO {
 
     public CourseDTO(String nameCourse, int id) {
         this.nameCourse = nameCourse;
+        this.id = id;
+    }
+
+    public CourseDTO(int id) {
         this.id = id;
     }
 
@@ -36,5 +42,17 @@ public class CourseDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof CourseDTO))
+            return false;
+        CourseDTO courseDTO = (CourseDTO) obj;
+        return this.nameCourse.equals(courseDTO.nameCourse) ;
     }
 }

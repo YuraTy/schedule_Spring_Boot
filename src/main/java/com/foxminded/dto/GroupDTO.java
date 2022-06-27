@@ -1,5 +1,7 @@
 package com.foxminded.dto;
 
+import com.foxminded.model.Group;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -13,6 +15,10 @@ public class GroupDTO {
 
     public GroupDTO(String nameGroup, int id) {
         this.nameGroup = nameGroup;
+        this.id = id;
+    }
+
+    public GroupDTO(int id) {
         this.id = id;
     }
 
@@ -39,5 +45,15 @@ public class GroupDTO {
         this.id = id;
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof GroupDTO))
+            return false;
+        GroupDTO groupDTO = (GroupDTO) obj;
+        return this.nameGroup.equals(groupDTO.nameGroup) ;
+    }
 }
