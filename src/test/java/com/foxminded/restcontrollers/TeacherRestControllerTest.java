@@ -80,7 +80,7 @@ class TeacherRestControllerTest {
         Mockito.when(teacherService.update(Mockito.any(),Mockito.any())).thenReturn(teacherTest());
         String inputJson = mapToJson(teacherTest());
 
-        String uri = "/api/teacher/1";
+        String uri = "/api/teacher/Ivan/Ivanov";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(uri)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson))
@@ -96,7 +96,7 @@ class TeacherRestControllerTest {
 
     @Test
     void delete() throws Exception {
-        String uri = "/api/teacher/1";
+        String uri = "/api/teacher/Ivan/Ivanov";
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete(uri).contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assertions.assertEquals(200, status);

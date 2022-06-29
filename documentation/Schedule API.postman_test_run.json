@@ -1,0 +1,765 @@
+{
+	"id": "8edd9321-7ff1-46c8-95cc-dd22290fc9e1",
+	"name": "Schedule API",
+	"timestamp": "2022-06-29T09:54:45.169Z",
+	"collection_id": "21632443-80521f27-8562-47ce-b509-662c3173abe3",
+	"folder_id": "21632443-ff323ae0-b7b5-45be-a492-a113f2c7e6eb",
+	"environment_id": "0",
+	"totalPass": 37,
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "8c943e5f-9100-4a50-8786-72dc7be706c4",
+			"name": "Get all teachers",
+			"url": "http://localhost:8080/api/teacher",
+			"time": 66,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				66
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "2bd6ac32-d5b0-4c6b-abf2-716e961f41ce",
+			"name": "Create new teacher",
+			"url": "http://localhost:8080/api/teacher",
+			"time": 51,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				51
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "91a4250e-75cc-4aed-a84a-6d0c3815a537",
+			"name": "Update teacher",
+			"url": "http://localhost:8080/api/teacher/Vova/Ponov",
+			"time": 52,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				52
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "d9b19c61-184e-4f36-b449-27f71e61e453",
+			"name": "Get all groups",
+			"url": "http://localhost:8080/api/group",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "89935565-ee83-4905-9124-26267da9e4d5",
+			"name": "Create new group",
+			"url": "http://localhost:8080/api/group",
+			"time": 18,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				18
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "8c1e8020-d803-4bf4-93be-47da680afea0",
+			"name": "Update group",
+			"url": "http://localhost:8080/api/group/WW-00",
+			"time": 62,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				62
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "020c9d20-5b20-4b14-b25a-1e84d91d8681",
+			"name": "Get all courses",
+			"url": "http://localhost:8080/api/course",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "535a62a3-cfba-4d9b-bc55-8c58fb3c53e5",
+			"name": "Create new course",
+			"url": "http://localhost:8080/api/course",
+			"time": 14,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "3e3f72fe-77db-4636-bd5d-f0cac4b4111b",
+			"name": "Update course by name",
+			"url": "http://localhost:8080/api/course/History",
+			"time": 38,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				38
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "0150fb3f-5ff6-471e-97d1-65ad53c1b122",
+			"name": "Get all classrooms",
+			"url": "http://localhost:8080/api/classroom",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "15869789-23a9-465b-887b-61544d88e87e",
+			"name": "Create new classroom",
+			"url": "http://localhost:8080/api/classroom",
+			"time": 42,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				42
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "4a1880f3-504a-4948-8630-c64f99e088bc",
+			"name": "Update classroom by number",
+			"url": "http://localhost:8080/api/classroom/555",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "3f3ea176-2861-4e08-ac02-2bf2bc00c7ce",
+			"name": "Get all schedule",
+			"url": "http://localhost:8080/api/schedule",
+			"time": 161,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				161
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "543c86f0-47b5-4b8c-aabf-d137155bcbf6",
+			"name": "Create new schedule",
+			"url": "http://localhost:8080/api/schedule",
+			"time": 238,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				238
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "0eca9119-98cd-4fb1-a874-e02b05675152",
+			"name": "Update schedule",
+			"url": "http://localhost:8080/api/schedule/76",
+			"time": 74,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				74
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "b6daf254-53ba-4aeb-b970-b70d93ab4ef0",
+			"name": "Get schedule for teacher",
+			"url": "http://localhost:8080/api/schedule-teacher/72",
+			"time": 44,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"response must be valid and have a body": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"response must be valid and have a body": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				44
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"response must be valid and have a body": true
+				}
+			]
+		},
+		{
+			"id": "3450c8e4-746d-4ff7-a3f9-14c817fedc7c",
+			"name": "Delete schedule by id",
+			"url": "http://localhost:8080/api/schedule/76",
+			"time": 42,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				42
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "7d2e7eb9-d6f1-4ffb-b791-b061a9ed451d",
+			"name": "Delete classroom by number",
+			"url": "http://localhost:8080/api/classroom/33",
+			"time": 28,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				28
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "f73ec878-7ce2-49b9-9487-01299e22e3ba",
+			"name": "Delete teacher",
+			"url": "http://localhost:8080/api/teacher",
+			"time": 31,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				31
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "eea7e828-fee1-4936-85f8-fc993ed3b127",
+			"name": "Delete group by name",
+			"url": "http://localhost:8080/api/group/EE-00",
+			"time": 25,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				25
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "a860b604-60e1-4fe8-8bc1-3a403f3d5ef9",
+			"name": "Delete course by name",
+			"url": "http://localhost:8080/api/course/Physics",
+			"time": 12,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 1062,
+	"collection": {
+		"requests": [
+			{
+				"id": "8c943e5f-9100-4a50-8786-72dc7be706c4",
+				"method": "GET"
+			},
+			{
+				"id": "2bd6ac32-d5b0-4c6b-abf2-716e961f41ce",
+				"method": "PUT"
+			},
+			{
+				"id": "91a4250e-75cc-4aed-a84a-6d0c3815a537",
+				"method": "POST"
+			},
+			{
+				"id": "d9b19c61-184e-4f36-b449-27f71e61e453",
+				"method": "GET"
+			},
+			{
+				"id": "89935565-ee83-4905-9124-26267da9e4d5",
+				"method": "PUT"
+			},
+			{
+				"id": "8c1e8020-d803-4bf4-93be-47da680afea0",
+				"method": "POST"
+			},
+			{
+				"id": "020c9d20-5b20-4b14-b25a-1e84d91d8681",
+				"method": "GET"
+			},
+			{
+				"id": "535a62a3-cfba-4d9b-bc55-8c58fb3c53e5",
+				"method": "PUT"
+			},
+			{
+				"id": "3e3f72fe-77db-4636-bd5d-f0cac4b4111b",
+				"method": "POST"
+			},
+			{
+				"id": "0150fb3f-5ff6-471e-97d1-65ad53c1b122",
+				"method": "GET"
+			},
+			{
+				"id": "15869789-23a9-465b-887b-61544d88e87e",
+				"method": "PUT"
+			},
+			{
+				"id": "4a1880f3-504a-4948-8630-c64f99e088bc",
+				"method": "POST"
+			},
+			{
+				"id": "3f3ea176-2861-4e08-ac02-2bf2bc00c7ce",
+				"method": "GET"
+			},
+			{
+				"id": "543c86f0-47b5-4b8c-aabf-d137155bcbf6",
+				"method": "PUT"
+			},
+			{
+				"id": "0eca9119-98cd-4fb1-a874-e02b05675152",
+				"method": "POST"
+			},
+			{
+				"id": "b6daf254-53ba-4aeb-b970-b70d93ab4ef0",
+				"method": "GET"
+			},
+			{
+				"id": "3450c8e4-746d-4ff7-a3f9-14c817fedc7c",
+				"method": "DELETE"
+			},
+			{
+				"id": "7d2e7eb9-d6f1-4ffb-b791-b061a9ed451d",
+				"method": "DELETE"
+			},
+			{
+				"id": "f73ec878-7ce2-49b9-9487-01299e22e3ba",
+				"method": "DELETE"
+			},
+			{
+				"id": "eea7e828-fee1-4936-85f8-fc993ed3b127",
+				"method": "DELETE"
+			},
+			{
+				"id": "a860b604-60e1-4fe8-8bc1-3a403f3d5ef9",
+				"method": "DELETE"
+			}
+		]
+	}
+}

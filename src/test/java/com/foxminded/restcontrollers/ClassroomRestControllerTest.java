@@ -66,7 +66,7 @@ class ClassroomRestControllerTest {
         String inputJson = mapToJson(classroomDTO);
 
         String uri = "/api/classroom";
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(uri)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(inputJson))
                 .andReturn();
@@ -87,7 +87,7 @@ class ClassroomRestControllerTest {
         String inputJson = mapToJson(classroomDTO);
 
         String uri = "/api/classroom/1";
-                MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put(uri)
+                MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(inputJson))
                 .andReturn();

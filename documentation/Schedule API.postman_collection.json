@@ -1,0 +1,2691 @@
+{
+	"info": {
+		"_postman_id": "80521f27-8562-47ce-b509-662c3173abe3",
+		"name": "Schedule API",
+		"description": "Operations with a schedule for training\n\nContact Support:\n Name: Yura Odnoroh\n Email: odnorog.yu@gmail.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21632443"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "teacher",
+					"item": [
+						{
+							"name": "Get all teachers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/teacher",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"teacher"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Found the teachers",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"firstName\": \"nostrud Duis fu\",\n    \"lastName\": \"elit cillum se\",\n    \"id\": 81663353\n  },\n  {\n    \"firstName\": \"et aliq\",\n    \"lastName\": \"Ut pariatur\",\n    \"id\": -58604806\n  }\n]"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Create new teacher",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"Vova\",\n  \"lastName\": \"Ponov\",\n  \"id\": 72\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/teacher",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"teacher"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Added teacher",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"firstName\": \"cillum v\",\n  \"lastName\": \"aute deseru\",\n  \"id\": -6097824\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"firstName\": \"cillum v\",\n  \"lastName\": \"aute deseru\",\n  \"id\": -6097824\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"firstName\": \"cillum v\",\n  \"lastName\": \"aute deseru\",\n  \"id\": -6097824\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Update teacher",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"Vova\",\n  \"lastName\": \"Kolom\",\n  \"id\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/teacher/:firstNameOld/:lastNameOld",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"teacher",
+										":firstNameOld",
+										":lastNameOld"
+									],
+									"variable": [
+										{
+											"key": "firstNameOld",
+											"value": "Vova",
+											"description": "(Required) Replacement first name"
+										},
+										{
+											"key": "lastNameOld",
+											"value": "Ponov",
+											"description": "(Required) Replacement last name"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Updated teacher",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"firstName\": \"cillum v\",\n  \"lastName\": \"aute deseru\",\n  \"id\": -6097824\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/:firstNameOld/:lastNameOld",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												":firstNameOld",
+												":lastNameOld"
+											],
+											"variable": [
+												{
+													"key": "firstNameOld",
+													"value": "est quis dolore",
+													"description": "(Required) Replacement first name"
+												},
+												{
+													"key": "lastNameOld",
+													"value": "est quis dolore",
+													"description": "(Required) Replacement last name"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"firstName\": \"cillum v\",\n  \"lastName\": \"aute deseru\",\n  \"id\": -6097824\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"firstName\": \"cillum v\",\n  \"lastName\": \"aute deseru\",\n  \"id\": -6097824\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/teacher/:firstNameOld/:lastNameOld",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"teacher",
+												":firstNameOld",
+												":lastNameOld"
+											],
+											"variable": [
+												{
+													"key": "firstNameOld",
+													"value": "est quis dolore",
+													"description": "(Required) Replacement first name"
+												},
+												{
+													"key": "lastNameOld",
+													"value": "est quis dolore",
+													"description": "(Required) Replacement last name"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "group",
+					"item": [
+						{
+							"name": "Get all groups",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/group",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"group"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Found the groups",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/group",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"group"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"nameGroup\": \"commodo\",\n    \"id\": 66726995\n  },\n  {\n    \"nameGroup\": \"sit Exce\",\n    \"id\": 76497120\n  }\n]"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/group",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"group"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Create new group",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nameGroup\": \"WW-00\",\n  \"id\": 73\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/group",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"group"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Added group",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nameGroup\": \"officia \",\n  \"id\": 11144134\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/group",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"group"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"nameGroup\": \"officia \",\n  \"id\": 11144134\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nameGroup\": \"officia \",\n  \"id\": 11144134\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/group",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"group"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Update group",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nameGroup\": \"EE-00\",\n  \"id\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/group/:oldName",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"group",
+										":oldName"
+									],
+									"variable": [
+										{
+											"key": "oldName",
+											"value": "WW-00",
+											"description": "(Required) Name to be replaced "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Updated group",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nameGroup\": \"officia \",\n  \"id\": 11144134\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/group/:oldName",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"group",
+												":oldName"
+											],
+											"variable": [
+												{
+													"key": "oldName",
+													"value": "est quis dolore",
+													"description": "(Required) Name to be replaced "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"nameGroup\": \"officia \",\n  \"id\": 11144134\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nameGroup\": \"officia \",\n  \"id\": 11144134\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/group/:oldName",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"group",
+												":oldName"
+											],
+											"variable": [
+												{
+													"key": "oldName",
+													"value": "est quis dolore",
+													"description": "(Required) Name to be replaced "
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "course",
+					"item": [
+						{
+							"name": "Get all courses",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/course",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"course"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Found the courses",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/course",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"course"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"nameCourse\": \"velit e\",\n    \"id\": -51973191\n  },\n  {\n    \"nameCourse\": \"elit\",\n    \"id\": -56001471\n  }\n]"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/course",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"course"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Create new course",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nameCourse\": \"History\",\n  \"id\": 74\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/course",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"course"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Added course",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nameCourse\": \"dolor eiusmod inc\",\n  \"id\": 6574989\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/course",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"course"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"nameCourse\": \"dolor eiusmod inc\",\n  \"id\": 6574989\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nameCourse\": \"dolor eiusmod inc\",\n  \"id\": 6574989\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/course",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"course"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Update course by name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nameCourse\": \"Physics\",\n  \"id\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/course/:oldName",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"course",
+										":oldName"
+									],
+									"variable": [
+										{
+											"key": "oldName",
+											"value": "History",
+											"description": "(Required) Name to be replaced"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Updated course",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nameCourse\": \"dolor eiusmod inc\",\n  \"id\": 6574989\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/course/:oldName",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"course",
+												":oldName"
+											],
+											"variable": [
+												{
+													"key": "oldName",
+													"value": "est quis dolore",
+													"description": "(Required) Name to be replaced"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"nameCourse\": \"dolor eiusmod inc\",\n  \"id\": 6574989\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"nameCourse\": \"dolor eiusmod inc\",\n  \"id\": 6574989\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/course/:oldName",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"course",
+												":oldName"
+											],
+											"variable": [
+												{
+													"key": "oldName",
+													"value": "est quis dolore",
+													"description": "(Required) Name to be replaced"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "classroom",
+					"item": [
+						{
+							"name": "Get all classrooms",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/classroom",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"classroom"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Found the classrooms",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/classroom",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"classroom"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"numberClassroom\": 3514,\n    \"id\": 17958677\n  },\n  {\n    \"numberClassroom\": 2209,\n    \"id\": -75578718\n  }\n]"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/classroom",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"classroom"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Create new classroom",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"numberClassroom\": 555,\n  \"id\": 75\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/classroom",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"classroom"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Added classroom",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"numberClassroom\": 3263,\n  \"id\": 11422235\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/classroom",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"classroom"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"numberClassroom\": 3263,\n  \"id\": 11422235\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"numberClassroom\": 3263,\n  \"id\": 11422235\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/classroom",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"classroom"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Update classroom by number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"numberClassroom\": 33,\n  \"id\": 0\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/classroom/:oldNumber",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"classroom",
+										":oldNumber"
+									],
+									"variable": [
+										{
+											"key": "oldNumber",
+											"value": "555",
+											"description": "(Required) Old number classroom"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Updated classroom",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"numberClassroom\": 3263,\n  \"id\": 11422235\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/classroom/:oldNumber",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"classroom",
+												":oldNumber"
+											],
+											"variable": [
+												{
+													"key": "oldNumber",
+													"value": "-19666327",
+													"description": "(Required) Old number classroom"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"numberClassroom\": 3263,\n  \"id\": 11422235\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"numberClassroom\": 3263,\n  \"id\": 11422235\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/classroom/:oldNumber",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"classroom",
+												":oldNumber"
+											],
+											"variable": [
+												{
+													"key": "oldNumber",
+													"value": "-19666327",
+													"description": "(Required) Old number classroom"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "schedule",
+					"item": [
+						{
+							"name": "Get all schedule",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/schedule",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"schedule"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Found the schedule",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/schedule",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"schedule"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"classroomDTO\": {\n      \"numberClassroom\": 1658,\n      \"id\": -14182317\n    },\n    \"courseDTO\": {\n      \"nameCourse\": \"adipisic\",\n      \"id\": -82036217\n    },\n    \"groupDTO\": {\n      \"nameGroup\": \"Duis id\",\n      \"id\": -76817459\n    },\n    \"lessonEndTime\": \"1988-12-07T14:45:37.796Z\",\n    \"lessonStartTime\": \"1972-08-06T15:43:46.221Z\",\n    \"teacherDTO\": {\n      \"firstName\": \"adi\",\n      \"lastName\": \"laborum culpa\",\n      \"id\": 78539283\n    },\n    \"scheduleId\": 32231793\n  },\n  {\n    \"classroomDTO\": {\n      \"numberClassroom\": 4071,\n      \"id\": -39162647\n    },\n    \"courseDTO\": {\n      \"nameCourse\": \"velit\",\n      \"id\": 97093185\n    },\n    \"groupDTO\": {\n      \"nameGroup\": \"fugiat pro\",\n      \"id\": -93991020\n    },\n    \"lessonEndTime\": \"2004-01-05T02:16:45.425Z\",\n    \"lessonStartTime\": \"1980-07-23T17:59:55.407Z\",\n    \"teacherDTO\": {\n      \"firstName\": \"eu voluptate \",\n      \"lastName\": \"est\",\n      \"id\": -75540098\n    },\n    \"scheduleId\": -70586109\n  }\n]"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/schedule",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"schedule"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Create new schedule",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"classroomDTO\": {\n    \"numberClassroom\": 33,\n    \"id\": 75\n  },\n  \"courseDTO\": {\n    \"nameCourse\": \"Physics\",\n    \"id\": 74\n  },\n  \"groupDTO\": {\n    \"nameGroup\": \"EE-00\",\n    \"id\": 73\n  },\n  \"lessonEndTime\": \"2020-10-08T23:41:00.617Z\",\n  \"lessonStartTime\": \"2002-05-24T16:21:30.858Z\",\n  \"teacherDTO\": {\n    \"firstName\": \"Vova\",\n    \"lastName\": \"Kolom\",\n    \"id\": 72\n  },\n  \"scheduleId\": 76\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/schedule",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"schedule"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Added schedule",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"classroomDTO\": {\n    \"numberClassroom\": 2391,\n    \"id\": -34372728\n  },\n  \"courseDTO\": {\n    \"nameCourse\": \"commodo quis ea\",\n    \"id\": -9292506\n  },\n  \"groupDTO\": {\n    \"nameGroup\": \"culpa lab\",\n    \"id\": 11808281\n  },\n  \"lessonEndTime\": \"2020-10-08T23:41:00.617Z\",\n  \"lessonStartTime\": \"2002-05-24T16:21:30.858Z\",\n  \"teacherDTO\": {\n    \"firstName\": \"ullamco Ut ex\",\n    \"lastName\": \"tempor\",\n    \"id\": -66392801\n  },\n  \"scheduleId\": 93409130\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/schedule",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"schedule"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"classroomDTO\": {\n    \"numberClassroom\": 2391,\n    \"id\": -34372728\n  },\n  \"courseDTO\": {\n    \"nameCourse\": \"commodo quis ea\",\n    \"id\": -9292506\n  },\n  \"groupDTO\": {\n    \"nameGroup\": \"culpa lab\",\n    \"id\": 11808281\n  },\n  \"lessonEndTime\": \"2020-10-08T23:41:00.617Z\",\n  \"lessonStartTime\": \"2002-05-24T16:21:30.858Z\",\n  \"teacherDTO\": {\n    \"firstName\": \"ullamco Ut ex\",\n    \"lastName\": \"tempor\",\n    \"id\": -66392801\n  },\n  \"scheduleId\": 93409130\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"classroomDTO\": {\n    \"numberClassroom\": 2391,\n    \"id\": -34372728\n  },\n  \"courseDTO\": {\n    \"nameCourse\": \"commodo quis ea\",\n    \"id\": -9292506\n  },\n  \"groupDTO\": {\n    \"nameGroup\": \"culpa lab\",\n    \"id\": 11808281\n  },\n  \"lessonEndTime\": \"2020-10-08T23:41:00.617Z\",\n  \"lessonStartTime\": \"2002-05-24T16:21:30.858Z\",\n  \"teacherDTO\": {\n    \"firstName\": \"ullamco Ut ex\",\n    \"lastName\": \"tempor\",\n    \"id\": -66392801\n  },\n  \"scheduleId\": 93409130\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/schedule",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"schedule"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Update schedule",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"classroomDTO\": {\n    \"numberClassroom\": 33,\n    \"id\": 75\n  },\n  \"courseDTO\": {\n    \"nameCourse\": \"Physics\",\n    \"id\": 74\n  },\n  \"groupDTO\": {\n    \"nameGroup\": \"EE-00\",\n    \"id\": 73\n  },\n  \"lessonEndTime\": \"2020-10-09T23:41:00.617Z\",\n  \"lessonStartTime\": \"2002-05-24T16:21:30.858Z\",\n  \"teacherDTO\": {\n    \"firstName\": \"Vova\",\n    \"lastName\": \"Kolom\",\n    \"id\": 72\n  },\n  \"scheduleId\": 76\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/schedule/:oldId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"schedule",
+										":oldId"
+									],
+									"variable": [
+										{
+											"key": "oldId",
+											"value": "76",
+											"description": "(Required) Id schedule to be replaced "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Updated schedule",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"classroomDTO\": {\n    \"numberClassroom\": 2391,\n    \"id\": -34372728\n  },\n  \"courseDTO\": {\n    \"nameCourse\": \"commodo quis ea\",\n    \"id\": -9292506\n  },\n  \"groupDTO\": {\n    \"nameGroup\": \"culpa lab\",\n    \"id\": 11808281\n  },\n  \"lessonEndTime\": \"2020-10-08T23:41:00.617Z\",\n  \"lessonStartTime\": \"2002-05-24T16:21:30.858Z\",\n  \"teacherDTO\": {\n    \"firstName\": \"ullamco Ut ex\",\n    \"lastName\": \"tempor\",\n    \"id\": -66392801\n  },\n  \"scheduleId\": 93409130\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/schedule/:oldId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"schedule",
+												":oldId"
+											],
+											"variable": [
+												{
+													"key": "oldId",
+													"value": "-19666327",
+													"description": "(Required) Id schedule to be replaced "
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"classroomDTO\": {\n    \"numberClassroom\": 2391,\n    \"id\": -34372728\n  },\n  \"courseDTO\": {\n    \"nameCourse\": \"commodo quis ea\",\n    \"id\": -9292506\n  },\n  \"groupDTO\": {\n    \"nameGroup\": \"culpa lab\",\n    \"id\": 11808281\n  },\n  \"lessonEndTime\": \"2020-10-08T23:41:00.617Z\",\n  \"lessonStartTime\": \"2002-05-24T16:21:30.858Z\",\n  \"teacherDTO\": {\n    \"firstName\": \"ullamco Ut ex\",\n    \"lastName\": \"tempor\",\n    \"id\": -66392801\n  },\n  \"scheduleId\": 93409130\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"classroomDTO\": {\n    \"numberClassroom\": 2391,\n    \"id\": -34372728\n  },\n  \"courseDTO\": {\n    \"nameCourse\": \"commodo quis ea\",\n    \"id\": -9292506\n  },\n  \"groupDTO\": {\n    \"nameGroup\": \"culpa lab\",\n    \"id\": 11808281\n  },\n  \"lessonEndTime\": \"2020-10-08T23:41:00.617Z\",\n  \"lessonStartTime\": \"2002-05-24T16:21:30.858Z\",\n  \"teacherDTO\": {\n    \"firstName\": \"ullamco Ut ex\",\n    \"lastName\": \"tempor\",\n    \"id\": -66392801\n  },\n  \"scheduleId\": 93409130\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/schedule/:oldId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"schedule",
+												":oldId"
+											],
+											"variable": [
+												{
+													"key": "oldId",
+													"value": "-19666327",
+													"description": "(Required) Id schedule to be replaced "
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						},
+						{
+							"name": "Get schedule for teacher",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"response must be valid and have a body\", function () {\r",
+											"     pm.response.to.be.ok;\r",
+											"     pm.response.to.be.withBody;\r",
+											"     pm.response.to.be.json;\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/schedule-teacher/:teacherId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"schedule-teacher",
+										":teacherId"
+									],
+									"variable": [
+										{
+											"key": "teacherId",
+											"value": "72",
+											"description": "(Required) Teacher id to search"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Found the schedule",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/schedule-teacher/:teacherId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"schedule-teacher",
+												":teacherId"
+											],
+											"variable": [
+												{
+													"key": "teacherId",
+													"value": "-19666327",
+													"description": "(Required) Teacher id to search"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n  {\n    \"classroomDTO\": {\n      \"numberClassroom\": 1658,\n      \"id\": -14182317\n    },\n    \"courseDTO\": {\n      \"nameCourse\": \"adipisic\",\n      \"id\": -82036217\n    },\n    \"groupDTO\": {\n      \"nameGroup\": \"Duis id\",\n      \"id\": -76817459\n    },\n    \"lessonEndTime\": \"1988-12-07T14:45:37.796Z\",\n    \"lessonStartTime\": \"1972-08-06T15:43:46.221Z\",\n    \"teacherDTO\": {\n      \"firstName\": \"adi\",\n      \"lastName\": \"laborum culpa\",\n      \"id\": 78539283\n    },\n    \"scheduleId\": 32231793\n  },\n  {\n    \"classroomDTO\": {\n      \"numberClassroom\": 4071,\n      \"id\": -39162647\n    },\n    \"courseDTO\": {\n      \"nameCourse\": \"velit\",\n      \"id\": 97093185\n    },\n    \"groupDTO\": {\n      \"nameGroup\": \"fugiat pro\",\n      \"id\": -93991020\n    },\n    \"lessonEndTime\": \"2004-01-05T02:16:45.425Z\",\n    \"lessonStartTime\": \"1980-07-23T17:59:55.407Z\",\n    \"teacherDTO\": {\n      \"firstName\": \"eu voluptate \",\n      \"lastName\": \"est\",\n      \"id\": -75540098\n    },\n    \"scheduleId\": -70586109\n  }\n]"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/schedule-teacher/:teacherId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"schedule-teacher",
+												":teacherId"
+											],
+											"variable": [
+												{
+													"key": "teacherId",
+													"value": "-19666327",
+													"description": "(Required) Teacher id to search"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "*/*"
+										}
+									],
+									"cookie": [],
+									"body": "est quis dolore"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Delete schedule by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/schedule/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"schedule",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "76",
+									"description": "(Required) Schedule id"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Deleted schedule",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/schedule/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"schedule",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-19666327",
+											"description": "(Required) Schedule id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"classroomDTO\": {\n    \"numberClassroom\": 2391,\n    \"id\": -34372728\n  },\n  \"courseDTO\": {\n    \"nameCourse\": \"commodo quis ea\",\n    \"id\": -9292506\n  },\n  \"groupDTO\": {\n    \"nameGroup\": \"culpa lab\",\n    \"id\": 11808281\n  },\n  \"lessonEndTime\": \"2020-10-08T23:41:00.617Z\",\n  \"lessonStartTime\": \"2002-05-24T16:21:30.858Z\",\n  \"teacherDTO\": {\n    \"firstName\": \"ullamco Ut ex\",\n    \"lastName\": \"tempor\",\n    \"id\": -66392801\n  },\n  \"scheduleId\": 93409130\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/schedule/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"schedule",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "-19666327",
+											"description": "(Required) Schedule id"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "est quis dolore"
+						}
+					]
+				},
+				{
+					"name": "Delete classroom by number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/classroom/:number",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"classroom",
+								":number"
+							],
+							"variable": [
+								{
+									"key": "number",
+									"value": "33",
+									"description": "(Required) Number for delete classroom"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Deleted classroom",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/classroom/:number",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"classroom",
+										":number"
+									],
+									"variable": [
+										{
+											"key": "number",
+											"value": "-19666327",
+											"description": "(Required) Number for delete classroom"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"numberClassroom\": 3263,\n  \"id\": 11422235\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/classroom/:number",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"classroom",
+										":number"
+									],
+									"variable": [
+										{
+											"key": "number",
+											"value": "-19666327",
+											"description": "(Required) Number for delete classroom"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "est quis dolore"
+						}
+					]
+				},
+				{
+					"name": "Delete teacher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Vova\",\n  \"lastName\": \"Kolom\",\n  \"id\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/teacher",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"teacher"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Deleted teacher",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"cillum v\",\n  \"lastName\": \"aute deseru\",\n  \"id\": -6097824\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/teacher",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"teacher"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"firstName\": \"cillum v\",\n  \"lastName\": \"aute deseru\",\n  \"id\": -6097824\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"cillum v\",\n  \"lastName\": \"aute deseru\",\n  \"id\": -6097824\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/teacher",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"teacher"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "est quis dolore"
+						}
+					]
+				},
+				{
+					"name": "Delete group by name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/group/:name",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"group",
+								":name"
+							],
+							"variable": [
+								{
+									"key": "name",
+									"value": "EE-00",
+									"description": "(Required) Name group"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Deleted group",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/group/:name",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"group",
+										":name"
+									],
+									"variable": [
+										{
+											"key": "name",
+											"value": "est quis dolore",
+											"description": "(Required) Name group"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"nameGroup\": \"officia \",\n  \"id\": 11144134\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/group/:name",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"group",
+										":name"
+									],
+									"variable": [
+										{
+											"key": "name",
+											"value": "est quis dolore",
+											"description": "(Required) Name group"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "est quis dolore"
+						}
+					]
+				},
+				{
+					"name": "Delete course by name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/course/:name",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"course",
+								":name"
+							],
+							"variable": [
+								{
+									"key": "name",
+									"value": "Physics",
+									"description": "(Required) Name course"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Deleted course",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/course/:name",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"course",
+										":name"
+									],
+									"variable": [
+										{
+											"key": "name",
+											"value": "est quis dolore",
+											"description": "(Required) Name course"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"nameCourse\": \"dolor eiusmod inc\",\n  \"id\": 6574989\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/course/:name",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"course",
+										":name"
+									],
+									"variable": [
+										{
+											"key": "name",
+											"value": "est quis dolore",
+											"description": "(Required) Name course"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "*/*"
+								}
+							],
+							"cookie": [],
+							"body": "est quis dolore"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
